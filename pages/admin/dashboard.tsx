@@ -4,20 +4,74 @@ import { FaHome, FaBox, FaProjectDiagram, FaUsers, FaCertificate, FaEnvelope, Fa
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { productService, projectService, statsService, Product, Project } from '../../lib/supabase';
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [dashboardStats, setDashboardStats] = useState({
+    products: 0,
+    projects: 0,
+    certificates: 8,
+    messages: 12
+  });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
     if (auth === 'true') {
       setIsAuthenticated(true);
+      loadData();
     } else {
       router.push('/admin/login');
     }
   }, [router]);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [productsData, projectsData, statsData] = await Promise.all([
+        productService.getAll(),
+        projectService.getAll(),
+        statsService.getDashboardStats()
+      ]);
+      
+      setProducts(productsData);
+      setProjects(projectsData);
+      setDashboardStats(statsData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (id: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+      try {
+        await productService.delete(id);
+        setProducts(products.filter(p => p.id !== id));
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Gagal menghapus produk');
+      }
+    }
+  };
+
+  const handleDeleteProject = async (id: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus proyek ini?')) {
+      try {
+        await projectService.delete(id);
+        setProjects(projects.filter(p => p.id !== id));
+      } catch (error) {
+        console.error('Error deleting project:', error);
+        alert('Gagal menghapus proyek');
+      }
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('adminAuth');
@@ -32,12 +86,27 @@ const AdminDashboard = () => {
     { id: 'contacts', name: 'Kontak', icon: FaEnvelope },
   ];
 
-  const stats = [
-    { title: 'Total Produk', value: '25', color: 'bg-blue-500', icon: FaBox },
-    { title: 'Total Proyek', value: '6', color: 'bg-green-500', icon: FaProjectDiagram },
-    { title: 'Sertifikat', value: '8', color: 'bg-yellow-500', icon: FaCertificate },
-    { title: 'Pesan Masuk', value: '12', color: 'bg-red-500', icon: FaEnvelope },
+  const statsCards = [
+    { title: 'Total Produk', value: dashboardStats.products.toString(), color: 'bg-blue-500', icon: FaBox },
+    { title: 'Total Proyek', value: dashboardStats.projects.toString(), color: 'bg-green-500', icon: FaProjectDiagram },
+    { title: 'Sertifikat', value: dashboardStats.certificates.toString(), color: 'bg-yellow-500', icon: FaCertificate },
+    { title: 'Pesan Masuk', value: dashboardStats.messages.toString(), color: 'bg-red-500', icon: FaEnvelope },
   ];
+
+  const getCategoryName = (category: string) => {
+    const categories: { [key: string]: string } = {
+      'pedestrian': 'Lampu Penyebrangan',
+      'warning': 'Warning Light',
+      'traffic': 'Traffic Light',
+      'street': 'Lampu Jalan',
+      'controller': 'Controller System',
+      'highway': 'Jalan Tol',
+      'city': 'Jalan Kota',
+      'smartcity': 'Smart City',
+      'government': 'Pemerintah'
+    };
+    return categories[category] || category;
+  };
 
   if (!isAuthenticated) {
     return <div>Loading...</div>;
@@ -103,7 +172,7 @@ const AdminDashboard = () => {
             <div>
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {stats.map((stat, index) => (
+                {statsCards.map((stat, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -179,24 +248,51 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">SP-230D Pedestrian Light</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">Unit lampu pedestrian dengan green dynamic display</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Lampu Penyebrangan</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">
-                          <FaEdit />
-                        </button>
-                        <button className="text-red-600 hover:text-red-900">
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : products.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Belum ada produk. <Link href="/admin/products/add" className="text-seltronik-red hover:underline">Tambah produk pertama</Link>
+                        </td>
+                      </tr>
+                    ) : (
+                      products.map((product) => (
+                        <tr key={product.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{product.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-300">{product.description}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {getCategoryName(product.category)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              Aktif
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button 
+                              className="text-blue-600 hover:text-blue-900 mr-3"
+                              title="Edit produk"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button 
+                              onClick={() => product.id && handleDeleteProduct(product.id)}
+                              className="text-red-600 hover:text-red-900"
+                              title="Hapus produk"
+                            >
+                              <FaTrash />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -227,22 +323,49 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">Tol Trans Jawa - Seksi 1</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">Jakarta - Cikampek</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">PT. Jasa Marga</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">2023</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">
-                          <FaEdit />
-                        </button>
-                        <button className="text-red-600 hover:text-red-900">
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : projects.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Belum ada proyek. <Link href="/admin/projects/add" className="text-seltronik-red hover:underline">Tambah proyek pertama</Link>
+                        </td>
+                      </tr>
+                    ) : (
+                      projects.map((project) => (
+                        <tr key={project.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{project.title}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-300">{project.location}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {project.client}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {project.year}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button 
+                              className="text-blue-600 hover:text-blue-900 mr-3"
+                              title="Edit proyek"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button 
+                              onClick={() => project.id && handleDeleteProject(project.id)}
+                              className="text-red-600 hover:text-red-900"
+                              title="Hapus proyek"
+                            >
+                              <FaTrash />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
