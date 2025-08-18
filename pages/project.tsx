@@ -313,7 +313,7 @@ const ProjectsPage = () => {
                 >
                   {/* Project Image */}
                   <div className="h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all duration-300"></div>
+                    <div className="absolute inset-0 bg-black/40"></div>
                     <div className="absolute top-4 left-4 z-10">
                       <span className="bg-seltronik-red text-white px-3 py-1 rounded-full text-sm font-semibold">
                         {project.year}

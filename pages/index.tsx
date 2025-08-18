@@ -276,8 +276,8 @@ const HomePage = () => {
                 className="group relative bg-white dark:bg-gray-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 <div className={`${product.color} h-48 flex items-center justify-center text-white relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300"></div>
-                  <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="relative z-10">
                     {product.icon}
                   </div>
                 </div>

@@ -268,7 +268,7 @@ const ProductsPage = () => {
                         {categories.find(c => c.id === product.category)?.name}
                       </span>
                     </div>
-                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 group-hover:scale-110 transition-transform duration-500"></div>
+                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400"></div>
                   </div>
 
                   {/* Product Info */}
