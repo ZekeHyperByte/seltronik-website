@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "@tanstack/react-virtual": "^3.0.0",
     "axios": "^1.6.2",
     "framer-motion": "^10.16.16",
     "next": "^15.4.6",
