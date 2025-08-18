@@ -258,8 +258,7 @@ const ProductsPage = () => {
                   key={product.id}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
+                  transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.05 }}
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
                 >
                   {/* Product Image */}
