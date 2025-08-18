@@ -1,8 +1,8 @@
 -- Supabase Database Setup for Seltronik Website
 -- Run these commands in your Supabase SQL Editor
 
--- Enable Row Level Security
-ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret';
+-- JWT secret is automatically managed by Supabase
+-- No need to set it manually
 
 -- Create Products Table
 CREATE TABLE IF NOT EXISTS products (
