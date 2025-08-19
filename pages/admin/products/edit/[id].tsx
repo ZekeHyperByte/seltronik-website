@@ -4,7 +4,7 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService, Product } from '../../../../lib/supabase';
+import { productService, storageService, Product } from '../../../../lib/supabase';
 
 const EditProduct = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,6 +13,8 @@ const EditProduct = () => {
   const { id } = router.query;
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [catalogFile, setCatalogFile] = useState<File | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -90,14 +92,26 @@ const EditProduct = () => {
 
     if (product) {
       try {
+        let imageUrl = product.image;
+        if (imageFile) {
+          imageUrl = await storageService.uploadFile(imageFile);
+        }
+
+        let catalogUrl = product.catalog_url;
+        if (catalogFile) {
+          catalogUrl = await storageService.uploadFile(catalogFile);
+        }
+
         await productService.update(product.id!, {
           ...product,
+          image: imageUrl,
+          catalog_url: catalogUrl,
           features: product.features.filter(f => f.trim() !== ''),
         });
         router.push('/admin/dashboard');
       } catch (error) {
         console.error('Error updating product:', error);
-        // You might want to show an error message to the user here
+        alert('Gagal memperbarui produk: ' + (error as Error).message);
       } finally {
         setIsLoading(false);
       }
@@ -319,27 +333,23 @@ const EditProduct = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Gambar
+                      Gambar
                     </label>
                     <input
-                      type="url"
-                      value={product.image}
-                      onChange={(e) => handleInputChange('image', e.target.value)}
+                      type="file"
+                      onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Katalog
+                      Katalog (PDF)
                     </label>
                     <input
-                      type="url"
-                      value={product.catalog_url}
-                      onChange={(e) => handleInputChange('catalog_url', e.target.value)}
+                      type="file"
+                      onChange={(e) => setCatalogFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/catalog.pdf"
                     />
                   </div>
                 </div>

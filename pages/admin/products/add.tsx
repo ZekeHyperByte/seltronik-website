@@ -4,7 +4,7 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService } from '../../../lib/supabase';
+import { productService, storageService } from '../../../lib/supabase';
 
 const AddProduct = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +27,9 @@ const AddProduct = () => {
     image: '',
     catalogUrl: ''
   });
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [catalogFile, setCatalogFile] = useState<File | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -93,10 +96,21 @@ const AddProduct = () => {
     setIsLoading(true);
 
     try {
+      let imageUrl = '';
+      if (imageFile) {
+        imageUrl = await storageService.uploadFile(imageFile);
+      }
+
+      let catalogUrl = '';
+      if (catalogFile) {
+        catalogUrl = await storageService.uploadFile(catalogFile);
+      }
+
       const productData = {
         ...product,
+        image: imageUrl,
+        catalog_url: catalogUrl,
         features: product.features.filter(f => f.trim() !== ''),
-        catalog_url: product.catalogUrl,
         specifications: {
           power: product.specifications.power,
           voltage: product.specifications.voltage,
@@ -331,27 +345,23 @@ const AddProduct = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Gambar
+                      Gambar
                     </label>
                     <input
-                      type="url"
-                      value={product.image}
-                      onChange={(e) => handleInputChange('image', e.target.value)}
+                      type="file"
+                      onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Katalog
+                      Katalog (PDF)
                     </label>
                     <input
-                      type="url"
-                      value={product.catalogUrl}
-                      onChange={(e) => handleInputChange('catalogUrl', e.target.value)}
+                      type="file"
+                      onChange={(e) => setCatalogFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/catalog.pdf"
                     />
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { projectService } from '../../../lib/supabase';
+import { projectService, storageService } from '../../../lib/supabase';
 
 const AddProject = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -31,6 +31,8 @@ const AddProject = () => {
       value: ''
     }
   });
+
+  const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -132,10 +134,14 @@ const AddProject = () => {
     setIsLoading(true);
 
     try {
+      const imageUrls = await Promise.all(
+        imageFiles.map(file => file ? storageService.uploadFile(file) : Promise.resolve(''))
+      );
+
       const projectData = {
         ...project,
         scope: project.scope.filter(s => s.trim() !== ''),
-        images: project.images.filter(img => img.trim() !== ''),
+        images: imageUrls.filter(url => url !== ''),
         stats: {
           units: parseInt(project.stats.units) || 0,
           duration: project.stats.duration,
@@ -151,7 +157,7 @@ const AddProject = () => {
       router.push('/admin/dashboard');
     } catch (error) {
       console.error('Error creating project:', error);
-      // You might want to show an error message to the user here
+      alert('Gagal menambahkan proyek: ' + (error as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -434,11 +440,13 @@ const AddProject = () => {
                   {project.images.map((image, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <input
-                        type="url"
-                        value={image}
-                        onChange={(e) => handleImageChange(index, e.target.value)}
+                        type="file"
+                        onChange={(e) => {
+                          const newImageFiles = [...imageFiles];
+                          newImageFiles[index] = e.target.files ? e.target.files[0] : null;
+                          setImageFiles(newImageFiles);
+                        }}
                         className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                        placeholder="https://example.com/image.jpg"
                       />
                       {project.images.length > 1 && (
                         <button

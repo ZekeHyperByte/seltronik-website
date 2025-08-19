@@ -4,7 +4,7 @@ import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { certificateService } from '../../../lib/supabase';
+import { certificateService, storageService } from '../../../lib/supabase';
 
 const AddCertificate = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,6 +20,9 @@ const AddCertificate = () => {
     certificate_url: '',
     image_url: '',
   });
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [certificateFile, setCertificateFile] = useState<File | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -49,11 +52,27 @@ const AddCertificate = () => {
     setIsLoading(true);
 
     try {
-      await certificateService.create(certificate);
+      let imageUrl = '';
+      if (imageFile) {
+        imageUrl = await storageService.uploadFile(imageFile);
+      }
+
+      let certificateUrl = '';
+      if (certificateFile) {
+        certificateUrl = await storageService.uploadFile(certificateFile);
+      }
+
+      const certificateData = {
+        ...certificate,
+        image_url: imageUrl,
+        certificate_url: certificateUrl,
+      };
+
+      await certificateService.create(certificateData);
       router.push('/admin/dashboard');
     } catch (error) {
       console.error('Error creating certificate:', error);
-      // You might want to show an error message to the user here
+      alert('Gagal menambahkan sertifikat: ' + (error as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -175,27 +194,23 @@ const AddCertificate = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Gambar
+                      Gambar
                     </label>
                     <input
-                      type="url"
-                      value={certificate.image_url}
-                      onChange={(e) => handleInputChange('image_url', e.target.value)}
+                      type="file"
+                      onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      URL Sertifikat (PDF)
+                      Sertifikat (PDF)
                     </label>
                     <input
-                      type="url"
-                      value={certificate.certificate_url}
-                      onChange={(e) => handleInputChange('certificate_url', e.target.value)}
+                      type="file"
+                      onChange={(e) => setCertificateFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="https://example.com/certificate.pdf"
                     />
                   </div>
                 </div>

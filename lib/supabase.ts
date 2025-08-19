@@ -274,6 +274,25 @@ export const certificateService = {
   }
 };
 
+// Storage
+export const storageService = {
+  async uploadFile(file: File) {
+    const { data, error } = await supabase.storage
+      .from('seltronik-assets')
+      .upload(`public/${file.name}`, file);
+
+    if (error) {
+      throw error;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('seltronik-assets')
+      .getPublicUrl(data.path);
+
+    return publicUrlData.publicUrl;
+  }
+};
+
 // Statistics
 export const statsService = {
   async getDashboardStats() {
