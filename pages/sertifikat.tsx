@@ -133,10 +133,7 @@ const CertificatesPage = () => {
                 >
                   {/* Certificate Image */}
                   <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <FaCertificate className="text-6xl text-gray-300 dark:text-gray-500" />
-                    </div>
-                    
+                    <img src={cert.image_url} alt={cert.name} className="w-full h-full object-cover" />
                   </div>
 
                   {/* Certificate Info */}
@@ -220,7 +217,7 @@ const CertificatesPage = () => {
                   {/* Certificate Preview */}
                   <div>
                     <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
-                      <FaCertificate className="text-8xl text-gray-300 dark:text-gray-500" />
+                      <img src={selectedCertificate.image_url} alt={selectedCertificate.name} className="w-full h-full object-contain" />
                     </div>
                     
                   </div>

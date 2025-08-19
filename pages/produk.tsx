@@ -124,7 +124,7 @@ const ProductsPage = () => {
                         {categories.find(c => c.id === product.category)?.name}
                       </span>
                     </div>
-                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400"></div>
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                   </div>
 
                   {/* Product Info */}
@@ -221,7 +221,9 @@ const ProductsPage = () => {
 
               <div className="grid lg:grid-cols-2 gap-8 p-6">
                 {/* Product Image */}
-                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl"></div>
+                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl">
+                  <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover rounded-xl" />
+                </div>
 
                 {/* Product Details */}
                 <div>

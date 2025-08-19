@@ -162,6 +162,7 @@ const ProjectsPage = () => {
                 >
                   {/* Project Image */}
                   <div className="h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
+                    <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40"></div>
                     <div className="absolute top-4 left-4 z-10">
                       <span className="bg-seltronik-red text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -293,7 +294,9 @@ const ProjectsPage = () => {
               {/* Modal Content */}
               <div className="p-6">
                 {/* Image Gallery */}
-                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6"></div>
+                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6">
+                  <img src={selectedProject.images[0]} alt={selectedProject.title} className="w-full h-full object-cover rounded-xl" />
+                </div>
 
                 {/* Project Details */}
                 <div className="grid lg:grid-cols-2 gap-8">
