@@ -127,9 +127,9 @@ const EditProject = () => {
           scope: project.scope.filter(s => s.trim() !== ''),
           images: project.images.filter(img => img.trim() !== ''),
           stats: {
-            units: parseInt(project.stats.units) || 0,
-            duration: project.stats.duration,
-            value: project.stats.value
+            units: parseInt(project.stats?.units?.toString() || '0') || 0,
+            duration: project.stats?.duration || '',
+            value: project.stats?.value || ''
           }
         });
         router.push('/admin/dashboard');

@@ -110,7 +110,7 @@ const AddProduct = () => {
       router.push('/admin/dashboard');
     } catch (error) {
       console.error('Error creating product:', error);
-      // You might want to show an error message to the user here
+      alert('Gagal menambahkan produk: ' + (error as Error).message);
     } finally {
       setIsLoading(false);
     }
