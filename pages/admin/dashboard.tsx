@@ -4,13 +4,14 @@ import { FaHome, FaBox, FaProjectDiagram, FaUsers, FaCertificate, FaEnvelope, Fa
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService, projectService, statsService, Product, Project } from '../../lib/supabase';
+import { productService, projectService, certificateService, statsService, Product, Project, Certificate } from '../../lib/supabase';
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [products, setProducts] = useState<Product[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [dashboardStats, setDashboardStats] = useState({
     products: 0,
     projects: 0,
@@ -33,14 +34,16 @@ const AdminDashboard = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [productsData, projectsData, statsData] = await Promise.all([
+      const [productsData, projectsData, certificatesData, statsData] = await Promise.all([
         productService.getAll(),
         projectService.getAll(),
+        certificateService.getAll(),
         statsService.getDashboardStats()
       ]);
       
       setProducts(productsData);
       setProjects(projectsData);
+      setCertificates(certificatesData);
       setDashboardStats(statsData);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -57,6 +60,18 @@ const AdminDashboard = () => {
       } catch (error) {
         console.error('Error deleting product:', error);
         alert('Gagal menghapus produk');
+      }
+    }
+  };
+
+  const handleDeleteCertificate = async (id: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus sertifikat ini?')) {
+      try {
+        await certificateService.delete(id);
+        setCertificates(certificates.filter(c => c.id !== id));
+      } catch (error) {
+        console.error('Error deleting certificate:', error);
+        alert('Gagal menghapus sertifikat');
       }
     }
   };
@@ -389,8 +404,57 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <p className="text-gray-600 dark:text-gray-300">Fitur manajemen sertifikat akan segera hadir.</p>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sertifikat</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Penerbit</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {loading ? (
+                      <tr>
+                        <td colSpan={3} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : certificates.length === 0 ? (
+                      <tr>
+                        <td colSpan={3} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                          Belum ada sertifikat. <Link href="/admin/certificates/add" className="text-seltronik-red hover:underline">Tambah sertifikat pertama</Link>
+                        </td>
+                      </tr>
+                    ) : (
+                      certificates.map((certificate) => (
+                        <tr key={certificate.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{certificate.name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {certificate.issuer}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button 
+                              className="text-blue-600 hover:text-blue-900 mr-3"
+                              title="Edit sertifikat"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button 
+                              onClick={() => certificate.id && handleDeleteCertificate(certificate.id)}
+                              className="text-red-600 hover:text-red-900"
+                              title="Hapus sertifikat"
+                            >
+                              <FaTrash />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}
