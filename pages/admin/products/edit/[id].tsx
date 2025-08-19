@@ -94,12 +94,20 @@ const EditProduct = () => {
       try {
         let imageUrl = product.image;
         if (imageFile) {
-          imageUrl = await storageService.uploadFile(imageFile);
+          try {
+            imageUrl = await storageService.uploadFile(imageFile);
+          } catch (uploadError) {
+            throw new Error('Gagal mengunggah gambar: ' + (uploadError as Error).message);
+          }
         }
 
         let catalogUrl = product.catalog_url;
         if (catalogFile) {
-          catalogUrl = await storageService.uploadFile(catalogFile);
+          try {
+            catalogUrl = await storageService.uploadFile(catalogFile);
+          } catch (uploadError) {
+            throw new Error('Gagal mengunggah katalog: ' + (uploadError as Error).message);
+          }
         }
 
         await productService.update(product.id!, {
