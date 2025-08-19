@@ -276,12 +276,14 @@ const AdminDashboard = () => {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button 
-                              className="text-blue-600 hover:text-blue-900 mr-3"
-                              title="Edit produk"
-                            >
-                              <FaEdit />
-                            </button>
+                            <Link href={`/admin/products/edit/${product.id}`}>
+                              <button 
+                                className="text-blue-600 hover:text-blue-900 mr-3"
+                                title="Edit produk"
+                              >
+                                <FaEdit />
+                              </button>
+                            </Link>
                             <button 
                               onClick={() => product.id && handleDeleteProduct(product.id)}
                               className="text-red-600 hover:text-red-900"
@@ -349,12 +351,14 @@ const AdminDashboard = () => {
                             {project.year}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button 
-                              className="text-blue-600 hover:text-blue-900 mr-3"
-                              title="Edit proyek"
-                            >
-                              <FaEdit />
-                            </button>
+                            <Link href={`/admin/projects/edit/${project.id}`}>
+                              <button 
+                                className="text-blue-600 hover:text-blue-900 mr-3"
+                                title="Edit proyek"
+                              >
+                                <FaEdit />
+                              </button>
+                            </Link>
                             <button 
                               onClick={() => project.id && handleDeleteProject(project.id)}
                               className="text-red-600 hover:text-red-900"
@@ -376,10 +380,13 @@ const AdminDashboard = () => {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Sertifikat</h2>
-                <button className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center">
+                <Link
+                  href="/admin/certificates/add"
+                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center"
+                >
                   <FaPlus className="mr-2" />
                   Tambah Sertifikat
-                </button>
+                </Link>
               </div>
               
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">

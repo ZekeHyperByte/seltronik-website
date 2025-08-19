@@ -4,33 +4,15 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { projectService } from '../../../lib/supabase';
+import { projectService, Project } from '../../../../lib/supabase';
 
-const AddProject = () => {
+const EditProject = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { id } = router.query;
 
-  const [project, setProject] = useState({
-    title: '',
-    client: '',
-    location: '',
-    year: '',
-    category: '',
-    description: '',
-    scope: [''],
-    images: [''],
-    testimonial: {
-      text: '',
-      author: '',
-      position: ''
-    },
-    stats: {
-      units: '',
-      duration: '',
-      value: ''
-    }
-  });
+  const [project, setProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -41,6 +23,20 @@ const AddProject = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (id) {
+      const fetchProject = async () => {
+        try {
+          const data = await projectService.getById(parseInt(id as string));
+          setProject(data);
+        } catch (error) {
+          console.error('Error fetching project:', error);
+        }
+      };
+      fetchProject();
+    }
+  }, [id]);
+
   const categories = [
     { id: 'highway', name: 'Jalan Tol' },
     { id: 'city', name: 'Jalan Kota' },
@@ -49,81 +45,74 @@ const AddProject = () => {
   ];
 
   const handleInputChange = (field: string, value: string) => {
-    setProject(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    if (project) {
+      setProject({ ...project, [field]: value });
+    }
   };
 
   const handleTestimonialChange = (field: string, value: string) => {
-    setProject(prev => ({
-      ...prev,
-      testimonial: {
-        ...prev.testimonial,
-        [field]: value
-      }
-    }));
+    if (project) {
+      setProject({
+        ...project,
+        testimonial: {
+          ...project.testimonial!,
+          [field]: value
+        }
+      });
+    }
   };
 
   const handleStatsChange = (field: string, value: string) => {
-    setProject(prev => ({
-      ...prev,
-      stats: {
-        ...prev.stats,
-        [field]: value
-      }
-    }));
+    if (project) {
+      setProject({
+        ...project,
+        stats: {
+          ...project.stats!,
+          [field]: value
+        }
+      });
+    }
   };
 
   const handleScopeChange = (index: number, value: string) => {
-    const newScope = [...project.scope];
-    newScope[index] = value;
-    setProject(prev => ({
-      ...prev,
-      scope: newScope
-    }));
+    if (project) {
+      const newScope = [...project.scope];
+      newScope[index] = value;
+      setProject({ ...project, scope: newScope });
+    }
   };
 
   const addScope = () => {
-    setProject(prev => ({
-      ...prev,
-      scope: [...prev.scope, '']
-    }));
+    if (project) {
+      setProject({ ...project, scope: [...project.scope, ''] });
+    }
   };
 
   const removeScope = (index: number) => {
-    if (project.scope.length > 1) {
+    if (project && project.scope.length > 1) {
       const newScope = project.scope.filter((_, i) => i !== index);
-      setProject(prev => ({
-        ...prev,
-        scope: newScope
-      }));
+      setProject({ ...project, scope: newScope });
     }
   };
 
   const handleImageChange = (index: number, value: string) => {
-    const newImages = [...project.images];
-    newImages[index] = value;
-    setProject(prev => ({
-      ...prev,
-      images: newImages
-    }));
+    if (project) {
+      const newImages = [...project.images];
+      newImages[index] = value;
+      setProject({ ...project, images: newImages });
+    }
   };
 
   const addImage = () => {
-    setProject(prev => ({
-      ...prev,
-      images: [...prev.images, '']
-    }));
+    if (project) {
+      setProject({ ...project, images: [...project.images, ''] });
+    }
   };
 
   const removeImage = (index: number) => {
-    if (project.images.length > 1) {
+    if (project && project.images.length > 1) {
       const newImages = project.images.filter((_, i) => i !== index);
-      setProject(prev => ({
-        ...prev,
-        images: newImages
-      }));
+      setProject({ ...project, images: newImages });
     }
   };
 
@@ -131,40 +120,36 @@ const AddProject = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const projectData = {
-        ...project,
-        scope: project.scope.filter(s => s.trim() !== ''),
-        images: project.images.filter(img => img.trim() !== ''),
-        stats: {
-          units: parseInt(project.stats.units) || 0,
-          duration: project.stats.duration,
-          value: project.stats.value
-        },
-        testimonial: {
-          text: project.testimonial.text,
-          author: project.testimonial.author,
-          position: project.testimonial.position
-        }
-      };
-      await projectService.create(projectData);
-      router.push('/admin/dashboard');
-    } catch (error) {
-      console.error('Error creating project:', error);
-      // You might want to show an error message to the user here
-    } finally {
-      setIsLoading(false);
+    if (project) {
+      try {
+        await projectService.update(project.id!, {
+          ...project,
+          scope: project.scope.filter(s => s.trim() !== ''),
+          images: project.images.filter(img => img.trim() !== ''),
+          stats: {
+            units: parseInt(project.stats.units) || 0,
+            duration: project.stats.duration,
+            value: project.stats.value
+          }
+        });
+        router.push('/admin/dashboard');
+      } catch (error) {
+        console.error('Error updating project:', error);
+        // You might want to show an error message to the user here
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !project) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
       <Head>
-        <title>Tambah Proyek - Admin Seltronik</title>
+        <title>Edit Proyek - Admin Seltronik</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
@@ -180,8 +165,8 @@ const AddProject = () => {
                 <FaArrowLeft size={20} />
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Tambah Proyek</h1>
-                <p className="text-gray-600 dark:text-gray-300">Tambahkan proyek baru ke website</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Proyek</h1>
+                <p className="text-gray-600 dark:text-gray-300">Perbarui detail proyek</p>
               </div>
             </div>
           </div>
@@ -334,7 +319,7 @@ const AddProject = () => {
                     </label>
                     <input
                       type="number"
-                      value={project.stats.units}
+                      value={project.stats?.units}
                       onChange={(e) => handleStatsChange('units', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                       placeholder="500"
@@ -347,7 +332,7 @@ const AddProject = () => {
                     </label>
                     <input
                       type="text"
-                      value={project.stats.duration}
+                      value={project.stats?.duration}
                       onChange={(e) => handleStatsChange('duration', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                       placeholder="6 bulan"
@@ -360,7 +345,7 @@ const AddProject = () => {
                     </label>
                     <input
                       type="text"
-                      value={project.stats.value}
+                      value={project.stats?.value}
                       onChange={(e) => handleStatsChange('value', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                       placeholder="Rp 15 Miliar"
@@ -378,7 +363,7 @@ const AddProject = () => {
                       Testimoni
                     </label>
                     <textarea
-                      value={project.testimonial.text}
+                      value={project.testimonial?.text}
                       onChange={(e) => handleTestimonialChange('text', e.target.value)}
                       rows={3}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
@@ -393,7 +378,7 @@ const AddProject = () => {
                       </label>
                       <input
                         type="text"
-                        value={project.testimonial.author}
+                        value={project.testimonial?.author}
                         onChange={(e) => handleTestimonialChange('author', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                         placeholder="Ir. Budi Santoso"
@@ -406,7 +391,7 @@ const AddProject = () => {
                       </label>
                       <input
                         type="text"
-                        value={project.testimonial.position}
+                        value={project.testimonial?.position}
                         onChange={(e) => handleTestimonialChange('position', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                         placeholder="Project Manager - Jasa Marga"
@@ -462,7 +447,7 @@ const AddProject = () => {
                   className="flex items-center px-6 py-3 bg-seltronik-red text-white rounded-lg hover:bg-red-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaSave className="mr-2" />
-                  {isLoading ? 'Menyimpan...' : 'Simpan Proyek'}
+                  {isLoading ? 'Menyimpan...' : 'Simpan Perubahan'}
                 </button>
               </div>
             </form>
@@ -473,4 +458,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default EditProject;

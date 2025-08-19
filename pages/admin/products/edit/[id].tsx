@@ -4,29 +4,15 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService } from '../../../lib/supabase';
+import { productService, Product } from '../../../../lib/supabase';
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { id } = router.query;
 
-  const [product, setProduct] = useState({
-    name: '',
-    category: '',
-    description: '',
-    features: [''],
-    specifications: {
-      power: '',
-      voltage: '',
-      material: '',
-      dimension: '',
-      weight: '',
-      certification: ''
-    },
-    image: '',
-    catalogUrl: ''
-  });
+  const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -37,6 +23,20 @@ const AddProduct = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (id) {
+      const fetchProduct = async () => {
+        try {
+          const data = await productService.getById(parseInt(id as string));
+          setProduct(data);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      };
+      fetchProduct();
+    }
+  }, [id]);
+
   const categories = [
     { id: 'pedestrian', name: 'Lampu Penyebrangan' },
     { id: 'warning', name: 'Warning Light' },
@@ -46,45 +46,41 @@ const AddProduct = () => {
   ];
 
   const handleInputChange = (field: string, value: string) => {
-    setProduct(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    if (product) {
+      setProduct({ ...product, [field]: value });
+    }
   };
 
   const handleSpecificationChange = (field: string, value: string) => {
-    setProduct(prev => ({
-      ...prev,
-      specifications: {
-        ...prev.specifications,
-        [field]: value
-      }
-    }));
+    if (product) {
+      setProduct({
+        ...product,
+        specifications: {
+          ...product.specifications,
+          [field]: value
+        }
+      });
+    }
   };
 
   const handleFeatureChange = (index: number, value: string) => {
-    const newFeatures = [...product.features];
-    newFeatures[index] = value;
-    setProduct(prev => ({
-      ...prev,
-      features: newFeatures
-    }));
+    if (product) {
+      const newFeatures = [...product.features];
+      newFeatures[index] = value;
+      setProduct({ ...product, features: newFeatures });
+    }
   };
 
   const addFeature = () => {
-    setProduct(prev => ({
-      ...prev,
-      features: [...prev.features, '']
-    }));
+    if (product) {
+      setProduct({ ...product, features: [...product.features, ''] });
+    }
   };
 
   const removeFeature = (index: number) => {
-    if (product.features.length > 1) {
+    if (product && product.features.length > 1) {
       const newFeatures = product.features.filter((_, i) => i !== index);
-      setProduct(prev => ({
-        ...prev,
-        features: newFeatures
-      }));
+      setProduct({ ...product, features: newFeatures });
     }
   };
 
@@ -92,38 +88,30 @@ const AddProduct = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const productData = {
-        ...product,
-        features: product.features.filter(f => f.trim() !== ''),
-        catalog_url: product.catalogUrl,
-        specifications: {
-          power: product.specifications.power,
-          voltage: product.specifications.voltage,
-          material: product.specifications.material,
-          dimension: product.specifications.dimension,
-          weight: product.specifications.weight,
-          certification: product.specifications.certification,
-        }
-      };
-      await productService.create(productData);
-      router.push('/admin/dashboard');
-    } catch (error) {
-      console.error('Error creating product:', error);
-      // You might want to show an error message to the user here
-    } finally {
-      setIsLoading(false);
+    if (product) {
+      try {
+        await productService.update(product.id!, {
+          ...product,
+          features: product.features.filter(f => f.trim() !== ''),
+        });
+        router.push('/admin/dashboard');
+      } catch (error) {
+        console.error('Error updating product:', error);
+        // You might want to show an error message to the user here
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !product) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
       <Head>
-        <title>Tambah Produk - Admin Seltronik</title>
+        <title>Edit Produk - Admin Seltronik</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
@@ -139,8 +127,8 @@ const AddProduct = () => {
                 <FaArrowLeft size={20} />
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Tambah Produk</h1>
-                <p className="text-gray-600 dark:text-gray-300">Tambahkan produk baru ke website</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Produk</h1>
+                <p className="text-gray-600 dark:text-gray-300">Perbarui detail produk</p>
               </div>
             </div>
           </div>
@@ -348,8 +336,8 @@ const AddProduct = () => {
                     </label>
                     <input
                       type="url"
-                      value={product.catalogUrl}
-                      onChange={(e) => handleInputChange('catalogUrl', e.target.value)}
+                      value={product.catalog_url}
+                      onChange={(e) => handleInputChange('catalog_url', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                       placeholder="https://example.com/catalog.pdf"
                     />
@@ -365,7 +353,7 @@ const AddProduct = () => {
                   className="flex items-center px-6 py-3 bg-seltronik-red text-white rounded-lg hover:bg-red-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaSave className="mr-2" />
-                  {isLoading ? 'Menyimpan...' : 'Simpan Produk'}
+                  {isLoading ? 'Menyimpan...' : 'Simpan Perubahan'}
                 </button>
               </div>
             </form>
@@ -376,4 +364,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;
