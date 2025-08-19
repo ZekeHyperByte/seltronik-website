@@ -1,180 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaFilter, FaDownload, FaWhatsapp, FaEye, FaCheckCircle, FaBolt, FaSun, FaShieldAlt, FaWifi, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  features: string[];
-  specifications: {
-    power?: string;
-    voltage?: string;
-    material?: string;
-    dimension?: string;
-    weight?: string;
-    certification?: string;
-  };
-  image: string;
-  catalogUrl: string;
-}
+import { productService, Product } from '../lib/supabase';
 
 const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await productService.getAll();
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const categories = [
-    { id: 'all', name: 'Semua Produk', count: 25 },
-    { id: 'pedestrian', name: 'Lampu Penyebrangan', count: 5 },
-    { id: 'warning', name: 'Warning Light', count: 6 },
-    { id: 'traffic', name: 'Traffic Light', count: 4 },
-    { id: 'street', name: 'Lampu Jalan', count: 7 },
-    { id: 'controller', name: 'Controller System', count: 3 }
-  ];
-
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'SP-230D Pedestrian Light',
-      category: 'pedestrian',
-      description: 'Unit lampu pedestrian dengan green dynamic display, dilengkapi countdown timer dan suara untuk penyebrangan yang lebih aman.',
-      features: [
-        'LED High Brightness',
-        'Countdown Timer Digital',
-        'Audio Warning System',
-        'Touchless Button',
-        'Weather Resistant IP65'
-      ],
-      specifications: {
-        power: '30 Watt',
-        voltage: 'AC 220V',
-        material: 'Aluminium Die Cast',
-        dimension: '300 x 300 x 120 mm',
-        weight: '5 kg',
-        certification: 'SNI, CE'
-      },
-      image: '/images/products/sp-230d.jpg',
-      catalogUrl: '/catalogs/pedestrian-sp230d.pdf'
-    },
-    {
-      id: 2,
-      name: 'Warning Light Solar WL-ST100',
-      category: 'warning',
-      description: 'Lampu peringatan tenaga surya dengan LED super bright, cocok untuk area konstruksi dan titik rawan kecelakaan.',
-      features: [
-        'Solar Powered',
-        'Automatic Day/Night Sensor',
-        '360° Visibility',
-        'Flashing Modes',
-        'Battery Backup 7 Days'
-      ],
-      specifications: {
-        power: '10 Watt Solar Panel',
-        voltage: 'DC 12V',
-        material: 'Polycarbonate',
-        dimension: '200 x 200 x 150 mm',
-        weight: '2.5 kg',
-        certification: 'SNI'
-      },
-      image: '/images/products/wl-st100.jpg',
-      catalogUrl: '/catalogs/warning-wl-st100.pdf'
-    },
-    {
-      id: 3,
-      name: 'Traffic Light Controller STC-880CPU',
-      category: 'controller',
-      description: 'CPU Controller untuk traffic light dengan kemampuan programming 8 fase dan monitoring real-time.',
-      features: [
-        '8 Phase Programming',
-        'Real-time Monitoring',
-        'Remote Control Ready',
-        'Conflict Detection',
-        'Emergency Override'
-      ],
-      specifications: {
-        power: '50 Watt',
-        voltage: 'AC 220V',
-        material: 'Metal Cabinet',
-        dimension: '400 x 300 x 150 mm',
-        weight: '8 kg',
-        certification: 'SNI, ISO 9001'
-      },
-      image: '/images/products/stc-880cpu.jpg',
-      catalogUrl: '/catalogs/controller-stc880.pdf'
-    },
-    {
-      id: 4,
-      name: 'LED Street Light SL-48A Series',
-      category: 'street',
-      description: 'Lampu jalan LED dengan efisiensi tinggi, hemat energi hingga 70% dibanding lampu konvensional.',
-      features: [
-        'High Efficiency LED',
-        'IP66 Waterproof',
-        'Die-cast Aluminum',
-        '50,000 Hours Lifespan',
-        'Multiple Wattage Options'
-      ],
-      specifications: {
-        power: '40W - 150W',
-        voltage: 'AC 220-240V',
-        material: 'Die-cast Aluminum',
-        dimension: '446.5 x 222 x 117 mm',
-        weight: '3.34 kg',
-        certification: 'SNI, CE, RoHS'
-      },
-      image: '/images/products/sl-48a.jpg',
-      catalogUrl: '/catalogs/street-sl48a.pdf'
-    },
-    {
-      id: 5,
-      name: 'Traffic Signal 3-Aspect LED',
-      category: 'traffic',
-      description: 'Lampu traffic signal 3 aspek dengan LED module berkualitas tinggi dan visibility optimal.',
-      features: [
-        '300mm LED Module',
-        'Ultra Bright LED',
-        'Modular Design',
-        'Long Lifespan',
-        'Low Power Consumption'
-      ],
-      specifications: {
-        power: '15W per aspect',
-        voltage: 'AC 220V',
-        material: 'Polycarbonate',
-        dimension: '1200 x 400 x 300 mm',
-        weight: '15 kg',
-        certification: 'SNI'
-      },
-      image: '/images/products/traffic-3aspect.jpg',
-      catalogUrl: '/catalogs/traffic-3aspect.pdf'
-    },
-    {
-      id: 6,
-      name: 'Solar Warning Light Barricade',
-      category: 'warning',
-      description: 'Lampu warning untuk barricade dengan solar cell, cocok untuk pembatas jalan dan area konstruksi.',
-      features: [
-        'Solar Powered',
-        'Auto On/Off',
-        'Weather Resistant',
-        'Easy Installation',
-        'Multiple Flash Patterns'
-      ],
-      specifications: {
-        power: '3 Watt Solar',
-        voltage: 'DC 6V',
-        material: 'ABS Plastic',
-        dimension: '180 x 180 x 100 mm',
-        weight: '1.5 kg',
-        certification: 'SNI'
-      },
-      image: '/images/products/solar-barricade.jpg',
-      catalogUrl: '/catalogs/solar-barricade.pdf'
-    }
+    { id: 'all', name: 'Semua Produk', count: products.length },
+    { id: 'pedestrian', name: 'Lampu Penyebrangan', count: products.filter(p => p.category === 'pedestrian').length },
+    { id: 'warning', name: 'Warning Light', count: products.filter(p => p.category === 'warning').length },
+    { id: 'traffic', name: 'Traffic Light', count: products.filter(p => p.category === 'traffic').length },
+    { id: 'street', name: 'Lampu Jalan', count: products.filter(p => p.category === 'street').length },
+    { id: 'controller', name: 'Controller System', count: products.filter(p => p.category === 'controller').length }
   ];
 
   const filteredProducts = products.filter(product => {
@@ -303,7 +159,7 @@ const ProductsPage = () => {
                         <FaEye /> Detail
                       </button>
                       <a
-                        href={product.catalogUrl}
+                        href={product.catalog_url}
                         className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 flex items-center justify-center gap-2"
                       >
                         <FaDownload /> Katalog
@@ -412,7 +268,7 @@ const ProductsPage = () => {
                       <FaWhatsapp /> Konsultasi via WhatsApp
                     </a>
                     <a
-                      href={selectedProduct.catalogUrl}
+                      href={selectedProduct.catalog_url}
                       className="flex-1 bg-seltronik-red text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2"
                     >
                       <FaDownload /> Download Katalog

@@ -20,7 +20,10 @@ const AdminLogin = () => {
     setError('');
 
     // Simple authentication (in production, use proper authentication)
-    if (credentials.username === 'admin' && credentials.password === 'seltronik2024') {
+    if (
+      credentials.username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
+      credentials.password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+    ) {
       localStorage.setItem('adminAuth', 'true');
       router.push('/admin/dashboard');
     } else {

@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, FaFileAlt, FaGlobeAsia, FaBuilding, FaCalendarAlt, FaQrcode } from 'react-icons/fa';
 import Link from 'next/link';
 import Head from 'next/head';
-
-interface Certificate {
-  id: number;
-  name: string;
-  category: string;
-  issuer: string;
-  issuedDate: string;
-  expiryDate?: string;
-  documentNumber: string;
-  description: string;
-  image: string;
-  pdfUrl: string;
-  verified: boolean;
-  qrCode?: string;
-}
+import { certificateService, Certificate } from '../lib/supabase';
 
 const CertificatesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const data = await certificateService.getAll();
+        setCertificates(data || []);
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+      }
+    };
+
+    fetchCertificates();
+  }, []);
 
   const categories = [
     { id: 'all', name: 'Semua Dokumen' },
@@ -30,160 +30,6 @@ const CertificatesPage = () => {
     { id: 'quality', name: 'Sertifikat Mutu' },
     { id: 'product', name: 'Sertifikat Produk' },
     { id: 'award', name: 'Penghargaan' }
-  ];
-
-  const certificates: Certificate[] = [
-    {
-      id: 1,
-      name: 'NIB (Nomor Induk Berusaha)',
-      category: 'business',
-      issuer: 'Pemerintah Republik Indonesia',
-      issuedDate: '21 Maret 2023',
-      documentNumber: '2103230046762',
-      description: 'Nomor Induk Berusaha sebagai identitas pelaku usaha yang terintegrasi dengan sistem OSS.',
-      image: '/images/certificates/nib.jpg',
-      pdfUrl: '/certificates/nib.pdf',
-      verified: true
-    },
-    {
-      id: 2,
-      name: 'NPWP Perusahaan',
-      category: 'business',
-      issuer: 'Direktorat Jenderal Pajak',
-      issuedDate: '15 Oktober 2000',
-      documentNumber: '40.313.195.6-423.000',
-      description: 'Nomor Pokok Wajib Pajak PT. Sinyal Elektro Mekanik.',
-      image: '/images/certificates/npwp.jpg',
-      pdfUrl: '/certificates/npwp.pdf',
-      verified: true
-    },
-    {
-      id: 3,
-      name: 'ISO 9001:2015',
-      category: 'quality',
-      issuer: 'International Organization for Standardization',
-      issuedDate: '10 Januari 2023',
-      expiryDate: '10 Januari 2026',
-      documentNumber: 'QMS-2023-001234',
-      description: 'Sertifikat Sistem Manajemen Mutu untuk produksi perlengkapan lalu lintas.',
-      image: '/images/certificates/iso9001.jpg',
-      pdfUrl: '/certificates/iso9001.pdf',
-      verified: true
-    },
-    {
-      id: 4,
-      name: 'Sertifikat SNI Lampu Jalan LED',
-      category: 'product',
-      issuer: 'Badan Standardisasi Nasional',
-      issuedDate: '27 Maret 2023',
-      expiryDate: '27 Maret 2025',
-      documentNumber: 'SNI-LED-2023-0456',
-      description: 'Sertifikat SNI untuk produk lampu jalan LED seri SL-48A.',
-      image: '/images/certificates/sni-led.jpg',
-      pdfUrl: '/certificates/sni-led.pdf',
-      verified: true
-    },
-    {
-      id: 5,
-      name: 'Sertifikat SNI Traffic Light',
-      category: 'product',
-      issuer: 'Badan Standardisasi Nasional',
-      issuedDate: '15 April 2023',
-      expiryDate: '15 April 2025',
-      documentNumber: 'SNI-TL-2023-0789',
-      description: 'Sertifikat SNI untuk produk traffic light 3 aspek LED.',
-      image: '/images/certificates/sni-traffic.jpg',
-      pdfUrl: '/certificates/sni-traffic.pdf',
-      verified: true
-    },
-    {
-      id: 6,
-      name: 'CE Marking',
-      category: 'quality',
-      issuer: 'European Union',
-      issuedDate: '5 Februari 2023',
-      expiryDate: '5 Februari 2025',
-      documentNumber: 'CE-2023-ID-5678',
-      description: 'Conformité Européenne marking untuk produk elektronik.',
-      image: '/images/certificates/ce-marking.jpg',
-      pdfUrl: '/certificates/ce-marking.pdf',
-      verified: true
-    },
-    {
-      id: 7,
-      name: 'RoHS Compliance',
-      category: 'quality',
-      issuer: 'TÜV Rheinland',
-      issuedDate: '20 Januari 2023',
-      expiryDate: '20 Januari 2024',
-      documentNumber: 'RoHS-2023-9012',
-      description: 'Restriction of Hazardous Substances compliance certificate.',
-      image: '/images/certificates/rohs.jpg',
-      pdfUrl: '/certificates/rohs.pdf',
-      verified: true
-    },
-    {
-      id: 8,
-      name: 'Sertifikat Merek Seltronik',
-      category: 'business',
-      issuer: 'Kementerian Hukum dan HAM',
-      issuedDate: '06 April 2023',
-      expiryDate: '06 April 2033',
-      documentNumber: 'IDM001147825',
-      description: 'Sertifikat merek dagang Seltronik Kelas 9 dan 11.',
-      image: '/images/certificates/trademark.jpg',
-      pdfUrl: '/certificates/trademark.pdf',
-      verified: true
-    },
-    {
-      id: 9,
-      name: 'Penghargaan Best Vendor 2023',
-      category: 'award',
-      issuer: 'PT. Jasa Marga (Persero) Tbk',
-      issuedDate: '15 Desember 2023',
-      documentNumber: 'JM-Award-2023-015',
-      description: 'Penghargaan sebagai vendor terbaik kategori perlengkapan jalan.',
-      image: '/images/certificates/award-jasamarga.jpg',
-      pdfUrl: '/certificates/award-jasamarga.pdf',
-      verified: true
-    },
-    {
-      id: 10,
-      name: 'Surat Keterangan Domisili',
-      category: 'business',
-      issuer: 'Pemerintah Kota Bandung',
-      issuedDate: '10 Januari 2024',
-      expiryDate: '10 Januari 2025',
-      documentNumber: 'SKD-2024-00123',
-      description: 'Surat keterangan domisili perusahaan di Kota Bandung.',
-      image: '/images/certificates/skd.jpg',
-      pdfUrl: '/certificates/skd.pdf',
-      verified: true
-    },
-    {
-      id: 11,
-      name: 'Top Innovation Award 2023',
-      category: 'award',
-      issuer: 'Kementerian PUPR',
-      issuedDate: '28 November 2023',
-      documentNumber: 'PUPR-INN-2023-088',
-      description: 'Penghargaan inovasi produk smart traffic light system.',
-      image: '/images/certificates/innovation-award.jpg',
-      pdfUrl: '/certificates/innovation-award.pdf',
-      verified: true
-    },
-    {
-      id: 12,
-      name: 'Akta Pendirian Perusahaan',
-      category: 'business',
-      issuer: 'Notaris Drs. Yudi Priadi, S.H.',
-      issuedDate: '20 Maret 2023',
-      documentNumber: 'No. 06',
-      description: 'Akta pendirian PT. Sinyal Elektro Mekanik dan perubahannya.',
-      image: '/images/certificates/akta.jpg',
-      pdfUrl: '/certificates/akta.pdf',
-      verified: true
-    }
   ];
 
   const filteredCertificates = selectedCategory === 'all' 
@@ -290,11 +136,7 @@ const CertificatesPage = () => {
                     <div className="absolute inset-0 flex items-center justify-center">
                       <FaCertificate className="text-6xl text-gray-300 dark:text-gray-500" />
                     </div>
-                    {cert.verified && (
-                      <div className="absolute top-4 right-4 bg-green-500 text-white p-2 rounded-full">
-                        <FaCheckCircle />
-                      </div>
-                    )}
+                    
                   </div>
 
                   {/* Certificate Info */}
@@ -303,17 +145,17 @@ const CertificatesPage = () => {
                       {cert.name}
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{cert.issuer}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">No: {cert.documentNumber}</p>
+                    
                     
                     <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300 mb-4">
                       <div className="flex items-center gap-2">
                         <FaCalendarAlt className="text-seltronik-green" />
-                        <span>Terbit: {cert.issuedDate}</span>
+                        <span>Terbit: {cert.issue_date}</span>
                       </div>
-                      {cert.expiryDate && (
+                      {cert.expiry_date && (
                         <div className="flex items-center gap-2">
                           <FaCalendarAlt className="text-seltronik-yellow" />
-                          <span>Berlaku: {cert.expiryDate}</span>
+                          <span>Berlaku: {cert.expiry_date}</span>
                         </div>
                       )}
                     </div>
@@ -326,7 +168,7 @@ const CertificatesPage = () => {
                         <FaEye /> Lihat
                       </button>
                       <a
-                        href={cert.pdfUrl}
+                        href={cert.certificate_url}
                         className="flex-1 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-white py-2 px-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-1 text-sm"
                       >
                         <FaDownload /> Unduh
@@ -362,11 +204,7 @@ const CertificatesPage = () => {
                 <div className="flex items-center gap-3">
                   <FaCertificate className="text-seltronik-red text-2xl" />
                   <h2 className="text-2xl font-bold text-seltronik-dark dark:text-white">{selectedCertificate.name}</h2>
-                  {selectedCertificate.verified && (
-                    <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                      <FaCheckCircle /> Terverifikasi
-                    </span>
-                  )}
+                  
                 </div>
                 <button
                   onClick={() => setSelectedCertificate(null)}
@@ -384,15 +222,7 @@ const CertificatesPage = () => {
                     <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
                       <FaCertificate className="text-8xl text-gray-300 dark:text-gray-500" />
                     </div>
-                    {selectedCertificate.qrCode && (
-                      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl flex items-center gap-3">
-                        <FaQrcode className="text-3xl text-gray-400" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 dark:text-white">Verifikasi Online</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Scan QR code untuk verifikasi</p>
-                        </div>
-                      </div>
-                    )}
+                    
                   </div>
 
                   {/* Certificate Details */}
@@ -406,41 +236,29 @@ const CertificatesPage = () => {
                         </p>
                       </div>
 
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Nomor Dokumen</h3>
-                        <p className="text-lg font-medium text-gray-800 dark:text-white flex items-center gap-2">
-                          <FaFileAlt className="text-seltronik-yellow" />
-                          {selectedCertificate.documentNumber}
-                        </p>
-                      </div>
+                      
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Tanggal Terbit</h3>
                           <p className="text-lg font-medium text-gray-800 dark:text-white">
-                            {selectedCertificate.issuedDate}
+                            {selectedCertificate.issue_date}
                           </p>
                         </div>
-                        {selectedCertificate.expiryDate && (
+                        {selectedCertificate.expiry_date && (
                           <div>
                             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Berlaku Hingga</h3>
                             <p className="text-lg font-medium text-gray-800 dark:text-white">
-                              {selectedCertificate.expiryDate}
+                              {selectedCertificate.expiry_date}
                             </p>
                           </div>
                         )}
                       </div>
 
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Deskripsi</h3>
-                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                          {selectedCertificate.description}
-                        </p>
-                      </div>
-
+                      
                       <div className="pt-4 border-t dark:border-gray-700 space-y-3">
                         <a
-                          href={selectedCertificate.pdfUrl}
+                          href={selectedCertificate.certificate_url}
                           className="w-full bg-seltronik-red text-white py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2"
                         >
                           <FaDownload /> Download PDF

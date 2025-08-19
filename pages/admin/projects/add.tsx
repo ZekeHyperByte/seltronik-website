@@ -4,6 +4,7 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { projectService } from '../../../lib/supabase';
 
 const AddProject = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -130,13 +131,9 @@ const AddProject = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would save to database here
-      const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-      const newProject = {
+    try {
+      await projectService.create({
         ...project,
-        id: Date.now(),
         scope: project.scope.filter(s => s.trim() !== ''),
         images: project.images.filter(img => img.trim() !== ''),
         stats: {
@@ -144,13 +141,14 @@ const AddProject = () => {
           duration: project.stats.duration,
           value: project.stats.value
         }
-      };
-      existingProjects.push(newProject);
-      localStorage.setItem('projects', JSON.stringify(existingProjects));
-      
-      setIsLoading(false);
+      });
       router.push('/admin/dashboard');
-    }, 1000);
+    } catch (error) {
+      console.error('Error creating project:', error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isAuthenticated) {

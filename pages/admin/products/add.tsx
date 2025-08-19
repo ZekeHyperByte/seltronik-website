@@ -4,6 +4,7 @@ import { FaArrowLeft, FaSave, FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { productService } from '../../../lib/supabase';
 
 const AddProduct = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -91,21 +92,19 @@ const AddProduct = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would save to database here
-      const existingProducts = JSON.parse(localStorage.getItem('products') || '[]');
-      const newProduct = {
+    try {
+      await productService.create({
         ...product,
-        id: Date.now(),
-        features: product.features.filter(f => f.trim() !== '')
-      };
-      existingProducts.push(newProduct);
-      localStorage.setItem('products', JSON.stringify(existingProducts));
-      
-      setIsLoading(false);
+        features: product.features.filter(f => f.trim() !== ''),
+        catalog_url: product.catalogUrl,
+      });
       router.push('/admin/dashboard');
-    }, 1000);
+    } catch (error) {
+      console.error('Error creating product:', error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isAuthenticated) {
