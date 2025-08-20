@@ -101,10 +101,10 @@ const EditProduct = () => {
           }
         }
 
-        let catalogUrl = product.catalog_url;
+        let catalog_url = product.catalog_url;
         if (catalogFile) {
           try {
-            catalogUrl = await storageService.uploadFile(catalogFile);
+            catalog_url = await storageService.uploadFile(catalogFile);
           } catch (uploadError) {
             throw new Error('Gagal mengunggah katalog: ' + (uploadError as Error).message);
           }
@@ -113,7 +113,7 @@ const EditProduct = () => {
         await productService.update(product.id!, {
           ...product,
           image: imageUrl,
-          catalog_url: catalogUrl,
+          catalog_url: catalog_url,
           features: product.features.filter(f => f.trim() !== ''),
         });
         router.push('/admin/dashboard');

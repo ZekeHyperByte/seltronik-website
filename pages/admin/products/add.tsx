@@ -25,7 +25,7 @@ const AddProduct = () => {
       certification: ''
     },
     image: '',
-    catalogUrl: ''
+    catalog_url: ''
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
