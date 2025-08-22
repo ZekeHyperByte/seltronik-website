@@ -22,6 +22,7 @@ export interface Product {
   }
   image?: string
   catalog_url?: string
+  is_featured?: boolean
   created_at?: string
   updated_at?: string
 }
@@ -70,6 +71,19 @@ export const productService = {
       .from('products')
       .select('*')
       .order('created_at', { ascending: false })
+    
+    if (error) throw error
+    return data
+  },
+
+  // Read Featured
+  async getFeatured() {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_featured', true)
+      .order('updated_at', { ascending: false })
+      .limit(5)
     
     if (error) throw error
     return data

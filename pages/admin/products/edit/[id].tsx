@@ -47,7 +47,7 @@ const EditProduct = () => {
     { id: 'controller', name: 'Controller System' }
   ];
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     if (product) {
       setProduct({ ...product, [field]: value });
     }
@@ -193,6 +193,17 @@ const EditProduct = () => {
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                       ))}
                     </select>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={product.is_featured || false}
+                        onChange={(e) => handleInputChange('is_featured', e.target.checked)}
+                        className="h-5 w-5 rounded border-gray-300 text-seltronik-red focus:ring-seltronik-red"
+                      />
+                      <span className="text-gray-700 dark:text-gray-300">Jadikan Produk Unggulan (Featured)</span>
+                    </label>
                   </div>
                 </div>
 

@@ -31,12 +31,8 @@ const HomePage = () => {
         setProjects(sortedProjects.slice(0, 3));
 
         // Fetch Products
-        const productData = await productService.getAll();
-        // Sort by last updated and take the top 5
-        const sortedProducts = (productData || []).sort((a, b) => 
-          new Date(b.updated_at!).getTime() - new Date(a.updated_at!).getTime()
-        );
-        setProducts(sortedProducts.slice(0, 5));
+        const productData = await productService.getFeatured();
+        setProducts(productData || []);
 
       } catch (error) {
         console.error('Error fetching data:', error);
