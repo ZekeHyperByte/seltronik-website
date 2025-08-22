@@ -124,10 +124,17 @@ const EditProject = () => {
     if (project) {
       try {
         const imageUrls = await Promise.all(
-          imageFiles.map((file, index) => {
+          imageFiles.map(async (file, index) => {
             if (file) {
+              // If there's a new file, first delete the old one if it exists
+              const oldImageUrl = project.images[index];
+              if (oldImageUrl) {
+                await storageService.deleteFile(oldImageUrl);
+              }
+              // Now, upload the new file
               return storageService.uploadFile(file);
             }
+            // If no new file, keep the existing image URL
             return Promise.resolve(project.images[index]);
           })
         );
