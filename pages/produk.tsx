@@ -112,9 +112,8 @@ const ProductsPage = () => {
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.05 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
                 >
                   {/* Product Image */}

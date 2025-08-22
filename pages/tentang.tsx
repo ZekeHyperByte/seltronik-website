@@ -5,6 +5,7 @@ import { FaHistory, FaEye, FaBullseye, FaAward, FaUsers, FaHandshake, FaCertific
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
+import AnimatedLogo from '../components/AnimatedLogo';
 
 const AboutPage = () => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
@@ -176,18 +177,9 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="relative"
+              className="relative flex items-center justify-center"
             >
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="h-48 bg-gradient-to-br from-seltronik-red to-red-600 rounded-2xl"></div>
-                  <div className="h-32 bg-gradient-to-br from-seltronik-yellow to-yellow-600 rounded-2xl"></div>
-                </div>
-                <div className="space-y-4 mt-8">
-                  <div className="h-32 bg-gradient-to-br from-seltronik-green to-green-600 rounded-2xl"></div>
-                  <div className="h-48 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl"></div>
-                </div>
-              </div>
+              <AnimatedLogo interactive={true} />
             </motion.div>
           </div>
         </div>

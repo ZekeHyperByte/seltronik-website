@@ -9,6 +9,7 @@ import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, F
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
+import { projectService, Project } from '../lib/supabase';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -18,52 +19,68 @@ import 'swiper/css/effect-fade';
 
 const HomePage = () => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await projectService.getAll();
+        // Sort by year descending and take the top 3
+        const sortedProjects = (data || []).sort((a, b) => parseInt(b.year) - parseInt(a.year));
+        setProjects(sortedProjects.slice(0, 3));
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const products = [
     {
       id: 1,
       name: 'Lampu Penyebrangan Orang',
       description: 'Sistem lampu penyebrangan modern dengan teknologi LED dan tombol touchless',
-      image: '/images/pedestrian-light.jpg',
+      image: '/images/Lampu_penyebrangan_orang.png',
       icon: <FaTrafficLight className="text-4xl" />,
       color: 'bg-seltronik-red',
-      link: '/produk/lampu-penyebrangan'
+      link: '/produk'
     },
     {
       id: 2,
       name: 'Warning Light Solar',
       description: 'Lampu peringatan dengan tenaga surya, hemat energi dan ramah lingkungan',
-      image: '/images/warning-light.jpg',
+      image: '/images/warning_light_solar.png',
       icon: <FaExclamationTriangle className="text-4xl" />,
       color: 'bg-seltronik-yellow',
-      link: '/produk/warning-light'
+      link: '/produk'
     },
     {
       id: 3,
       name: 'Traffic Light Controller',
       description: 'Sistem pengatur lalu lintas dengan teknologi terkini dan monitoring real-time',
-      image: '/images/traffic-controller.jpg',
+      image: '/images/traffic_light_controller.png',
       icon: <FaMicrochip className="text-4xl" />,
       color: 'bg-seltronik-green',
-      link: '/produk/traffic-light'
+      link: '/produk'
     },
     {
       id: 4,
       name: 'Lampu Jalan LED',
       description: 'Penerangan jalan umum dengan LED berkualitas tinggi, hemat hingga 70% energi',
-      image: '/images/street-light.jpg',
+      image: '/images/lampu_jalan_led.png',
       icon: <FaLightbulb className="text-4xl" />,
       color: 'bg-blue-500',
-      link: '/produk/lampu-jalan'
+      link: '/produk'
     },
     {
       id: 5,
       name: 'Solar Cell System',
       description: 'Sistem tenaga surya untuk berbagai aplikasi penerangan jalan',
-      image: '/images/solar-system.jpg',
+      image: '', // No image yet
       icon: <FaSolarPanel className="text-4xl" />,
       color: 'bg-orange-500',
-      link: '/produk/solar-system'
+      link: '/produk'
     }
   ];
 
@@ -99,26 +116,6 @@ const HomePage = () => {
     { name: 'Adhi Karya', logo: '/images/clients/adhi.png' }
   ];
 
-  const projects = [
-    {
-      title: 'Tol Trans Jawa',
-      description: 'Pemasangan 500+ unit lampu jalan LED',
-      image: '/images/projects/tol-trans-jawa.jpg',
-      year: '2023'
-    },
-    {
-      title: 'Smart City Bandung',
-      description: 'Implementasi traffic light system terintegrasi',
-      image: '/images/projects/smart-city.jpg',
-      year: '2023'
-    },
-    {
-      title: 'MRT Jakarta Phase 2',
-      description: 'Sistem penyebrangan dan warning light',
-      image: '/images/projects/mrt.jpg',
-      year: '2024'
-    }
-  ];
 
   return (
     <Layout>
@@ -265,38 +262,31 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {products.map((product, index) => (
-              <motion.div
+          <div className="flex w-full h-[600px] gap-2">
+            {products.map((product) => (
+              <div
                 key={product.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="group relative bg-white dark:bg-gray-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="group relative flex-1 hover:flex-[5] transition-all duration-700 ease-in-out bg-gray-500 bg-center bg-cover rounded-2xl overflow-hidden"
+                style={{ backgroundImage: product.image ? `url(${product.image})` : 'none' }}
               >
-                <div className={`${product.color} h-48 flex items-center justify-center text-white relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="relative z-10">
-                    {product.icon}
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-700 ease-in-out"></div>
+                <div className="relative h-full flex flex-col justify-end p-8 text-white">
+                  <div className="transform transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-12">
+                    <h3 className="text-2xl font-bold font-heading mb-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{product.description}</p>
+                    <Link
+                      href={product.link}
+                      className="inline-flex items-center text-seltronik-yellow font-semibold hover:text-yellow-300 transition-colors duration-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300"
+                    >
+                      Lihat Detail <FaArrowRight className="ml-2" />
+                    </Link>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold font-heading text-seltronik-dark dark:text-white mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{product.description}</p>
-                  <Link
-                    href={product.link}
-                    className="inline-flex items-center text-seltronik-red font-semibold hover:text-red-600 dark:hover:text-seltronik-yellow transition-colors duration-300"
-                  >
-                    Lihat Detail <FaArrowRight className="ml-2" />
-                  </Link>
-                </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-
           <div className="text-center mt-12">
             <Link
               href="/produk"
@@ -339,38 +329,32 @@ const HomePage = () => {
             }}
             className="pb-12"
           >
-            {projects.map((project, index) => (
-              <SwiperSlide key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-xl group cursor-pointer"
-                >
-                  <div className="h-64 bg-gray-200 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
-                    <div className="absolute bottom-4 left-4 text-white z-20">
-                      <span className="bg-seltronik-red px-3 py-1 rounded-full text-sm font-semibold">
-                        {project.year}
-                      </span>
+            {projects.map((project) => (
+              <SwiperSlide key={project.id}>
+                <Link href="/project">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer h-full"
+                  >
+                    <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 flex items-end p-6">
+                      <div className="transform transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">
+                        <h3 className="text-2xl font-bold font-heading text-white">
+                          {project.title}
+                        </h3>
+                      </div>
                     </div>
-                    <div className="w-full h-full bg-gray-300 group-hover:scale-110 transition-transform duration-500"></div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold font-heading text-seltronik-dark mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600">{project.description}</p>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>
 
           <div className="text-center mt-8">
             <Link
-              href="/proyek"
+              href="/project"
               className="inline-block bg-white text-seltronik-dark px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Lihat Semua Proyek
