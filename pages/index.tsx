@@ -188,13 +188,15 @@ const HomePage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+                className="group bg-gray-50 dark:bg-gray-700 rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 min-h-[220px]"
               >
                 <div className="text-seltronik-red text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-bold font-heading text-seltronik-dark dark:text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 opacity-0 h-0 group-hover:opacity-100 group-hover:h-auto transition-all duration-300">
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </div>
