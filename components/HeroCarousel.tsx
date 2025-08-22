@@ -19,7 +19,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
 
   return (
     <div
-      className="relative w-[400px] h-[400px]"
+      className="relative w-[600px] h-[600px]"
       style={{
         maskImage: 'url(/images/seltroniklogo.svg)', // Fallback for Firefox
         maskSize: 'contain',
