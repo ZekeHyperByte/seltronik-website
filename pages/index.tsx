@@ -9,6 +9,7 @@ import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, F
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
+import HeroCarousel from '../components/HeroCarousel';
 import { projectService, Project, productService, Product } from '../lib/supabase';
 
 // Import Swiper styles
@@ -145,9 +146,7 @@ const HomePage = () => {
               transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
               className="relative flex justify-center"
             >
-              <div className="relative">
-                <AnimatedLogo />
-              </div>
+              <HeroCarousel projects={projects} />
             </motion.div>
           </div>
         </div>
