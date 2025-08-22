@@ -9,7 +9,7 @@ import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, F
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
-import { projectService, Project } from '../lib/supabase';
+import { projectService, Project, productService, Product } from '../lib/supabase';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -20,69 +20,31 @@ import 'swiper/css/effect-fade';
 const HomePage = () => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
   const [projects, setProjects] = useState<Project[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchData = async () => {
       try {
-        const data = await projectService.getAll();
-        // Sort by year descending and take the top 3
-        const sortedProjects = (data || []).sort((a, b) => parseInt(b.year) - parseInt(a.year));
+        // Fetch Projects
+        const projectData = await projectService.getAll();
+        const sortedProjects = (projectData || []).sort((a, b) => parseInt(b.year) - parseInt(a.year));
         setProjects(sortedProjects.slice(0, 3));
+
+        // Fetch Products
+        const productData = await productService.getAll();
+        // Sort by last updated and take the top 5
+        const sortedProducts = (productData || []).sort((a, b) => 
+          new Date(b.updated_at!).getTime() - new Date(a.updated_at!).getTime()
+        );
+        setProducts(sortedProducts.slice(0, 5));
+
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchProjects();
+    fetchData();
   }, []);
-
-  const products = [
-    {
-      id: 1,
-      name: 'Lampu Penyebrangan Orang',
-      description: 'Sistem lampu penyebrangan modern dengan teknologi LED dan tombol touchless',
-      image: '/images/Lampu_penyebrangan_orang.png',
-      icon: <FaTrafficLight className="text-4xl" />,
-      color: 'bg-seltronik-red',
-      link: '/produk'
-    },
-    {
-      id: 2,
-      name: 'Warning Light Solar',
-      description: 'Lampu peringatan dengan tenaga surya, hemat energi dan ramah lingkungan',
-      image: '/images/warning_light_solar.png',
-      icon: <FaExclamationTriangle className="text-4xl" />,
-      color: 'bg-seltronik-yellow',
-      link: '/produk'
-    },
-    {
-      id: 3,
-      name: 'Traffic Light Controller',
-      description: 'Sistem pengatur lalu lintas dengan teknologi terkini dan monitoring real-time',
-      image: '/images/traffic_light_controller.png',
-      icon: <FaMicrochip className="text-4xl" />,
-      color: 'bg-seltronik-green',
-      link: '/produk'
-    },
-    {
-      id: 4,
-      name: 'Lampu Jalan LED',
-      description: 'Penerangan jalan umum dengan LED berkualitas tinggi, hemat hingga 70% energi',
-      image: '/images/lampu_jalan_led.png',
-      icon: <FaLightbulb className="text-4xl" />,
-      color: 'bg-blue-500',
-      link: '/produk'
-    },
-    {
-      id: 5,
-      name: 'Solar Cell System',
-      description: 'Sistem tenaga surya untuk berbagai aplikasi penerangan jalan',
-      image: '', // No image yet
-      icon: <FaSolarPanel className="text-4xl" />,
-      color: 'bg-orange-500',
-      link: '/produk'
-    }
-  ];
 
   const features = [
     {
@@ -277,7 +239,7 @@ const HomePage = () => {
                     </h3>
                     <p className="text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{product.description}</p>
                     <Link
-                      href={product.link}
+                      href="/produk"
                       className="inline-flex items-center text-seltronik-yellow font-semibold hover:text-yellow-300 transition-colors duration-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300"
                     >
                       Lihat Detail <FaArrowRight className="ml-2" />

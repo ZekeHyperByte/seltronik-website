@@ -94,20 +94,18 @@ const EditProduct = () => {
       try {
         let imageUrl = product.image;
         if (imageFile) {
-          try {
-            imageUrl = await storageService.uploadFile(imageFile);
-          } catch (uploadError) {
-            throw new Error('Gagal mengunggah gambar: ' + (uploadError as Error).message);
+          if (product.image) {
+            await storageService.deleteFile(product.image);
           }
+          imageUrl = await storageService.uploadFile(imageFile);
         }
 
         let catalog_url = product.catalog_url;
         if (catalogFile) {
-          try {
-            catalog_url = await storageService.uploadFile(catalogFile);
-          } catch (uploadError) {
-            throw new Error('Gagal mengunggah katalog: ' + (uploadError as Error).message);
+          if (product.catalog_url) {
+            await storageService.deleteFile(product.catalog_url);
           }
+          catalog_url = await storageService.uploadFile(catalogFile);
         }
 
         await productService.update(product.id!, {
