@@ -12,6 +12,7 @@
     "@headlessui/react": "^2.0.0",
     "@next/eslint-plugin-next": "^15.4.6",
     "@supabase/supabase-js": "^2.55.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tanstack/react-virtual": "^3.0.0",
     "axios": "^1.6.2",
     "framer-motion": "^12.23.12",
