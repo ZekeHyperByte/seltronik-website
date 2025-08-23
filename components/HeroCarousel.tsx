@@ -2,7 +2,6 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { Project } from '../lib/supabase';
-import LogoMask from './LogoMask';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -14,12 +13,18 @@ interface HeroCarouselProps {
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
   if (!projects || projects.length === 0) {
-    return null; // Don't render anything if there are no projects
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-seltronik-red via-seltronik-yellow to-seltronik-green rounded-full flex items-center justify-center">
+        <div className="text-white text-4xl md:text-6xl lg:text-8xl font-bold">
+          S
+        </div>
+      </div>
+    );
   }
 
   return (
     <div
-      className="relative w-[600px] h-[600px]"
+      className="relative w-full h-full rounded-full overflow-hidden"
       style={{
         maskImage: 'url(/images/seltroniklogo.svg)', // Fallback for Firefox
         maskSize: 'contain',
@@ -44,11 +49,15 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
       >
         {projects.map((project) => (
           <SwiperSlide key={project.id}>
-            <img
-              src={project.images[0]}
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
+            <div className="w-full h-full relative">
+              <img
+                src={project.images[0]}
+                alt={project.title}
+                className="w-full h-full object-cover"
+              />
+              {/* Optional overlay for better visibility */}
+              <div className="absolute inset-0 bg-black/20"></div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

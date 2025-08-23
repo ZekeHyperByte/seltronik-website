@@ -80,7 +80,7 @@ const ContactPage = () => {
       <Toaster position="top-right" />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-20">
+      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -89,8 +89,8 @@ const ContactPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Hubungi Kami</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Hubungi Kami</h1>
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Konsultasikan kebutuhan infrastruktur lalu lintas Anda dengan tim ahli kami
             </p>
           </motion.div>
@@ -98,9 +98,9 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-12 -mt-8">
+      <section className="py-8 md:py-12 -mt-6 md:-mt-8">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
@@ -108,15 +108,15 @@ const ContactPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="text-seltronik-red text-3xl mb-4 flex justify-center">
+                <div className="text-seltronik-red text-2xl md:text-3xl mb-3 md:mb-4 flex justify-center">
                   {info.icon}
                 </div>
-                <h3 className="font-bold text-lg text-seltronik-dark dark:text-white mb-2">{info.title}</h3>
-                <p className="text-gray-700 dark:text-gray-300 font-medium">{info.content}</p>
+                <h3 className="font-bold text-base md:text-lg text-seltronik-dark dark:text-white mb-2">{info.title}</h3>
+                <p className="text-gray-700 dark:text-gray-300 font-medium text-sm md:text-base">{info.content}</p>
                 {info.subcontent && (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{info.subcontent}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm mt-1">{info.subcontent}</p>
                 )}
               </motion.div>
             ))}
@@ -125,82 +125,82 @@ const ContactPage = () => {
       </section>
 
       {/* Main Contact Section */}
-      <section className="py-16 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
             >
-              <h2 className="text-3xl font-bold font-heading text-seltronik-dark dark:text-white mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white mb-6">
                 Kirim Pesan
               </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 dark:text-gray-300 mb-2">Nama Lengkap *</label>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Nama Lengkap *</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
                       placeholder="John Doe"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Email *</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
                       placeholder="john@company.com"
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 dark:text-gray-300 mb-2">No. Telepon *</label>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">No. Telepon *</label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
                       placeholder="08123456789"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 dark:text-gray-300 mb-2">Perusahaan</label>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Perusahaan</label>
                     <input
                       type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
                       placeholder="PT. Example"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 mb-2">Subjek *</label>
+                  <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Subjek *</label>
                   <select
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
                   >
                     <option value="">Pilih Subjek</option>
                     <option value="konsultasi">Konsultasi Produk</option>
@@ -212,14 +212,14 @@ const ContactPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 mb-2">Pesan *</label>
+                  <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Pesan *</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
-                    className="w-full px-4 py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red resize-none dark:bg-gray-700 dark:text-white"
+                    rows={4}
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red resize-none dark:bg-gray-700 dark:text-white text-sm md:text-base"
                     placeholder="Tuliskan pesan Anda di sini..."
                   />
                 </div>
@@ -227,7 +227,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+                  className={`w-full py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     isSubmitting
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-seltronik-red text-white hover:bg-red-600 transform hover:scale-105'
@@ -256,7 +256,7 @@ const ContactPage = () => {
               className="space-y-6"
             >
               {/* Map */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-96">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-80 lg:h-96">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.907095851549!2d107.59705831431712!3d-6.901674069459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e63e6e9cd6b9%3A0x2a9e24c5c1a5f63!2sJl.%20Panglima%20Polim%20Raya%2C%20Sukahaji%2C%20Kec.%20Babakan%20Ciparay%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040221!5e0!3m2!1sen!2sid!4v1647856231456!5m2!1sen!2sid"
                   width="100%"
@@ -269,18 +269,18 @@ const ContactPage = () => {
               </div>
 
               {/* Office Hours */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-                <h3 className="text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-6 flex items-center gap-2">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
+                <h3 className="text-xl md:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-6 flex items-center gap-2">
                   <FaClock className="text-seltronik-red" /> Jam Operasional
                 </h3>
                 <div className="space-y-3">
                   {officeHours.map((schedule, index) => (
                     <div
                       key={index}
-                      className="flex justify-between items-center py-3 border-b dark:border-gray-700 last:border-0"
+                      className="flex justify-between items-center py-2 md:py-3 border-b dark:border-gray-700 last:border-0"
                     >
-                      <span className="font-medium text-gray-700 dark:text-gray-300">{schedule.day}</span>
-                      <span className={`font-semibold ${
+                      <span className="font-medium text-gray-700 dark:text-gray-300 text-sm md:text-base">{schedule.day}</span>
+                      <span className={`font-semibold text-sm md:text-base ${
                         schedule.time === 'Tutup' ? 'text-red-500' : 'text-seltronik-green'
                       }`}>
                         {schedule.time}
@@ -290,34 +290,34 @@ const ContactPage = () => {
                 </div>
 
                 {/* Social Media */}
-                <div className="mt-8 pt-6 border-t dark:border-gray-700">
-                  <h4 className="font-bold text-gray-700 dark:text-white mb-4">Ikuti Kami</h4>
+                <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t dark:border-gray-700">
+                  <h4 className="font-bold text-gray-700 dark:text-white mb-4 text-sm md:text-base">Ikuti Kami</h4>
                   <div className="flex gap-3">
                     <a
                       href="#"
-                      className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
                     >
-                      <FaFacebookF />
+                      <FaFacebookF className="text-sm md:text-base" />
                     </a>
                     <a
                       href="#"
-                      className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
                     >
-                      <FaInstagram />
+                      <FaInstagram className="text-sm md:text-base" />
                     </a>
                     <a
                       href="#"
-                      className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-seltronik-red hover:text-white transition-all duration-300"
                     >
-                      <FaLinkedinIn />
+                      <FaLinkedinIn className="text-sm md:text-base" />
                     </a>
                     <a
                       href="https://wa.me/628112345678"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition-all duration-300"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition-all duration-300"
                     >
-                      <FaWhatsapp />
+                      <FaWhatsapp className="text-sm md:text-base" />
                     </a>
                   </div>
                 </div>
@@ -328,21 +328,21 @@ const ContactPage = () => {
       </section>
 
       {/* Quick Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-seltronik-red to-red-600">
+      <section className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-2xl md:text-3xl font-bold font-heading mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold font-heading mb-4">
             Butuh Respon Cepat?
           </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
             Hubungi kami langsung melalui WhatsApp untuk mendapatkan respon lebih cepat
           </p>
           <a
             href="https://wa.me/628112345678"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-white text-seltronik-dark px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
+            className="inline-flex items-center gap-3 bg-white text-seltronik-dark px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
           >
-            <FaWhatsapp size={24} /> Chat WhatsApp Sekarang
+            <FaWhatsapp size={20} className="md:text-2xl" /> Chat WhatsApp Sekarang
           </a>
         </div>
       </section>

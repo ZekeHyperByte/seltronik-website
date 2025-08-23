@@ -115,7 +115,7 @@ const AboutPage = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-20">
+      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -124,8 +124,8 @@ const AboutPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Lebih dari 23 tahun berkontribusi dalam pembangunan infrastruktur lalu lintas Indonesia
             </p>
           </motion.div>
@@ -133,41 +133,42 @@ const AboutPage = () => {
       </section>
 
       {/* Company Overview */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+              className="order-2 lg:order-1"
             >
-              <h2 className="text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 md:mb-6">
                 PT. Sinyal Elektro Mekanik
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-4 text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base lg:text-lg leading-relaxed">
                 PT. Sinyal Elektro Mekanik (Seltronik) merupakan perusahaan yang bergerak di bidang elektronik 
                 mekanikal yang berkaitan dengan perlengkapan dan rambu-rambu jalan. Didirikan pada tahun 2000, 
                 kami telah menjadi mitra terpercaya pemerintah dan swasta dalam menyediakan solusi infrastruktur 
                 lalu lintas berkualitas tinggi.
               </p>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm md:text-base lg:text-lg leading-relaxed">
                 Dengan dukungan tim ahli berpengalaman dan teknologi modern, kami berkomitmen untuk terus 
                 berinovasi dalam menghadirkan produk-produk yang tidak hanya memenuhi standar nasional, 
                 tetapi juga standar internasional.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <h3 className="text-2xl font-bold text-seltronik-red mb-1">
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-red mb-1">
                     <CountUp end={23} duration={2} />+
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300">Tahun Pengalaman</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Tahun Pengalaman</p>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <h3 className="text-2xl font-bold text-seltronik-yellow mb-1">
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-yellow mb-1">
                     <CountUp end={50} duration={2} />+
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300">Tim Profesional</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Tim Profesional</p>
                 </div>
               </div>
             </motion.div>
@@ -177,32 +178,34 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="relative flex items-center justify-center"
+              className="relative flex items-center justify-center order-1 lg:order-2"
             >
-              <AnimatedLogo interactive={true} />
+              <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
+                <AnimatedLogo interactive={true} />
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-16 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-seltronik-red/10 rounded-full flex items-center justify-center">
-                  <FaEye className="text-seltronik-red text-2xl" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-red/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <FaEye className="text-seltronik-red text-xl md:text-2xl" />
                 </div>
-                <h2 className="text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Visi</h2>
+                <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Visi</h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base lg:text-lg leading-relaxed">
                 Membangun negeri dengan berinovasi dibidang elektronik perlengkapan & rambu-rambu jalan 
                 yang siap bersaing di skala nasional & internasional.
               </p>
@@ -213,30 +216,30 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-seltronik-yellow/10 rounded-full flex items-center justify-center">
-                  <FaBullseye className="text-seltronik-yellow text-2xl" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-yellow/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <FaBullseye className="text-seltronik-yellow text-xl md:text-2xl" />
                 </div>
-                <h2 className="text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Misi</h2>
+                <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Misi</h2>
               </div>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">Memberikan produk inovasi tinggi di bidangnya</span>
+                  <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Memberikan produk inovasi tinggi di bidangnya</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">Memprioritaskan kualitas guna meningkatkan penjualan produk</span>
+                  <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Memprioritaskan kualitas guna meningkatkan penjualan produk</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">Menyediakan alat produksi teknologi tinggi untuk menjaga kepercayaan mitra perusahaan</span>
+                  <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Menyediakan alat produksi teknologi tinggi untuk menjaga kepercayaan mitra perusahaan</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">Menjalin kerjasama dengan pihak terkait baik instansi pemerintah maupun swasta</span>
+                  <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Menjalin kerjasama dengan pihak terkait baik instansi pemerintah maupun swasta</span>
                 </li>
               </ul>
             </motion.div>
@@ -245,24 +248,24 @@ const AboutPage = () => {
       </section>
 
       {/* Company Values */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
           >
-            <h2 className="text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Nilai-Nilai Perusahaan
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Prinsip yang menjadi fondasi dalam setiap langkah kami
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {values.map((value, index) => (
               <motion.div
                 key={index}
@@ -272,11 +275,11 @@ const AboutPage = () => {
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-24 h-24 bg-gradient-to-br from-seltronik-red to-seltronik-yellow rounded-full flex items-center justify-center text-white text-3xl mx-auto mb-4">
+                <div className="w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-seltronik-red to-seltronik-yellow rounded-full flex items-center justify-center text-white text-2xl md:text-3xl mx-auto mb-4">
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-bold text-seltronik-dark dark:text-white mb-2">{value.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{value.description}</p>
+                <h3 className="text-lg md:text-xl font-bold text-seltronik-dark dark:text-white mb-2">{value.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -284,19 +287,19 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
           >
-            <h2 className="text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Perjalanan Kami
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Milestone penting dalam sejarah PT. Sinyal Elektro Mekanik
             </p>
           </motion.div>
@@ -312,23 +315,36 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className={`flex items-center mb-12 ${
-                  index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                }`}
+                className="relative mb-8 md:mb-12"
               >
-                <div className="w-full lg:w-5/12">
-                  <div className={`bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 ${
-                    index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'
-                  }`}>
-                    <h3 className="text-2xl font-bold text-seltronik-red mb-2">{item.year}</h3>
-                    <h4 className="text-xl font-semibold text-seltronik-dark dark:text-white mb-2">{item.title}</h4>
-                    <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+                {/* Mobile Layout */}
+                <div className="lg:hidden">
+                  <div className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-4 md:p-6 ml-8 relative">
+                    <div className="absolute -left-4 top-6 w-6 h-6 bg-seltronik-red rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>
+                    <h3 className="text-xl md:text-2xl font-bold text-seltronik-red mb-2">{item.year}</h3>
+                    <h4 className="text-lg md:text-xl font-semibold text-seltronik-dark dark:text-white mb-2">{item.title}</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item.description}</p>
                   </div>
                 </div>
-                <div className="hidden lg:flex w-2/12 justify-center">
-                  <div className="w-6 h-6 bg-seltronik-red rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>
+
+                {/* Desktop Layout */}
+                <div className={`hidden lg:flex items-center ${
+                  index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                }`}>
+                  <div className="w-full lg:w-5/12">
+                    <div className={`bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 ${
+                      index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'
+                    }`}>
+                      <h3 className="text-2xl font-bold text-seltronik-red mb-2">{item.year}</h3>
+                      <h4 className="text-xl font-semibold text-seltronik-dark dark:text-white mb-2">{item.title}</h4>
+                      <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+                    </div>
+                  </div>
+                  <div className="flex w-2/12 justify-center">
+                    <div className="w-6 h-6 bg-seltronik-red rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>
+                  </div>
+                  <div className="w-5/12"></div>
                 </div>
-                <div className="hidden lg:block w-5/12"></div>
               </motion.div>
             ))}
           </div>
@@ -336,24 +352,24 @@ const AboutPage = () => {
       </section>
 
       {/* Certifications */}
-      <section className="py-16 bg-seltronik-dark">
+      <section className="py-12 md:py-16 bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
           >
-            <h2 className="text-4xl font-bold font-heading text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
               Sertifikasi & Penghargaan
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Komitmen kami terhadap kualitas dan standar internasional
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {certifications.map((cert, index) => (
               <motion.div
                 key={index}
@@ -361,13 +377,13 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-white/10 backdrop-blur rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300"
+                className="bg-white/10 backdrop-blur rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-all duration-300"
               >
-                <div className="text-seltronik-yellow text-4xl mb-4 flex justify-center">
+                <div className="text-seltronik-yellow text-3xl md:text-4xl mb-4 flex justify-center">
                   {cert.icon}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{cert.name}</h3>
-                <p className="text-gray-300 text-sm">{cert.description}</p>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">{cert.name}</h3>
+                <p className="text-gray-300 text-xs md:text-sm">{cert.description}</p>
               </motion.div>
             ))}
           </div>
@@ -375,24 +391,24 @@ const AboutPage = () => {
       </section>
 
       {/* Leadership Team */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
           >
-            <h2 className="text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Tim Kepemimpinan
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Dipimpin oleh profesional berpengalaman di bidangnya
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {team.map((member, index) => (
               <motion.div
                 key={index}
@@ -402,10 +418,10 @@ const AboutPage = () => {
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-32 h-32 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 rounded-full mx-auto mb-4"></div>
-                <h3 className="text-xl font-bold text-seltronik-dark dark:text-white">{member.name}</h3>
-                <p className="text-seltronik-red font-medium">{member.position}</p>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">{member.experience}</p>
+                <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 rounded-full mx-auto mb-4"></div>
+                <h3 className="text-lg md:text-xl font-bold text-seltronik-dark dark:text-white">{member.name}</h3>
+                <p className="text-seltronik-red font-medium text-sm md:text-base">{member.position}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">{member.experience}</p>
               </motion.div>
             ))}
           </div>
@@ -413,76 +429,76 @@ const AboutPage = () => {
       </section>
 
       {/* Statistics */}
-      <section ref={ref} className="py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section ref={ref} className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-white text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             >
-              <FaIndustry className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold mb-2">
+              <FaIndustry className="text-3xl md:text-5xl mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={3} duration={2.5} />}
               </h3>
-              <p className="text-xl">Pabrik Produksi</p>
+              <p className="text-sm sm:text-base md:text-xl">Pabrik Produksi</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
             >
-              <FaUsers className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold mb-2">
+              <FaUsers className="text-3xl md:text-5xl mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={150} duration={2.5} />}+
               </h3>
-              <p className="text-xl">Karyawan</p>
+              <p className="text-sm sm:text-base md:text-xl">Karyawan</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
             >
-              <FaGlobeAsia className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold mb-2">
+              <FaGlobeAsia className="text-3xl md:text-5xl mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={34} duration={2.5} />}
               </h3>
-              <p className="text-xl">Provinsi Terjangkau</p>
+              <p className="text-sm sm:text-base md:text-xl">Provinsi Terjangkau</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
             >
-              <FaHandshake className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold mb-2">
+              <FaHandshake className="text-3xl md:text-5xl mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={500} duration={2.5} />}+
               </h3>
-              <p className="text-xl">Mitra Bisnis</p>
+              <p className="text-sm sm:text-base md:text-xl">Mitra Bisnis</p>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-4xl font-bold font-heading mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Mari Berkolaborasi Bersama Kami
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8">
             Wujudkan infrastruktur lalu lintas yang modern, aman, dan efisien untuk Indonesia
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/produk"
-              className="bg-seltronik-red text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Lihat Produk Kami
             </Link>
             <Link
               href="/kontak"
-              className="bg-white/10 backdrop-blur text-white px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30"
+              className="bg-white/10 backdrop-blur text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30"
             >
               Hubungi Kami
             </Link>
