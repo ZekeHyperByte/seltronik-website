@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
+import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
+import { Autoplay, Pagination, Navigation, Controller } from 'swiper/modules';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, FaRoad, FaTrafficLight, FaExclamationTriangle, FaSolarPanel, FaMicrochip, FaArrowRight } from 'react-icons/fa';
@@ -19,6 +19,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 
 const HomePage = () => {
+  const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
+  const [textSwiper, setTextSwiper] = useState<SwiperClass | null>(null);
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
   const [projects, setProjects] = useState<Project[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -47,22 +49,26 @@ const HomePage = () => {
     {
       icon: <FaShieldAlt />,
       title: 'Kualitas Terjamin',
-      description: 'Produk bersertifikat standar nasional dan internasional'
+      description: 'Produk bersertifikat standar nasional dan internasional',
+      image: '/images/features/quality_ensured.jpg'
     },
     {
       icon: <FaTruck />,
       title: 'Pengiriman Cepat',
-      description: 'Layanan pengiriman ke seluruh Indonesia dengan armada sendiri'
+      description: 'Layanan pengiriman ke seluruh Indonesia dengan armada sendiri',
+      image: '/images/features/fast_delivery.jpg'
     },
     {
       icon: <FaHeadset />,
       title: 'Support 24/7',
-      description: 'Tim teknis siap membantu instalasi dan maintenance'
+      description: 'Tim teknis siap membantu instalasi dan maintenance',
+      image: '/images/features/247_support.jpg'
     },
     {
       icon: <FaAward />,
       title: 'Berpengalaman',
-      description: 'Lebih dari 20 tahun melayani proyek pemerintah dan swasta'
+      description: 'Lebih dari 20 tahun melayani proyek pemerintah dan swasta',
+      image: '/images/features/experience.jpg'
     }
   ];
 
@@ -164,43 +170,45 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
-              Mengapa Memilih Seltronik?
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Kami berkomitmen memberikan solusi terbaik untuk kebutuhan infrastruktur lalu lintas Anda
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="group bg-gray-50 dark:bg-gray-700 rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 min-h-[220px]"
+      <section className="relative bg-seltronik-dark h-[70vh] min-h-[600px]">
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          loop={true}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          navigation
+          pagination={{ clickable: true }}
+          className="w-full h-full"
+        >
+          {features.map((feature, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="w-full h-full bg-cover bg-center flex flex-col items-center justify-center"
+                style={{ backgroundImage: `url(${feature.image})` }}
               >
-                <div className="text-seltronik-red text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold font-heading text-seltronik-dark dark:text-white mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 opacity-0 h-0 group-hover:opacity-100 group-hover:h-auto transition-all duration-300">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+                <div className="absolute inset-0 bg-black/70"></div>
+                <div className="container mx-auto px-4 relative z-10 text-center text-white">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                    className="mb-12"
+                  >
+                    <h2 className="text-5xl font-bold font-heading text-white mb-4">
+                      Mengapa Memilih Seltronik?
+                    </h2>
+                  </motion.div>
+                  <div className="flex flex-col items-center">
+                    <div className="text-5xl mb-4 text-seltronik-red">{feature.icon}</div>
+                    <h3 className="text-4xl font-bold font-heading" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+                      {feature.title}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
       {/* Products Showcase */}
