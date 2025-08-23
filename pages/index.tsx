@@ -123,7 +123,7 @@ const HomePage = () => {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 mt-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-center md:text-left">
                 <div>
                   <h3 className="text-3xl font-bold text-seltronik-yellow">
                     <CountUp end={23} duration={2} />+
@@ -229,7 +229,7 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          <div className="flex w-full h-[600px] gap-2">
+          <div className="grid md:flex w-full md:h-[600px] gap-2">
             {products.map((product) => (
               <div
                 key={product.id}

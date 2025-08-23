@@ -59,7 +59,7 @@ const CertificatesPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold font-heading mb-4">Sertifikat & Legalitas</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Sertifikat & Legalitas</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Komitmen kami terhadap kualitas dan standar tertinggi dibuktikan dengan berbagai sertifikasi resmi
             </p>
@@ -70,7 +70,7 @@ const CertificatesPage = () => {
       {/* Stats Section */}
       <section className="py-12 -mt-8">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -214,7 +214,7 @@ const CertificatesPage = () => {
                 <div className="grid lg:grid-cols-2 gap-8">
                   {/* Certificate Preview */}
                   <div>
-                    <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
+                    <div className="h-64 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
                       <img src={selectedCertificate.image_url} alt={selectedCertificate.name} className="w-full h-full object-contain" />
                     </div>
                     

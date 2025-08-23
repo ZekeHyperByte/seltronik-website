@@ -124,7 +124,7 @@ const AboutPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Lebih dari 23 tahun berkontribusi dalam pembangunan infrastruktur lalu lintas Indonesia
             </p>
@@ -415,7 +415,7 @@ const AboutPage = () => {
       {/* Statistics */}
       <section ref={ref} className="py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-white text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-white text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}

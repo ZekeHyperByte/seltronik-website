@@ -61,7 +61,7 @@ const ProjectsPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold font-heading mb-4">Proyek Kami</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Proyek Kami</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Kepercayaan klien adalah kebanggaan kami. Lihat berbagai proyek infrastruktur yang telah kami selesaikan
             </p>
@@ -72,7 +72,7 @@ const ProjectsPage = () => {
       {/* Stats Overview */}
       <section className="py-12 -mt-8">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -293,7 +293,7 @@ const ProjectsPage = () => {
               {/* Modal Content */}
               <div className="p-6">
                 {/* Image Gallery */}
-                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6">
+                <div className="h-64 md:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6">
                   <img src={selectedProject.images[0]} alt={selectedProject.title} className="w-full h-full object-cover rounded-xl" />
                 </div>
 

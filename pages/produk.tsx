@@ -52,7 +52,7 @@ const ProductsPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold font-heading mb-4">Produk Kami</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Produk Kami</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Solusi lengkap untuk kebutuhan infrastruktur lalu lintas dengan teknologi terkini dan kualitas terjamin
             </p>
@@ -117,7 +117,7 @@ const ProductsPage = () => {
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
                 >
                   {/* Product Image */}
-                  <div className="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+                  <div className="h-48 md:h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
                     <div className="absolute top-4 right-4 z-10">
                       <span className="bg-seltronik-red text-white px-3 py-1 rounded-full text-sm font-semibold">
                         {categories.find(c => c.id === product.category)?.name}
@@ -220,7 +220,7 @@ const ProductsPage = () => {
 
               <div className="grid lg:grid-cols-2 gap-8 p-6">
                 {/* Product Image */}
-                <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl">
+                <div className="h-64 md:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl">
                   <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover rounded-xl" />
                 </div>
 

@@ -89,7 +89,7 @@ const ContactPage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold font-heading mb-4">Hubungi Kami</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">Hubungi Kami</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Konsultasikan kebutuhan infrastruktur lalu lintas Anda dengan tim ahli kami
             </p>
@@ -256,7 +256,7 @@ const ContactPage = () => {
               className="space-y-6"
             >
               {/* Map */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-96">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-96">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.907095851549!2d107.59705831431712!3d-6.901674069459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e63e6e9cd6b9%3A0x2a9e24c5c1a5f63!2sJl.%20Panglima%20Polim%20Raya%2C%20Sukahaji%2C%20Kec.%20Babakan%20Ciparay%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040221!5e0!3m2!1sen!2sid!4v1647856231456!5m2!1sen!2sid"
                   width="100%"
@@ -330,7 +330,7 @@ const ContactPage = () => {
       {/* Quick Contact CTA */}
       <section className="py-16 bg-gradient-to-r from-seltronik-red to-red-600">
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl font-bold font-heading mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold font-heading mb-4">
             Butuh Respon Cepat?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

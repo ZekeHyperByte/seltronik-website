@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaBox, FaProjectDiagram, FaUsers, FaCertificate, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaHome, FaBox, FaProjectDiagram, FaUsers, FaCertificate, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye, FaBars, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -8,6 +8,7 @@ import { productService, projectService, certificateService, statsService, Produ
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [products, setProducts] = useState<Product[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -136,7 +137,7 @@ const AdminDashboard = () => {
 
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
         {/* Sidebar */}
-        <div className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg">
+        <div className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out z-40`}>
           {/* Logo */}
           <div className="flex items-center justify-center h-16 bg-seltronik-red">
             <span className="text-white text-xl font-bold">Seltronik Admin</span>
@@ -171,7 +172,15 @@ const AdminDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="ml-64 p-8">
+        <div className="lg:ml-64 p-8">
+          {/* Mobile Header */}
+          <div className="lg:hidden flex justify-between items-center mb-8">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+              {isSidebarOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
+            </button>
+            <span className="text-xl font-bold text-seltronik-red">Seltronik Admin</span>
+          </div>
+
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -252,8 +261,8 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-                <table className="w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
+                <table className="w-full min-w-max">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Produk</th>
@@ -329,8 +338,8 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-                <table className="w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
+                <table className="w-full min-w-max">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Proyek</th>
@@ -404,8 +413,8 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-                <table className="w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
+                <table className="w-full min-w-max">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sertifikat</th>
