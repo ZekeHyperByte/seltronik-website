@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaFilter, FaDownload, FaWhatsapp, FaEye, FaCheckCircle, FaBolt, FaSun, FaShieldAlt, FaWifi, FaTimes, FaTh, FaList } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 import { productService, Product } from '../lib/supabase';
 
 const ProductsPage = () => {
@@ -203,10 +204,14 @@ const ProductsPage = () => {
                       </span>
                     </div>
                     {product.image && (
-                      <img 
+                      <Image 
                         src={product.image} 
                         alt={product.name} 
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105" 
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                       />
                     )}
                   </div>
@@ -319,10 +324,13 @@ const ProductsPage = () => {
                 {/* Product Image */}
                 <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden">
                   {selectedProduct.image && (
-                    <img 
+                    <Image 
                       src={selectedProduct.image} 
                       alt={selectedProduct.name} 
-                      className="w-full h-full object-cover" 
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover" 
+                      priority
                     />
                   )}
                 </div>

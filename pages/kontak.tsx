@@ -105,10 +105,11 @@ const ContactPage = () => {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center hover:shadow-2xl transition-shadow duration-300"
               >
                 <div className="text-seltronik-red text-2xl md:text-3xl mb-3 md:mb-4 flex justify-center">
                   {info.icon}

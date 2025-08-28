@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
 import { projectService, Project } from '../lib/supabase';
 
 // Import Swiper styles
@@ -214,10 +215,14 @@ const ProjectsPage = () => {
                   {/* Project Image */}
                   <div className="h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
                     {project.images && project.images[0] && (
-                      <img 
+                      <Image 
                         src={project.images[0]} 
                         alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105" 
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                       />
                     )}
                     <div className="absolute inset-0 bg-black/40"></div>
@@ -394,10 +399,13 @@ const ProjectsPage = () => {
                 {/* Image Gallery */}
                 <div className="h-48 sm:h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6 overflow-hidden">
                   {selectedProject.images && selectedProject.images[0] && (
-                    <img 
+                    <Image 
                       src={selectedProject.images[0]} 
                       alt={selectedProject.title} 
-                      className="w-full h-full object-cover" 
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 100vw"
+                      className="object-cover" 
+                      priority
                     />
                   )}
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes, FaWhatsapp, FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebookF, FaInstagram, FaLinkedinIn, FaChevronUp, FaSun, FaMoon } from 'react-icons/fa';
 import { useTheme } from '../contexts/ThemeContext';
@@ -11,6 +12,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -38,6 +40,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const isActiveRoute = (href: string) => {
+    return router.pathname === href;
   };
 
   const navigationItems = [
@@ -79,15 +85,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm xl:text-base text-seltronik-dark dark:text-white hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors duration-300 font-medium"
-                >
-                  {item.name}
-                </Link>
-              ))}
+              <div className="flex items-center space-x-6 xl:space-x-8 relative">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`relative py-2 text-sm xl:text-base font-medium transition-colors duration-300 ${
+                      isActiveRoute(item.href)
+                        ? 'text-seltronik-red dark:text-seltronik-yellow'
+                        : 'text-seltronik-dark dark:text-white hover:text-seltronik-red dark:hover:text-seltronik-yellow'
+                    }`}
+                  >
+                    {item.name}
+                    {isActiveRoute(item.href) && (
+                      <motion.div
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-seltronik-red dark:bg-seltronik-yellow rounded-full"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        style={{ transformOrigin: 'left' }}
+                      />
+                    )}
+                  </Link>
+                ))}
+              </div>
               <Link
                 href="/kontak"
                 className="bg-seltronik-red text-white px-4 xl:px-6 py-2 xl:py-3 rounded-full hover:bg-red-600 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm xl:text-base"
@@ -174,7 +195,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block py-3 px-4 text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-300 font-medium"
+                        className={`block py-3 px-4 rounded-lg transition-colors duration-300 font-medium ${
+                          isActiveRoute(item.href)
+                            ? 'bg-seltronik-red/10 text-seltronik-red dark:bg-seltronik-yellow/10 dark:text-seltronik-yellow border-l-4 border-seltronik-red dark:border-seltronik-yellow'
+                            : 'text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}

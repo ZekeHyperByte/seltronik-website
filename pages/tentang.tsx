@@ -377,7 +377,8 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-white/10 backdrop-blur rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-all duration-300"
+                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+                className="bg-white/10 backdrop-blur rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-colors duration-300"
               >
                 <div className="text-seltronik-yellow text-3xl md:text-4xl mb-4 flex justify-center">
                   {cert.icon}
