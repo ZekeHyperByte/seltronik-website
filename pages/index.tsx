@@ -440,11 +440,14 @@ const HomePage = () => {
             {clients.map((client, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: index * 0.1 
+                }}
+                whileHover={{ scale: 1.05 }}
                 className="grayscale hover:grayscale-0 transition-all duration-300"
               >
                 <div className="h-16 md:h-20 flex items-center justify-center p-2">

@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-seltronik-dark">
+    <div className="min-h-screen">
       {/* Header */}
       <header className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white/90 dark:bg-seltronik-dark/90 backdrop-blur-md shadow-lg py-2' : 'bg-white/95 dark:bg-seltronik-dark/95 backdrop-blur-sm py-3 md:py-4'

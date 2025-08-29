@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaWhatsapp, FaClock, FaFacebookF, FaInstagram, FaLinkedinIn, FaPaperPlane } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
+import { useInView } from 'react-intersection-observer';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,17 @@ const ContactPage = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const { ref: mapRef, inView: mapInView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  useEffect(() => {
+    if (mapInView) {
+      setShouldLoadMap(true);
+    }
+  }, [mapInView]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -257,16 +269,28 @@ const ContactPage = () => {
               className="space-y-6"
             >
               {/* Map */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-80 lg:h-96">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.907095851549!2d107.59705831431712!3d-6.901674069459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e63e6e9cd6b9%3A0x2a9e24c5c1a5f63!2sJl.%20Panglima%20Polim%20Raya%2C%20Sukahaji%2C%20Kec.%20Babakan%20Ciparay%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040221!5e0!3m2!1sen!2sid!4v1647856231456!5m2!1sen!2sid"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+              <div ref={mapRef} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-80 lg:h-96">
+                {shouldLoadMap ? (
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.907095851549!2d107.59705831431712!3d-6.901674069459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e63e6e9cd6b9%3A0x2a9e24c5c1a5f63!2sJl.%20Panglima%20Polim%20Raya%2C%20Sukahaji%2C%20Kec.%20Babakan%20Ciparay%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040221!5e0!3m2!1sen!2sid!4v1647856231456!5m2!1sen!2sid"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Lokasi Kantor Seltronik"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                    <div className="text-center">
+                      <div className="animate-pulse mb-4">
+                        <FaMapMarkerAlt className="text-4xl text-seltronik-red mx-auto" />
+                      </div>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">Memuat peta...</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Office Hours */}
