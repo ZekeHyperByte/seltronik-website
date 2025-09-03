@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaFilter, FaDownload, FaWhatsapp, FaEye, FaCheckCircle, FaBolt, FaSun, FaShieldAlt, FaWifi, FaTimes, FaTh, FaList } from 'react-icons/fa';
 import Link from 'next/link';
@@ -13,33 +15,48 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Apply GSAP animations
   useGSAPAnimations();
 
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedProduct) {
-        setSelectedProduct(null);
-      }
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [selectedProduct]);
+  // ESC key handling is now handled by the Modal component
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const data = await productService.getAll();
         setProducts(data || []);
       } catch (error) {
         console.error('Error fetching products:', error);
+        setError('Gagal memuat data produk. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
+
+  const handleRetry = () => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await productService.getAll();
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setError('Gagal memuat data produk. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  };
 
   const categories = [
     { id: 'all', name: 'Semua Produk', count: products.length },
@@ -72,7 +89,7 @@ const ProductsPage = () => {
       </section>
 
       {/* Search and Filter Section */}
-      <section className="gsap-fade-up bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-16 md:top-20 z-30">
+      <section className="gsap-fade-up bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-14 md:top-16 z-30">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col gap-4">
             {/* Search Bar and View Toggle */}
@@ -142,7 +159,26 @@ const ProductsPage = () => {
       {/* Products Grid/List */}
       <section className="gsap-fade-up py-8 md:py-12 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
-          <AnimatePresence mode="wait">
+          {/* Loading State */}
+          {isLoading && (
+            <GridSkeleton 
+              count={8} 
+              viewMode={viewMode}
+              gridCols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            />
+          )}
+
+          {/* Error State */}
+          {error && (
+            <ErrorState 
+              message={error}
+              onRetry={handleRetry}
+            />
+          )}
+
+          {/* Content */}
+          {!isLoading && !error && (
+            <AnimatePresence mode="wait">
             <motion.div
               key={selectedCategory + searchTerm + viewMode}
               initial={{ opacity: 0, y: 20 }}
@@ -241,62 +277,36 @@ const ProductsPage = () => {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          )}
 
-          {filteredProducts.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
-              <p className="text-xl md:text-2xl text-gray-400">Tidak ada produk yang ditemukan</p>
-              <button
-                onClick={() => {
-                  setSelectedCategory('all');
-                  setSearchTerm('');
-                }}
-                className="mt-4 text-seltronik-red hover:underline"
-              >
-                Reset Filter
-              </button>
-            </motion.div>
+          {/* Empty State */}
+          {!isLoading && !error && filteredProducts.length === 0 && (
+            <EmptyState
+              title="Tidak ada produk ditemukan"
+              message="Produk yang Anda cari tidak ditemukan. Coba ubah filter atau kata kunci pencarian."
+              onReset={() => {
+                setSelectedCategory('all');
+                setSearchTerm('');
+              }}
+              resetLabel="Reset Filter"
+              icon="🔍"
+            />
           )}
         </div>
       </section>
 
       {/* Product Detail Modal */}
-      <AnimatePresence>
+      <Modal
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        title={selectedProduct?.name || ''}
+        subtitle="Klik di luar area ini, tekan ESC, atau klik X untuk menutup"
+        enableAnimation={true}
+      >
         {selectedProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedProduct(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-center">
-                <div className="flex flex-col">
-                  <h2 className="text-xl md:text-2xl font-bold font-heading text-seltronik-dark dark:text-white">{selectedProduct.name}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Klik di luar area ini, tekan ESC, atau klik X untuk menutup</p>
-                </div>
-                <button
-                  onClick={() => setSelectedProduct(null)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                  aria-label="Close modal"
-                >
-                  <FaTimes size={20} />
-                </button>
-              </div>
-
-              <div className="grid lg:grid-cols-2 gap-6 md:gap-8 p-4 md:p-6">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
                 {/* Product Image */}
                 <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden relative group cursor-pointer">
                   {selectedProduct.image && (
@@ -371,12 +381,10 @@ const ProductsPage = () => {
                       </a>
                     )}
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
+      </Modal>
 
       {/* CTA Section */}
       <section className="gsap-scale py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">

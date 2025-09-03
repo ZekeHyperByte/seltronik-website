@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaBuilding, FaRoad, FaCity, FaTools, FaTrafficLight, FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight, FaEye, FaTimes, FaFilter } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,33 +20,48 @@ const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Apply GSAP animations
   useGSAPAnimations();
 
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedProject) {
-        setSelectedProject(null);
-      }
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [selectedProject]);
+  // ESC key handling is now handled by the Modal component
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const data = await projectService.getAll();
         setProjects(data || []);
       } catch (error) {
         console.error('Error fetching projects:', error);
+        setError('Gagal memuat data proyek. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProjects();
   }, []);
+
+  const handleRetry = () => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await projectService.getAll();
+        setProjects(data || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setError('Gagal memuat data proyek. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProjects();
+  };
 
   const categories = [
     { id: 'all', name: 'Semua Proyek', icon: FaRoad, count: projects.length },
@@ -106,7 +123,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* Category Filter */}
-      <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-16 md:top-20 z-30">
+      <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-14 md:top-16 z-30">
         <div className="container mx-auto px-4">
           {/* Mobile Filter Button */}
           <div className="md:hidden mb-4">
@@ -175,7 +192,25 @@ const ProjectsPage = () => {
       {/* Projects Grid */}
       <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          {/* Loading State */}
+          {isLoading && (
+            <GridSkeleton 
+              count={6} 
+              gridCols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            />
+          )}
+
+          {/* Error State */}
+          {error && (
+            <ErrorState 
+              message={error}
+              onRetry={handleRetry}
+            />
+          )}
+
+          {/* Content */}
+          {!isLoading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {filteredProjects.map((project, index) => (
                 <div
                   key={project.id}
@@ -236,17 +271,17 @@ const ProjectsPage = () => {
                 </div>
               ))}
             </div>
+          )}
 
-          {filteredProjects.length === 0 && (
-            <div className="gsap-fade-up text-center py-12">
-              <p className="text-xl md:text-2xl text-gray-400">Tidak ada proyek yang ditemukan</p>
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className="mt-4 text-seltronik-red hover:underline"
-              >
-                Lihat Semua Proyek
-              </button>
-            </div>
+          {/* Empty State */}
+          {!isLoading && !error && filteredProjects.length === 0 && (
+            <EmptyState
+              title="Tidak ada proyek ditemukan"
+              message="Proyek yang Anda cari tidak ditemukan. Coba ubah filter kategori."
+              onReset={() => setSelectedCategory('all')}
+              resetLabel="Lihat Semua Proyek"
+              icon="🏗️"
+            />
           )}
         </div>
       </section>
@@ -312,43 +347,26 @@ const ProjectsPage = () => {
       )}
 
       {/* Project Detail Modal */}
-      <AnimatePresence>
+      <Modal
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+        title={selectedProject?.title || ''}
+        subtitle="Klik di luar area ini, tekan ESC, atau klik X untuk menutup"
+        enableAnimation={false}
+      >
         {selectedProject && (
-          <div
-            className="gsap-scale fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedProject(null)}
-          >
-            <div
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
-                <div className="flex-1 pr-4">
-                  <h2 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">{selectedProject.title}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Klik di luar area ini, tekan ESC, atau klik X untuk menutup</p>
-                  <div className="flex flex-wrap gap-4 text-xs md:text-sm text-gray-600 dark:text-gray-300">
-                    <span className="flex items-center gap-1">
-                      <FaBuilding className="text-seltronik-red" />
-                      {selectedProject.client}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaCalendarAlt className="text-seltronik-yellow" />
-                      {selectedProject.year}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                  aria-label="Close modal"
-                >
-                  <FaTimes size={20} />
-                </button>
-              </div>
-
-              {/* Modal Content */}
-              <div className="p-4 md:p-6">
+          <>
+            {/* Client and Year Info */}
+            <div className="flex flex-wrap gap-4 text-xs md:text-sm text-gray-600 dark:text-gray-300 mb-6">
+              <span className="flex items-center gap-1">
+                <FaBuilding className="text-seltronik-red" />
+                {selectedProject.client}
+              </span>
+              <span className="flex items-center gap-1">
+                <FaCalendarAlt className="text-seltronik-yellow" />
+                {selectedProject.year}
+              </span>
+            </div>
                 {/* Image Gallery */}
                 <div className="h-48 sm:h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6 overflow-hidden relative group cursor-pointer">
                   {selectedProject.images && selectedProject.images[0] && (
@@ -449,11 +467,9 @@ const ProjectsPage = () => {
                     </div>
                   </div>
                 )}
-              </div>
-            </div>
-          </div>
+          </>
         )}
-      </AnimatePresence>
+      </Modal>
 
       {/* CTA Section */}
       <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, FaFileAlt, FaGlobeAsia, FaBuilding, FaCalendarAlt, FaQrcode, FaTimes, FaFilter } from 'react-icons/fa';
@@ -16,19 +18,43 @@ const CertificatesPage = () => {
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const data = await certificateService.getAll();
         setCertificates(data || []);
       } catch (error) {
         console.error('Error fetching certificates:', error);
+        setError('Gagal memuat data sertifikat. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchCertificates();
   }, []);
+
+  const handleRetry = () => {
+    const fetchCertificates = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await certificateService.getAll();
+        setCertificates(data || []);
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+        setError('Gagal memuat data sertifikat. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCertificates();
+  };
 
   const categories = [
     { id: 'all', name: 'Semua Dokumen', count: certificates.length },
@@ -86,7 +112,7 @@ const CertificatesPage = () => {
       </section>
 
       {/* Category Filter */}
-      <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-16 md:top-20 z-30">
+      <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-14 md:top-16 z-30">
         <div className="container mx-auto px-4">
           {/* Mobile Filter Button */}
           <div className="md:hidden mb-4">
@@ -148,9 +174,27 @@ const CertificatesPage = () => {
       {/* Certificates Grid */}
       <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <AnimatePresence mode="wait">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-              {filteredCertificates.map((cert, index) => (
+          {/* Loading State */}
+          {isLoading && (
+            <GridSkeleton 
+              count={10} 
+              gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            />
+          )}
+
+          {/* Error State */}
+          {error && (
+            <ErrorState 
+              message={error}
+              onRetry={handleRetry}
+            />
+          )}
+
+          {/* Content */}
+          {!isLoading && !error && (
+            <AnimatePresence mode="wait">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                {filteredCertificates.map((cert, index) => (
                 <div
                   key={cert.id}
                   className="gsap-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:-translate-y-1"
@@ -213,52 +257,32 @@ const CertificatesPage = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </AnimatePresence>
+              </div>
+            </AnimatePresence>
+          )}
 
-          {filteredCertificates.length === 0 && (
-            <div className="gsap-fade-up text-center py-12">
-              <p className="text-xl md:text-2xl text-gray-400">Tidak ada sertifikat yang ditemukan</p>
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className="mt-4 text-seltronik-red hover:underline"
-              >
-                Lihat Semua Sertifikat
-              </button>
-            </div>
+          {/* Empty State */}
+          {!isLoading && !error && filteredCertificates.length === 0 && (
+            <EmptyState
+              title="Tidak ada sertifikat ditemukan"
+              message="Sertifikat yang Anda cari tidak ditemukan. Coba ubah filter kategori."
+              onReset={() => setSelectedCategory('all')}
+              resetLabel="Lihat Semua Sertifikat"
+              icon="📜"
+            />
           )}
         </div>
       </section>
 
       {/* Certificate Detail Modal */}
-      <AnimatePresence>
+      <Modal
+        isOpen={!!selectedCertificate}
+        onClose={() => setSelectedCertificate(null)}
+        title={selectedCertificate?.name || ''}
+        enableAnimation={false}
+      >
         {selectedCertificate && (
-          <motion.div
-            className="gsap-scale fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedCertificate(null)}
-          >
-            <div
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
-                <div className="flex items-center gap-3 flex-1 pr-4">
-                  <FaCertificate className="text-seltronik-red text-xl md:text-2xl flex-shrink-0" />
-                  <h2 className="text-lg md:text-2xl font-bold text-seltronik-dark dark:text-white line-clamp-2">{selectedCertificate.name}</h2>
-                </div>
-                <button
-                  onClick={() => setSelectedCertificate(null)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white p-2"
-                  aria-label="Close modal"
-                >
-                  <FaTimes size={20} />
-                </button>
-              </div>
-
-              {/* Modal Content */}
-              <div className="p-4 md:p-6">
-                <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
                   {/* Certificate Preview */}
                   <div>
                     <div className="h-64 sm:h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center overflow-hidden">
@@ -321,12 +345,9 @@ const CertificatesPage = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </Modal>
 
       {/* Trust Badges Section */}
       <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
