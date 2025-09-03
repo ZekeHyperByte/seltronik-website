@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { Project } from '../lib/supabase';
@@ -67,10 +68,11 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
         {projects.map((project) => (
           <SwiperSlide key={project.id}>
             <div className="w-full h-full relative">
-              <img
+              <Image
                 src={project.images[0]}
                 alt={project.title}
                 className="w-full h-full object-cover"
+                fill
               />
               {/* Optional overlay for better visibility */}
               <div className="absolute inset-0 bg-black/20"></div>

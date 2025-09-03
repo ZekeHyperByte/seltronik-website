@@ -17,6 +17,17 @@ const ProductsPage = () => {
   // Apply GSAP animations
   useGSAPAnimations();
 
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedProduct) {
+        setSelectedProduct(null);
+      }
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [selectedProduct]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -272,10 +283,13 @@ const ProductsPage = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-center">
-                <h2 className="text-xl md:text-2xl font-bold font-heading text-seltronik-dark dark:text-white">{selectedProduct.name}</h2>
+                <div className="flex flex-col">
+                  <h2 className="text-xl md:text-2xl font-bold font-heading text-seltronik-dark dark:text-white">{selectedProduct.name}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Klik di luar area ini, tekan ESC, atau klik X untuk menutup</p>
+                </div>
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white p-2"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                   aria-label="Close modal"
                 >
                   <FaTimes size={20} />
@@ -284,7 +298,7 @@ const ProductsPage = () => {
 
               <div className="grid lg:grid-cols-2 gap-6 md:gap-8 p-4 md:p-6">
                 {/* Product Image */}
-                <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden">
+                <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden relative group cursor-pointer">
                   {selectedProduct.image && (
                     <Image 
                       src={selectedProduct.image} 
@@ -295,6 +309,15 @@ const ProductsPage = () => {
                       priority
                     />
                   )}
+                  {/* Click anywhere on image to close modal */}
+                  <div 
+                    className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    <div className="bg-black/50 text-white px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm">
+                      Klik untuk menutup
+                    </div>
+                  </div>
                 </div>
 
                 {/* Product Details */}

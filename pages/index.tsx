@@ -365,7 +365,7 @@ const HomePage = () => {
               >
                 <div className="h-48 bg-gray-300 dark:bg-gray-700 relative">
                   {product.image && (
-                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                    <Image src={product.image} alt={product.name} className="w-full h-full object-cover" fill />
                   )}
                   <div className="absolute inset-0 bg-black/40"></div>
                 </div>
@@ -447,7 +447,7 @@ const HomePage = () => {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer h-64 md:h-80"
                   >
-                    <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <Image src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" fill />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute inset-0 flex items-end p-4 md:p-6">
                       <div className="transform transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">

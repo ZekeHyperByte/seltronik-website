@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, FaFileAlt, FaGlobeAsia, FaBuilding, FaCalendarAlt, FaQrcode, FaTimes, FaFilter } from 'react-icons/fa';
 import Link from 'next/link';
@@ -157,10 +158,11 @@ const CertificatesPage = () => {
                   {/* Certificate Image */}
                   <div className="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
                     {cert.image_url ? (
-                      <img 
+                      <Image 
                         src={cert.image_url} 
                         alt={cert.name} 
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                        fill
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -261,10 +263,11 @@ const CertificatesPage = () => {
                   <div>
                     <div className="h-64 sm:h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center overflow-hidden">
                       {selectedCertificate.image_url ? (
-                        <img 
+                        <Image 
                           src={selectedCertificate.image_url} 
                           alt={selectedCertificate.name} 
                           className="w-full h-full object-contain" 
+                          fill
                         />
                       ) : (
                         <FaCertificate className="text-6xl md:text-8xl text-gray-400" />
