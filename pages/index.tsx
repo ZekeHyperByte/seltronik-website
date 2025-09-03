@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Autoplay, Pagination, Navigation, Controller } from 'swiper/modules';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
@@ -18,12 +20,116 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 
+// Register GSAP plugins
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const HomePage = () => {
   const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
   const [textSwiper, setTextSwiper] = useState<SwiperClass | null>(null);
-  const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [statsInView, setStatsInView] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  
+  // Refs for GSAP animations
+  const heroRef = useRef<HTMLElement>(null);
+  const productsRef = useRef<HTMLElement>(null);
+  const projectsRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLElement>(null);
+  const clientsRef = useRef<HTMLElement>(null);
+
+  // GSAP Smooth Scroll Animations
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Smooth scroll setup
+      gsap.config({ nullTargetWarn: false });
+
+      // Hero section animations
+      gsap.set(".hero-floating", { y: 50, opacity: 0 });
+      gsap.to(".hero-floating", {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        stagger: 0.3,
+        ease: "power2.out",
+      });
+
+      // Section reveal animations
+      const sections = [".products-section", ".projects-section", ".stats-section", ".clients-section"];
+      
+      sections.forEach((section) => {
+        gsap.fromTo(section, 
+          { 
+            y: 100, 
+            opacity: 0 
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+
+      // Smooth floating animation for hero elements
+      gsap.to(".floating-1", {
+        y: -20,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      gsap.to(".floating-2", {
+        y: -30,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1
+      });
+
+      gsap.to(".floating-3", {
+        y: -25,
+        duration: 3.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 2
+      });
+
+      // Stats counter animation
+      gsap.fromTo(".stats-container", 
+        { scale: 0.8, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.2,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: ".stats-container",
+            start: "top 80%",
+            onEnter: () => setStatsInView(true),
+            onLeave: () => setStatsInView(false),
+            onEnterBack: () => setStatsInView(true),
+            onLeaveBack: () => setStatsInView(false)
+          }
+        }
+      );
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,17 +190,17 @@ const HomePage = () => {
   return (
     <Layout>
       {/* Hero Section with Traffic Light Animation */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-seltronik-dark via-gray-900 to-black">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-seltronik-dark via-gray-900 to-black">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         </div>
 
-        {/* Floating Elements - Responsive sizes */}
-        <div className="absolute top-10 md:top-20 left-4 md:left-10 w-16 h-16 md:w-20 md:h-20 bg-seltronik-red/20 rounded-full blur-xl animate-float"></div>
-        <div className="absolute top-20 md:top-40 right-8 md:right-20 w-20 h-20 md:w-32 md:h-32 bg-seltronik-yellow/20 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-10 md:bottom-20 left-1/6 md:left-1/4 w-16 h-16 md:w-24 md:h-24 bg-seltronik-green/20 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
+        {/* GSAP Floating Elements - Responsive sizes */}
+        <div className="absolute top-10 md:top-20 left-4 md:left-10 w-16 h-16 md:w-20 md:h-20 bg-seltronik-red/20 rounded-full blur-xl floating-1 hero-floating"></div>
+        <div className="absolute top-20 md:top-40 right-8 md:right-20 w-20 h-20 md:w-32 md:h-32 bg-seltronik-yellow/20 rounded-full blur-xl floating-2 hero-floating"></div>
+        <div className="absolute bottom-10 md:bottom-20 left-1/6 md:left-1/4 w-16 h-16 md:w-24 md:h-24 bg-seltronik-green/20 rounded-full blur-xl floating-3 hero-floating"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -202,7 +308,7 @@ const HomePage = () => {
       </section>
 
       {/* Products Showcase */}
-      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section ref={productsRef} className="products-section py-12 md:py-16 lg:py-20 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -293,7 +399,7 @@ const HomePage = () => {
       </section>
 
       {/* Projects Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-seltronik-dark">
+      <section ref={projectsRef} className="projects-section py-12 md:py-16 lg:py-20 bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -371,55 +477,39 @@ const HomePage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section ref={ref} className="py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
-        <div className="container mx-auto px-4">
+      <section ref={statsRef} className="stats-section py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+        <div className="container mx-auto px-4 stats-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            >
+            <div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-                {inView && <CountUp end={2000} duration={2.5} />}+
+                {statsInView ? <CountUp end={2000} duration={2.5} /> : '2000'}+
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Unit Terpasang</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-            >
+            </div>
+            <div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-                {inView && <CountUp end={34} duration={2.5} />}
+                {statsInView ? <CountUp end={34} duration={2.5} /> : '34'}
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Provinsi</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-            >
+            </div>
+            <div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-                {inView && <CountUp end={150} duration={2.5} />}+
+                {statsInView ? <CountUp end={150} duration={2.5} /> : '150'}+
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Kota/Kabupaten</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-            >
+            </div>
+            <div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-                {inView && <CountUp end={98} duration={2.5} />}%
+                {statsInView ? <CountUp end={98} duration={2.5} /> : '98'}%
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Kepuasan Klien</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Clients Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white dark:bg-gray-800">
+      <section ref={clientsRef} className="clients-section py-12 md:py-16 lg:py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

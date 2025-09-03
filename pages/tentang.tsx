@@ -6,9 +6,13 @@ import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import AnimatedLogo from '../components/AnimatedLogo';
+import useGSAPAnimations from '../hooks/useGSAP';
 
 const AboutPage = () => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
+
+  // Apply GSAP animations
+  useGSAPAnimations();
 
   const timeline = [
     {
@@ -115,34 +119,22 @@ const AboutPage = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Lebih dari 23 tahun berkontribusi dalam pembangunan infrastruktur lalu lintas Indonesia
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Company Overview */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="order-2 lg:order-1"
-            >
+            <div className="gsap-fade-up order-2 lg:order-1">
               <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 md:mb-6">
                 PT. Sinyal Elektro Mekanik
               </h2>
@@ -171,34 +163,22 @@ const AboutPage = () => {
                   <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Tim Profesional</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="relative flex items-center justify-center order-1 lg:order-2"
-            >
+            <div className="gsap-scale relative flex items-center justify-center order-1 lg:order-2">
               <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
                 <AnimatedLogo interactive={true} />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
-            >
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
                 <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-red/10 rounded-full flex items-center justify-center flex-shrink-0">
                   <FaEye className="text-seltronik-red text-xl md:text-2xl" />
@@ -209,15 +189,9 @@ const AboutPage = () => {
                 Membangun negeri dengan berinovasi dibidang elektronik perlengkapan & rambu-rambu jalan 
                 yang siap bersaing di skala nasional & internasional.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
-            >
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
                 <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-yellow/10 rounded-full flex items-center justify-center flex-shrink-0">
                   <FaBullseye className="text-seltronik-yellow text-xl md:text-2xl" />
@@ -242,80 +216,60 @@ const AboutPage = () => {
                   <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Menjalin kerjasama dengan pihak terkait baik instansi pemerintah maupun swasta</span>
                 </li>
               </ul>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Company Values */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 md:mb-12"
-          >
+          <div className="gsap-fade-up text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Nilai-Nilai Perusahaan
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Prinsip yang menjadi fondasi dalam setiap langkah kami
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {values.map((value, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="text-center"
+                className="gsap-scale text-center"
               >
                 <div className="w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-seltronik-red to-seltronik-yellow rounded-full flex items-center justify-center text-white text-2xl md:text-3xl mx-auto mb-4">
                   {value.icon}
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-seltronik-dark dark:text-white mb-2">{value.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{value.description}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Timeline */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 md:mb-12"
-          >
+          <div className="gsap-fade-up text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Perjalanan Kami
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Milestone penting dalam sejarah PT. Sinyal Elektro Mekanik
             </p>
-          </motion.div>
+          </div>
 
           <div className="relative">
             {/* Vertical line for desktop */}
             <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-300 dark:bg-gray-700"></div>
             
             {timeline.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="relative mb-8 md:mb-12"
+                className="gsap-card relative mb-8 md:mb-12"
               >
                 {/* Mobile Layout */}
                 <div className="lg:hidden">
@@ -345,144 +299,107 @@ const AboutPage = () => {
                   </div>
                   <div className="w-5/12"></div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Certifications */}
-      <section className="py-12 md:py-16 bg-seltronik-dark">
+      <section className="gsap-fade-up py-12 md:py-16 bg-seltronik-dark">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 md:mb-12"
-          >
+          <div className="gsap-fade-up text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
               Sertifikasi & Penghargaan
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Komitmen kami terhadap kualitas dan standar internasional
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {certifications.map((cert, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
-                className="bg-white/10 backdrop-blur rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-colors duration-300"
+                className="gsap-scale bg-white/10 backdrop-blur rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-colors duration-300 hover:scale-105"
               >
                 <div className="text-seltronik-yellow text-3xl md:text-4xl mb-4 flex justify-center">
                   {cert.icon}
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-white mb-2">{cert.name}</h3>
                 <p className="text-gray-300 text-xs md:text-sm">{cert.description}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Leadership Team */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 md:mb-12"
-          >
+          <div className="gsap-fade-up text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Tim Kepemimpinan
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Dipimpin oleh profesional berpengalaman di bidangnya
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {team.map((member, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="text-center"
+                className="gsap-card text-center"
               >
                 <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 rounded-full mx-auto mb-4"></div>
                 <h3 className="text-lg md:text-xl font-bold text-seltronik-dark dark:text-white">{member.name}</h3>
                 <p className="text-seltronik-red font-medium text-sm md:text-base">{member.position}</p>
                 <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">{member.experience}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Statistics */}
-      <section ref={ref} className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section ref={ref} className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            >
+            <div className="gsap-scale">
               <FaIndustry className="text-3xl md:text-5xl mx-auto mb-4" />
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={3} duration={2.5} />}
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Pabrik Produksi</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-            >
+            </div>
+            <div className="gsap-scale">
               <FaUsers className="text-3xl md:text-5xl mx-auto mb-4" />
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={150} duration={2.5} />}+
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Karyawan</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-            >
+            </div>
+            <div className="gsap-scale">
               <FaGlobeAsia className="text-3xl md:text-5xl mx-auto mb-4" />
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={34} duration={2.5} />}
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Provinsi Terjangkau</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-            >
+            </div>
+            <div className="gsap-scale">
               <FaHandshake className="text-3xl md:text-5xl mx-auto mb-4" />
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                 {inView && <CountUp end={500} duration={2.5} />}+
               </h3>
               <p className="text-sm sm:text-base md:text-xl">Mitra Bisnis</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Mari Berkolaborasi Bersama Kami

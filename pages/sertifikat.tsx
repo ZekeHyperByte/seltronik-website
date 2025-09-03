@@ -5,8 +5,12 @@ import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, 
 import Link from 'next/link';
 import Head from 'next/head';
 import { certificateService, Certificate } from '../lib/supabase';
+import useGSAPAnimations from '../hooks/useGSAP';
 
 const CertificatesPage = () => {
+  // Apply GSAP animations
+  useGSAPAnimations();
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -52,20 +56,14 @@ const CertificatesPage = () => {
       </Head>
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Sertifikat & Legalitas</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Komitmen kami terhadap kualitas dan standar tertinggi dibuktikan dengan berbagai sertifikasi resmi
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -74,17 +72,13 @@ const CertificatesPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
+                className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
               >
                 <h3 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>{stat.value}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">{stat.label}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -124,12 +118,7 @@ const CertificatesPage = () => {
           {/* Mobile Filter Panel */}
           <AnimatePresence>
             {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden grid grid-cols-1 gap-2 mt-4"
-              >
+              <div className="gsap-fade-up md:hidden grid grid-cols-1 gap-2 mt-4">
                 {categories.map((category) => (
                   <button
                     key={category.id}
@@ -149,31 +138,21 @@ const CertificatesPage = () => {
                     </span>
                   </button>
                 ))}
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </div>
       </section>
 
       {/* Certificates Grid */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedCategory}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {filteredCertificates.map((cert, index) => (
-                <motion.div
+                <div
                   key={cert.id}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                  className="gsap-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:-translate-y-1"
                 >
                   {/* Certificate Image */}
                   <div className="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
@@ -230,17 +209,13 @@ const CertificatesPage = () => {
                       )}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </AnimatePresence>
 
           {filteredCertificates.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
+            <div className="gsap-fade-up text-center py-12">
               <p className="text-xl md:text-2xl text-gray-400">Tidak ada sertifikat yang ditemukan</p>
               <button
                 onClick={() => setSelectedCategory('all')}
@@ -248,7 +223,7 @@ const CertificatesPage = () => {
               >
                 Lihat Semua Sertifikat
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
@@ -257,16 +232,10 @@ const CertificatesPage = () => {
       <AnimatePresence>
         {selectedCertificate && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            className="gsap-scale fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedCertificate(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+            <div
               className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content"
               onClick={(e) => e.stopPropagation()}
             >
@@ -351,77 +320,53 @@ const CertificatesPage = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Trust Badges Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 md:mb-12"
-          >
+          <div className="gsap-fade-up text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
               Standar Kualitas Kami
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Produk kami telah memenuhi berbagai standar nasional dan internasional
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center"
-            >
+            <div className="gsap-scale bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center">
               <FaShieldAlt className="text-4xl md:text-6xl text-seltronik-red mx-auto mb-4" />
               <h3 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">Quality Assurance</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
                 Sistem manajemen mutu tersertifikasi ISO 9001:2015 untuk menjamin kualitas produk
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center"
-            >
+            <div className="gsap-scale bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center">
               <FaGlobeAsia className="text-4xl md:text-6xl text-seltronik-yellow mx-auto mb-4" />
               <h3 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">Standar Internasional</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
                 Produk memenuhi standar CE Marking dan RoHS untuk pasar global
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center"
-            >
+            <div className="gsap-scale bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 text-center">
               <FaAward className="text-4xl md:text-6xl text-seltronik-green mx-auto mb-4" />
               <h3 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">Penghargaan</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
                 Berbagai penghargaan dari klien dan institusi atas kualitas dan inovasi produk
               </p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Butuh Dokumen Lengkap?

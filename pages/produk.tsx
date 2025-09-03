@@ -5,6 +5,7 @@ import { FaSearch, FaFilter, FaDownload, FaWhatsapp, FaEye, FaCheckCircle, FaBol
 import Link from 'next/link';
 import Image from 'next/image';
 import { productService, Product } from '../lib/supabase';
+import useGSAPAnimations from '../hooks/useGSAP';
 
 const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -12,7 +13,9 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [showFilters, setShowFilters] = useState(false);
+
+  // Apply GSAP animations
+  useGSAPAnimations();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,25 +49,19 @@ const ProductsPage = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Produk Kami</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Solusi lengkap untuk kebutuhan infrastruktur lalu lintas dengan teknologi terkini dan kualitas terjamin
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Search and Filter Section */}
-      <section className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-16 md:top-20 z-30">
+      <section className="gsap-fade-up bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-16 md:top-20 z-30">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col gap-4">
             {/* Search Bar and View Toggle */}
@@ -107,67 +104,32 @@ const ProductsPage = () => {
                 </button>
               </div>
 
-              {/* Mobile Filter Button */}
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="sm:hidden flex items-center justify-center px-4 py-2 bg-seltronik-red text-white rounded-lg"
-              >
-                <FaFilter className="mr-2" />
-                Filter
-              </button>
             </div>
 
-            {/* Desktop Category Filter */}
-            <div className="hidden sm:flex gap-2 overflow-x-auto pb-2 lg:pb-0">
-              {categories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-3 md:px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 text-sm md:text-base ${
-                    selectedCategory === category.id
-                      ? 'bg-seltronik-red text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {category.name} ({category.count})
-                </button>
-              ))}
+            {/* Category Filter - Show on all screen sizes with horizontal scroll */}
+            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+              <div className="flex gap-2 min-w-max">
+                {categories.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-3 md:px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 text-xs sm:text-sm md:text-base flex-shrink-0 ${
+                      selectedCategory === category.id
+                        ? 'bg-seltronik-red text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {category.name} ({category.count})
+                  </button>
+                ))}
+              </div>
             </div>
-
-            {/* Mobile Category Filter */}
-            <AnimatePresence>
-              {showFilters && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="sm:hidden grid grid-cols-1 gap-2"
-                >
-                  {categories.map(category => (
-                    <button
-                      key={category.id}
-                      onClick={() => {
-                        setSelectedCategory(category.id);
-                        setShowFilters(false);
-                      }}
-                      className={`px-4 py-3 rounded-lg font-medium text-left transition-all duration-300 ${
-                        selectedCategory === category.id
-                          ? 'bg-seltronik-red text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                      }`}
-                    >
-                      {category.name} ({category.count})
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
       </section>
 
       {/* Products Grid/List */}
-      <section className="py-8 md:py-12 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="gsap-fade-up py-8 md:py-12 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <AnimatePresence mode="wait">
             <motion.div
@@ -188,7 +150,7 @@ const ProductsPage = () => {
                   key={product.id}
                   whileHover={{ scale: viewMode === 'grid' ? 1.02 : 1.01, y: -2 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group ${
+                  className={`gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group ${
                     viewMode === 'list' ? 'flex flex-col md:flex-row' : ''
                   }`}
                 >
@@ -394,7 +356,7 @@ const ProductsPage = () => {
       </AnimatePresence>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section className="gsap-scale py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-4">
             Butuh Konsultasi Produk?

@@ -4,8 +4,12 @@ import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaWhatsapp, FaClock, FaFacebookF, FaInstagram, FaLinkedinIn, FaPaperPlane } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 import { useInView } from 'react-intersection-observer';
+import useGSAPAnimations from '../hooks/useGSAP';
 
 const ContactPage = () => {
+  // Apply GSAP animations
+  useGSAPAnimations();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -92,20 +96,14 @@ const ContactPage = () => {
       <Toaster position="top-right" />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Hubungi Kami</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Konsultasikan kebutuhan infrastruktur lalu lintas Anda dengan tim ahli kami
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -114,14 +112,9 @@ const ContactPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {contactInfo.map((info, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20, delay: index * 0.1 }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center hover:shadow-2xl transition-shadow duration-300"
+                className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
                 <div className="text-seltronik-red text-2xl md:text-3xl mb-3 md:mb-4 flex justify-center">
                   {info.icon}
@@ -131,24 +124,18 @@ const ContactPage = () => {
                 {info.subcontent && (
                   <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm mt-1">{info.subcontent}</p>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Main Contact Section */}
-      <section className="py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
-            >
+            <div className="gsap-fade-up bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
               <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white mb-6">
                 Kirim Pesan
               </h2>
@@ -258,16 +245,10 @@ const ContactPage = () => {
                   )}
                 </button>
               </form>
-            </motion.div>
+            </div>
 
             {/* Map and Additional Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="space-y-6"
-            >
+            <div className="gsap-scale space-y-6">
               {/* Map */}
               <div ref={mapRef} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden h-64 md:h-80 lg:h-96">
                 {shouldLoadMap ? (
@@ -347,13 +328,13 @@ const ContactPage = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Quick Contact CTA */}
-      <section className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-2xl sm:text-3xl font-bold font-heading mb-4">
             Butuh Respon Cepat?

@@ -29,14 +29,49 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
+    window.addEventListener('keydown', handleKeyDown);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isMenuOpen]);
+
+  // Close menu on route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsMenuOpen(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router.events]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    console.log('Menu state changed:', isMenuOpen);
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -134,124 +169,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {theme === 'light' ? <FaMoon size={18} /> : <FaSun size={18} />}
               </button>
               <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                aria-label="Toggle menu"
+                onClick={() => {
+                  console.log('Menu button clicked, current state:', isMenuOpen);
+                  setIsMenuOpen(!isMenuOpen);
+                }}
+                className="p-2 text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors relative"
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
               >
-                {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: isMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+                </motion.div>
               </button>
             </div>
           </nav>
         </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="lg:hidden fixed inset-0 bg-black/50 z-40"
-                onClick={() => setIsMenuOpen(false)}
-              />
-              
-              {/* Menu Panel */}
-              <motion.div
-                initial={{ opacity: 0, x: '100%' }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: '100%' }}
-                transition={{ type: 'tween', duration: 0.3 }}
-                className="lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-seltronik-dark shadow-2xl z-50 overflow-y-auto"
-              >
-                <div className="p-6">
-                  {/* Mobile Menu Header */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center space-x-3">
-                      <div className="relative w-10 h-10">
-                        <Image
-                          src="/images/seltroniklogo.svg"
-                          alt="Seltronik Logo"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <h2 className="text-xl font-bold text-seltronik-dark dark:text-white">
-                        Seltronik
-                      </h2>
-                    </div>
-                    <button
-                      onClick={() => setIsMenuOpen(false)}
-                      className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white rounded-lg"
-                    >
-                      <FaTimes size={20} />
-                    </button>
-                  </div>
-
-                  {/* Navigation Links */}
-                  <nav className="space-y-2 mb-8">
-                    {navigationItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={`block py-3 px-4 rounded-lg transition-colors duration-300 font-medium ${
-                          isActiveRoute(item.href)
-                            ? 'bg-seltronik-red/10 text-seltronik-red dark:bg-seltronik-yellow/10 dark:text-seltronik-yellow border-l-4 border-seltronik-red dark:border-seltronik-yellow'
-                            : 'text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </nav>
-
-                  {/* CTA Button */}
-                  <Link
-                    href="/kontak"
-                    className="block w-full text-center bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium mb-8"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Hubungi Kami
-                  </Link>
-
-                  {/* Contact Info */}
-                  <div className="border-t dark:border-gray-700 pt-6">
-                    <h3 className="text-lg font-semibold text-seltronik-dark dark:text-white mb-4">
-                      Kontak Cepat
-                    </h3>
-                    <div className="space-y-3 text-sm">
-                      <a
-                        href="tel:+622287241364"
-                        className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
-                      >
-                        <FaPhone className="flex-shrink-0" />
-                        <span>022-87241364</span>
-                      </a>
-                      <a
-                        href="mailto:sinyalektronik@outlook.com"
-                        className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
-                      >
-                        <FaEnvelope className="flex-shrink-0" />
-                        <span>sinyalektronik@outlook.com</span>
-                      </a>
-                      <a
-                        href="https://wa.me/628112345678"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-green-500 transition-colors"
-                      >
-                        <FaWhatsapp className="flex-shrink-0" />
-                        <span>+62 811-2345-678</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
       </header>
 
       {/* Main Content */}
@@ -376,6 +313,111 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <FaWhatsapp size={24} className="md:text-2xl" />
       </a>
+
+      {/* Mobile Menu - Rendered at root level */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <div
+              className="lg:hidden fixed inset-0 bg-black/50 z-[10000]"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            
+            {/* Menu Panel */}
+            <div
+              id="mobile-menu"
+              className="lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-seltronik-dark shadow-2xl z-[10001] overflow-y-auto"
+              role="navigation"
+              aria-label="Mobile menu"
+            >
+              <div className="p-6">
+                {/* Mobile Menu Header */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative w-10 h-10">
+                      <Image
+                        src="/images/seltroniklogo.svg"
+                        alt="Seltronik Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <h2 className="text-xl font-bold text-seltronik-dark dark:text-white">
+                      Seltronik
+                    </h2>
+                  </div>
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white rounded-lg"
+                  >
+                    <FaTimes size={20} />
+                  </button>
+                </div>
+
+                {/* Navigation Links */}
+                <nav className="space-y-2 mb-8">
+                  {navigationItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`block py-3 px-4 rounded-lg transition-colors duration-300 font-medium ${
+                        isActiveRoute(item.href)
+                          ? 'bg-seltronik-red/10 text-seltronik-red dark:bg-seltronik-yellow/10 dark:text-seltronik-yellow border-l-4 border-seltronik-red dark:border-seltronik-yellow'
+                          : 'text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+
+                {/* CTA Button */}
+                <Link
+                  href="/kontak"
+                  className="block w-full text-center bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium mb-8"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Hubungi Kami
+                </Link>
+
+                {/* Contact Info */}
+                <div className="border-t dark:border-gray-700 pt-6">
+                  <h3 className="text-lg font-semibold text-seltronik-dark dark:text-white mb-4">
+                    Kontak Cepat
+                  </h3>
+                  <div className="space-y-3 text-sm">
+                    <a
+                      href="tel:+622287241364"
+                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
+                    >
+                      <FaPhone className="flex-shrink-0" />
+                      <span>022-87241364</span>
+                    </a>
+                    <a
+                      href="mailto:sinyalektronik@outlook.com"
+                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
+                    >
+                      <FaEnvelope className="flex-shrink-0" />
+                      <span>sinyalektronik@outlook.com</span>
+                    </a>
+                    <a
+                      href="https://wa.me/628112345678"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-green-500 transition-colors"
+                    >
+                      <FaWhatsapp className="flex-shrink-0" />
+                      <span>+62 811-2345-678</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

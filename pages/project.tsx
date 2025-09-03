@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { projectService, Project } from '../lib/supabase';
+import useGSAPAnimations from '../hooks/useGSAP';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -17,6 +18,9 @@ const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+
+  // Apply GSAP animations
+  useGSAPAnimations();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -55,20 +59,14 @@ const ProjectsPage = () => {
       </Head>
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Proyek Kami</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Kepercayaan klien adalah kebanggaan kami. Lihat berbagai proyek infrastruktur yang telah kami selesaikan
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -76,46 +74,22 @@ const ProjectsPage = () => {
       <section className="py-8 md:py-12 -mt-6 md:-mt-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
-            >
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-red mb-2">500+</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Proyek Selesai</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
-            >
+            </div>
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-yellow mb-2">34</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Provinsi</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
-            >
+            </div>
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-green mb-2">100+</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Klien Puas</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center"
-            >
+            </div>
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 mb-2">2000+</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Km Jalan</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -158,12 +132,7 @@ const ProjectsPage = () => {
           {/* Mobile Filter Panel */}
           <AnimatePresence>
             {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden grid grid-cols-1 gap-2 mt-4"
-              >
+              <div className="gsap-fade-up md:hidden grid grid-cols-1 gap-2 mt-4">
                 {categories.map((category) => (
                   <button
                     key={category.id}
@@ -186,31 +155,20 @@ const ProjectsPage = () => {
                     </span>
                   </button>
                 ))}
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </div>
       </section>
 
       {/* Projects Grid */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedCategory}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8"
-            >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {filteredProjects.map((project, index) => (
-                <motion.div
+                <div
                   key={project.id}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                  className="gsap-card bg-white dark:bg-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:-translate-y-1"
                 >
                   {/* Project Image */}
                   <div className="h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
@@ -264,17 +222,12 @@ const ProjectsPage = () => {
                       <FaEye /> Lihat Detail
                     </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
-          </AnimatePresence>
+            </div>
 
           {filteredProjects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
+            <div className="gsap-fade-up text-center py-12">
               <p className="text-xl md:text-2xl text-gray-400">Tidak ada proyek yang ditemukan</p>
               <button
                 onClick={() => setSelectedCategory('all')}
@@ -282,29 +235,23 @@ const ProjectsPage = () => {
               >
                 Lihat Semua Proyek
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
 
       {/* Testimonials Section */}
       {testimonials.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
+        <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
           <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="text-center mb-8 md:mb-12"
-            >
+            <div className="gsap-fade-up text-center mb-8 md:mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
                 Apa Kata Klien Kami
               </h2>
               <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
                 Kepuasan klien adalah prioritas utama kami
               </p>
-            </motion.div>
+            </div>
 
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
@@ -356,17 +303,11 @@ const ProjectsPage = () => {
       {/* Project Detail Modal */}
       <AnimatePresence>
         {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          <div
+            className="gsap-scale fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedProject(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+            <div
               className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content"
               onClick={(e) => e.stopPropagation()}
             >
@@ -488,13 +429,13 @@ const ProjectsPage = () => {
                   </div>
                 )}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Siap Menjadi Bagian dari Kesuksesan Anda?
