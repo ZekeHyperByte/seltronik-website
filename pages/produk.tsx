@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Modal from '../components/Modal';
+import SearchInput from '../components/SearchInput';
+import OptimizedImage from '../components/OptimizedImage';
 import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
+import { useSearch } from '../hooks/useSearch';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import { imageSizes, imageQuality, generateBlurDataURL } from '../lib/imageOptimization';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaFilter, FaDownload, FaWhatsapp, FaEye, FaCheckCircle, FaBolt, FaSun, FaShieldAlt, FaWifi, FaTimes, FaTh, FaList } from 'react-icons/fa';
 import Link from 'next/link';
@@ -11,51 +16,66 @@ import useGSAPAnimations from '../hooks/useGSAP';
 
 const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Enhanced search with debouncing
+  const {
+    searchTerm,
+    searchResults,
+    suggestions,
+    isSearching,
+    setSearchTerm,
+    clearSearch,
+    hasSearch
+  } = useSearch({ 
+    items: products,
+    searchFields: ['name', 'description'],
+    debounceMs: 300,
+    maxSuggestions: 5
+  });
+
   // Apply GSAP animations
   useGSAPAnimations();
+
+  // Error handling
+  const { handleApiError, withErrorHandling } = useErrorHandler();
 
   // ESC key handling is now handled by the Modal component
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
+    const fetchProducts = withErrorHandling(
+      async () => {
         setIsLoading(true);
         setError(null);
         const data = await productService.getAll();
         setProducts(data || []);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-        setError('Gagal memuat data produk. Silakan coba lagi.');
-      } finally {
-        setIsLoading(false);
+      },
+      {
+        errorMessage: 'Gagal memuat data produk. Silakan coba lagi.',
       }
-    };
+    );
 
-    fetchProducts();
-  }, []);
+    fetchProducts().finally(() => setIsLoading(false));
+  }, [withErrorHandling]);
 
   const handleRetry = () => {
-    const fetchProducts = async () => {
-      try {
+    const fetchProducts = withErrorHandling(
+      async () => {
         setIsLoading(true);
         setError(null);
         const data = await productService.getAll();
         setProducts(data || []);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-        setError('Gagal memuat data produk. Silakan coba lagi.');
-      } finally {
-        setIsLoading(false);
+      },
+      {
+        errorMessage: 'Gagal memuat data produk. Silakan coba lagi.',
       }
-    };
-    fetchProducts();
+    );
+    
+    fetchProducts().finally(() => setIsLoading(false));
   };
 
   const categories = [
@@ -67,11 +87,9 @@ const ProductsPage = () => {
     { id: 'controller', name: 'Controller System', count: products.filter(p => p.category === 'controller').length }
   ];
 
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
+  // Apply category filter to search results
+  const filteredProducts = searchResults.filter(product => {
+    return selectedCategory === 'all' || product.category === selectedCategory;
   });
 
   return (
@@ -94,17 +112,17 @@ const ProductsPage = () => {
           <div className="flex flex-col gap-4">
             {/* Search Bar and View Toggle */}
             <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-              {/* Search Bar */}
-              <div className="relative flex-1">
-                <FaSearch className="absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm md:text-base" />
-                <input
-                  type="text"
-                  placeholder="Cari produk..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 md:pl-12 pr-4 py-2 md:py-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white text-sm md:text-base"
-                />
-              </div>
+              {/* Enhanced Search Bar */}
+              <SearchInput
+                value={searchTerm}
+                onChange={setSearchTerm}
+                onClear={clearSearch}
+                suggestions={suggestions}
+                isSearching={isSearching}
+                placeholder="Cari produk..."
+                className="flex-1"
+                showSuggestions={true}
+              />
 
               {/* View Mode Toggle - Hidden on mobile */}
               <div className="hidden sm:flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
@@ -213,14 +231,15 @@ const ProductsPage = () => {
                       </span>
                     </div>
                     {product.image && (
-                      <Image 
+                      <OptimizedImage 
                         src={product.image} 
                         alt={product.name} 
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105" 
-                        placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                        sizes={imageSizes.card}
+                        quality={imageQuality.card}
+                        className="transition-transform duration-300 group-hover:scale-105" 
+                        objectFit="cover"
+                        blurDataURL={generateBlurDataURL()}
                       />
                     )}
                   </div>
@@ -242,7 +261,7 @@ const ProductsPage = () => {
                       {/* Features */}
                       <div className="mb-4">
                         <div className="flex flex-wrap gap-1 md:gap-2">
-                          {product.features.slice(0, viewMode === 'grid' ? 2 : 4).map((feature, idx) => (
+                          {product.features.slice(0, viewMode === 'grid' ? 2 : 4).map((feature: string, idx: number) => (
                             <span
                               key={idx}
                               className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full"
@@ -260,7 +279,7 @@ const ProductsPage = () => {
                     {/* Actions */}
                     <div className={`flex gap-2 ${viewMode === 'list' ? 'md:flex-row' : 'flex-col sm:flex-row'}`}>
                       <button
-                        onClick={() => setSelectedProduct(product)}
+                        onClick={() => setSelectedProduct(product as Product)}
                         className="flex-1 bg-seltronik-red text-white px-3 md:px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
                       >
                         <FaEye /> Detail
@@ -288,7 +307,7 @@ const ProductsPage = () => {
               message="Produk yang Anda cari tidak ditemukan. Coba ubah filter atau kata kunci pencarian."
               onReset={() => {
                 setSelectedCategory('all');
-                setSearchTerm('');
+                clearSearch();
               }}
               resetLabel="Reset Filter"
               icon="🔍"
@@ -310,13 +329,16 @@ const ProductsPage = () => {
                 {/* Product Image */}
                 <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden relative group cursor-pointer">
                   {selectedProduct.image && (
-                    <Image 
+                    <OptimizedImage 
                       src={selectedProduct.image} 
                       alt={selectedProduct.name} 
                       fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover" 
+                      sizes={imageSizes.modal}
+                      quality={imageQuality.modal}
+                      className="" 
+                      objectFit="cover"
                       priority
+                      blurDataURL={generateBlurDataURL()}
                     />
                   )}
                   {/* Click anywhere on image to close modal */}
@@ -338,7 +360,7 @@ const ProductsPage = () => {
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-3">Fitur Unggulan</h3>
                     <div className="space-y-2">
-                      {selectedProduct.features.map((feature, idx) => (
+                      {selectedProduct.features.map((feature: string, idx: number) => (
                         <div key={idx} className="flex items-start gap-2">
                           <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
                           <span className="text-gray-700 dark:text-gray-300 text-sm md:text-base">{feature}</span>

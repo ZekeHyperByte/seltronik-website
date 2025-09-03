@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Modal from '../components/Modal';
+import OptimizedImage from '../components/OptimizedImage';
 import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
+import { imageSizes, imageQuality, generateBlurDataURL } from '../lib/imageOptimization';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, FaFileAlt, FaGlobeAsia, FaBuilding, FaCalendarAlt, FaQrcode, FaTimes, FaFilter } from 'react-icons/fa';
@@ -9,6 +11,8 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { certificateService, Certificate } from '../lib/supabase';
 import useGSAPAnimations from '../hooks/useGSAP';
+import { useSearch } from '../hooks/useSearch';
+import SearchInput from '../components/SearchInput';
 
 const CertificatesPage = () => {
   // Apply GSAP animations
@@ -20,6 +24,25 @@ const CertificatesPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Search functionality
+  const {
+    searchTerm,
+    debouncedSearchTerm,
+    searchResults,
+    suggestions,
+    isSearching,
+    setSearchTerm,
+    clearSearch,
+    highlightText,
+    hasResults,
+    hasSearch,
+  } = useSearch({
+    items: certificates,
+    searchFields: ['name', 'issuer', 'description'],
+    debounceMs: 300,
+    maxSuggestions: 5,
+  });
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -57,16 +80,17 @@ const CertificatesPage = () => {
   };
 
   const categories = [
-    { id: 'all', name: 'Semua Dokumen', count: certificates.length },
-    { id: 'business', name: 'Legalitas Usaha', count: certificates.filter(c => c.category === 'business').length },
-    { id: 'quality', name: 'Sertifikat Mutu', count: certificates.filter(c => c.category === 'quality').length },
-    { id: 'product', name: 'Sertifikat Produk', count: certificates.filter(c => c.category === 'product').length },
-    { id: 'award', name: 'Penghargaan', count: certificates.filter(c => c.category === 'award').length }
+    { id: 'all', name: 'Semua Dokumen', count: searchResults.length },
+    { id: 'business', name: 'Legalitas Usaha', count: searchResults.filter(c => c.category === 'business').length },
+    { id: 'quality', name: 'Sertifikat Mutu', count: searchResults.filter(c => c.category === 'quality').length },
+    { id: 'product', name: 'Sertifikat Produk', count: searchResults.filter(c => c.category === 'product').length },
+    { id: 'award', name: 'Penghargaan', count: searchResults.filter(c => c.category === 'award').length }
   ];
 
+  // Apply category filter to search results
   const filteredCertificates = selectedCategory === 'all' 
-    ? certificates 
-    : certificates.filter(cert => cert.category === selectedCategory);
+    ? searchResults 
+    : searchResults.filter(cert => cert.category === selectedCategory);
 
   const stats = [
     { label: 'Sertifikat Aktif', value: '15+', color: 'text-seltronik-green' },
@@ -111,9 +135,21 @@ const CertificatesPage = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
+      {/* Search & Filter Section */}
       <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-14 md:top-16 z-30">
         <div className="container mx-auto px-4">
+          {/* Search Bar */}
+          <div className="mb-6">
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+              onClear={clearSearch}
+              suggestions={suggestions}
+              isSearching={isSearching}
+              placeholder="Cari sertifikat, penerbit, atau kategori..."
+              className="max-w-2xl mx-auto"
+            />
+          </div>
           {/* Mobile Filter Button */}
           <div className="md:hidden mb-4">
             <button
@@ -202,11 +238,15 @@ const CertificatesPage = () => {
                   {/* Certificate Image */}
                   <div className="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
                     {cert.image_url ? (
-                      <Image 
+                      <OptimizedImage 
                         src={cert.image_url} 
                         alt={cert.name} 
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                        className="transition-transform duration-300 group-hover:scale-105" 
                         fill
+                        sizes={imageSizes.certificate}
+                        quality={imageQuality.card}
+                        objectFit="cover"
+                        blurDataURL={generateBlurDataURL()}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -238,7 +278,7 @@ const CertificatesPage = () => {
 
                     <div className="flex flex-col sm:flex-row gap-2">
                       <button
-                        onClick={() => setSelectedCertificate(cert)}
+                        onClick={() => setSelectedCertificate(cert as Certificate)}
                         className="flex-1 bg-seltronik-red text-white py-2 px-2 md:px-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-1 text-xs md:text-sm"
                       >
                         <FaEye className="flex-shrink-0" /> 
@@ -287,11 +327,16 @@ const CertificatesPage = () => {
                   <div>
                     <div className="h-64 sm:h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center overflow-hidden">
                       {selectedCertificate.image_url ? (
-                        <Image 
+                        <OptimizedImage 
                           src={selectedCertificate.image_url} 
                           alt={selectedCertificate.name} 
-                          className="w-full h-full object-contain" 
+                          className="" 
                           fill
+                          sizes={imageSizes.modal}
+                          quality={imageQuality.modal}
+                          objectFit="contain"
+                          priority
+                          blurDataURL={generateBlurDataURL()}
                         />
                       ) : (
                         <FaCertificate className="text-6xl md:text-8xl text-gray-400" />

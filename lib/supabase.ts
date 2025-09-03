@@ -222,6 +222,7 @@ export interface Certificate {
   expiry_date?: string;
   certificate_url: string;
   image_url: string;
+  description?: string;
   created_at?: string;
   updated_at?: string;
 }

@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from '../contexts/ThemeContext'
+import { ErrorProvider } from '../contexts/ErrorContext'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 // Smooth page transitions without white flash
 const pageVariants = {
@@ -83,21 +85,25 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <ThemeProvider>
-      {/* Prevent white flash with background */}
-      <div className="min-h-screen bg-gray-50 dark:bg-seltronik-dark">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={router.asPath}
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={pageTransition}
-          >
-            <Component {...pageProps} />
-          </motion.div>
-        </AnimatePresence>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ErrorProvider>
+          {/* Prevent white flash with background */}
+          <div className="min-h-screen bg-gray-50 dark:bg-seltronik-dark">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={router.asPath}
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
+                transition={pageTransition}
+              >
+                <ErrorBoundary>
+                  <Component {...pageProps} />
+                </ErrorBoundary>
+              </motion.div>
+            </AnimatePresence>
 
         {/* Improved Traffic Light Loading Overlay */}
         <AnimatePresence>
@@ -203,7 +209,9 @@ export default function App({ Component, pageProps }: AppProps) {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </ThemeProvider>
+          </div>
+        </ErrorProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }

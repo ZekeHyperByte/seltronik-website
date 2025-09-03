@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Modal from '../components/Modal';
+import SearchInput from '../components/SearchInput';
+import OptimizedImage from '../components/OptimizedImage';
 import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
+import { useSearch } from '../hooks/useSearch';
+import { imageSizes, imageQuality, generateBlurDataURL } from '../lib/imageOptimization';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaMapMarkerAlt, FaCalendarAlt, FaBuilding, FaRoad, FaCity, FaTools, FaTrafficLight, FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight, FaEye, FaTimes, FaFilter } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCalendarAlt, FaBuilding, FaRoad, FaCity, FaTools, FaTrafficLight, FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight, FaEye, FaTimes, FaFilter, FaSearch } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
@@ -22,6 +26,22 @@ const ProjectsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Enhanced search with debouncing
+  const {
+    searchTerm,
+    searchResults,
+    suggestions,
+    isSearching,
+    setSearchTerm,
+    clearSearch,
+    hasSearch
+  } = useSearch({ 
+    items: projects,
+    searchFields: ['title', 'description', 'client', 'location'],
+    debounceMs: 300,
+    maxSuggestions: 5
+  });
 
   // Apply GSAP animations
   useGSAPAnimations();
@@ -71,9 +91,10 @@ const ProjectsPage = () => {
     { id: 'government', name: 'Pemerintah', icon: FaBuilding, count: projects.filter(p => p.category === 'government').length }
   ];
 
+  // Apply category filter to search results
   const filteredProjects = selectedCategory === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+    ? searchResults 
+    : searchResults.filter(project => project.category === selectedCategory);
 
   const testimonials = projects
     .filter(p => p.testimonial)
@@ -122,9 +143,23 @@ const ProjectsPage = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
+      {/* Search and Category Filter */}
       <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-14 md:top-16 z-30">
         <div className="container mx-auto px-4">
+          {/* Search Bar */}
+          <div className="mb-6">
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+              onClear={clearSearch}
+              suggestions={suggestions}
+              isSearching={isSearching}
+              placeholder="Cari proyek berdasarkan nama, lokasi, atau klien..."
+              className="max-w-md mx-auto"
+              showSuggestions={true}
+            />
+          </div>
+
           {/* Mobile Filter Button */}
           <div className="md:hidden mb-4">
             <button
@@ -219,14 +254,15 @@ const ProjectsPage = () => {
                   {/* Project Image */}
                   <div className="h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
                     {project.images && project.images[0] && (
-                      <Image 
+                      <OptimizedImage 
                         src={project.images[0]} 
                         alt={project.title} 
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105" 
-                        placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                        sizes={imageSizes.card}
+                        quality={imageQuality.card}
+                        className="transition-transform duration-300 group-hover:scale-105" 
+                        objectFit="cover"
+                        blurDataURL={generateBlurDataURL()}
                       />
                     )}
                     <div className="absolute inset-0 bg-black/40"></div>
@@ -262,7 +298,7 @@ const ProjectsPage = () => {
                       {project.description}
                     </p>
                     <button
-                      onClick={() => setSelectedProject(project)}
+                      onClick={() => setSelectedProject(project as Project)}
                       className="w-full bg-seltronik-red text-white py-2 md:py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
                     >
                       <FaEye /> Lihat Detail
@@ -370,13 +406,16 @@ const ProjectsPage = () => {
                 {/* Image Gallery */}
                 <div className="h-48 sm:h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl mb-6 overflow-hidden relative group cursor-pointer">
                   {selectedProject.images && selectedProject.images[0] && (
-                    <Image 
+                    <OptimizedImage 
                       src={selectedProject.images[0]} 
                       alt={selectedProject.title} 
                       fill
-                      sizes="(max-width: 1024px) 100vw, 100vw"
-                      className="object-cover" 
+                      sizes={imageSizes.modal}
+                      quality={imageQuality.modal}
+                      className="" 
+                      objectFit="cover"
                       priority
+                      blurDataURL={generateBlurDataURL()}
                     />
                   )}
                   {/* Click anywhere on image to close modal */}
@@ -422,7 +461,7 @@ const ProjectsPage = () => {
                   <div>
                     <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-4">Lingkup Pekerjaan</h3>
                     <ul className="space-y-2">
-                      {selectedProject.scope.map((item, idx) => (
+                      {selectedProject.scope.map((item: string, idx: number) => (
                         <li key={idx} className="flex items-start gap-2">
                           <span className="text-seltronik-green mt-1 flex-shrink-0">✓</span>
                           <span className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item}</span>
