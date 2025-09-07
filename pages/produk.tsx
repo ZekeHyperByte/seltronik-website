@@ -325,84 +325,100 @@ const ProductsPage = () => {
         enableAnimation={true}
       >
         {selectedProduct && (
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-                {/* Product Image */}
-                <div className="h-64 md:h-80 lg:h-96 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden relative group cursor-pointer">
-                  {selectedProduct.image && (
-                    <OptimizedImage 
-                      src={selectedProduct.image} 
-                      alt={selectedProduct.name} 
-                      fill
-                      sizes={imageSizes.modal}
-                      quality={imageQuality.modal}
-                      className="" 
-                      objectFit="cover"
-                      priority
-                      blurDataURL={generateBlurDataURL()}
-                    />
-                  )}
-                  {/* Click anywhere on image to close modal */}
-                  <div 
-                    className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center"
-                    onClick={() => setSelectedProduct(null)}
-                  >
-                    <div className="bg-black/50 text-white px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm">
-                      Klik untuk menutup
-                    </div>
+          <div className="space-y-6">
+            {/* Top Section: Image + Features */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Product Image - Left */}
+              <div className="h-64 md:h-80 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl overflow-hidden relative group cursor-pointer">
+                {selectedProduct.image && (
+                  <OptimizedImage 
+                    src={selectedProduct.image} 
+                    alt={selectedProduct.name} 
+                    fill
+                    sizes={imageSizes.modal}
+                    quality={imageQuality.modal}
+                    className="" 
+                    objectFit="cover"
+                    priority
+                    blurDataURL={generateBlurDataURL()}
+                  />
+                )}
+                {/* Click anywhere on image to close modal */}
+                <div 
+                  className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center"
+                  onClick={() => setSelectedProduct(null)}
+                >
+                  <div className="bg-black/50 text-white px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm">
+                    Klik untuk menutup
                   </div>
                 </div>
+              </div>
 
-                {/* Product Details */}
-                <div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm md:text-base">{selectedProduct.description}</p>
+              {/* Features - Right */}
+              <div className="flex flex-col justify-between">
+                {/* Description */}
+                <div className="mb-4">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed">{selectedProduct.description}</p>
+                </div>
 
-                  {/* Features */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-3">Fitur Unggulan</h3>
-                    <div className="space-y-2">
-                      {selectedProduct.features.map((feature: string, idx: number) => (
-                        <div key={idx} className="flex items-start gap-2">
-                          <FaCheckCircle className="text-seltronik-green mt-1 flex-shrink-0" />
-                          <span className="text-gray-700 dark:text-gray-300 text-sm md:text-base">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Specifications */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-3">Spesifikasi Teknis</h3>
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                      <div className="grid grid-cols-1 gap-2">
-                        {Object.entries(selectedProduct.specifications).map(([key, value]) => (
-                          <div key={key} className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-600 last:border-0">
-                            <span className="text-gray-600 dark:text-gray-300 capitalize text-sm md:text-base">{key.replace('_', ' ')}</span>
-                            <span className="text-gray-800 dark:text-white font-medium text-sm md:text-base text-right">{value}</span>
-                          </div>
-                        ))}
+                {/* Features */}
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-4 flex items-center gap-2">
+                    <FaCheckCircle className="text-seltronik-green" />
+                    Fitur Unggulan
+                  </h3>
+                  <div className="space-y-3">
+                    {selectedProduct.features.map((feature: string, idx: number) => (
+                      <div key={idx} className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-l-4 border-seltronik-green">
+                        <FaCheckCircle className="text-seltronik-green mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700 dark:text-gray-300 text-sm md:text-base font-medium">{feature}</span>
                       </div>
-                    </div>
+                    ))}
                   </div>
+                </div>
+              </div>
+            </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a
-                      href={`https://wa.me/628112345678?text=Saya tertarik dengan produk ${selectedProduct.name}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-green-500 text-white px-4 md:px-6 py-3 rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
-                    >
-                      <FaWhatsapp /> Konsultasi via WhatsApp
-                    </a>
-                    {selectedProduct.catalog_url && (
-                      <a
-                        href={selectedProduct.catalog_url}
-                        className="flex-1 bg-seltronik-red text-white px-4 md:px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
-                      >
-                        <FaDownload /> Download Katalog
-                      </a>
-                    )}
-                  </div>
+            {/* Bottom Section: Specifications - Full Width */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h3 className="text-lg font-bold text-seltronik-dark dark:text-white mb-4 flex items-center gap-2">
+                <FaBolt className="text-seltronik-red" />
+                Spesifikasi Teknis
+              </h3>
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-600">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Object.entries(selectedProduct.specifications).map(([key, value]) => (
+                    <div key={key} className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-100 dark:border-gray-600">
+                      <dt className="text-gray-600 dark:text-gray-300 text-xs font-medium uppercase tracking-wide mb-1">
+                        {key.replace('_', ' ')}
+                      </dt>
+                      <dd className="text-gray-900 dark:text-white text-sm md:text-base font-semibold">
+                        {value}
+                      </dd>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <a
+                href={`https://wa.me/628112345678?text=Saya tertarik dengan produk ${selectedProduct.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-green-500 text-white px-4 md:px-6 py-3 rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <FaWhatsapp className="text-lg" /> Konsultasi via WhatsApp
+              </a>
+              {selectedProduct.catalog_url && (
+                <a
+                  href={selectedProduct.catalog_url}
+                  className="flex-1 bg-seltronik-red text-white px-4 md:px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <FaDownload className="text-lg" /> Download Katalog
+                </a>
+              )}
             </div>
           </div>
         )}

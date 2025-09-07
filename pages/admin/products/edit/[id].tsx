@@ -15,6 +15,7 @@ const EditProduct = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [catalogFile, setCatalogFile] = useState<File | null>(null);
+  const [specificationFields, setSpecificationFields] = useState<Array<{key: string, value: string}>>([]);
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -31,6 +32,16 @@ const EditProduct = () => {
         try {
           const data = await productService.getById(parseInt(id as string));
           setProduct(data);
+          // Convert specifications object to array for editing
+          const specFields = Object.entries(data.specifications || {}).map(([key, value]) => ({ 
+            key, 
+            value: String(value) 
+          }));
+          if (specFields.length === 0) {
+            setSpecificationFields([{ key: '', value: '' }]);
+          } else {
+            setSpecificationFields(specFields);
+          }
         } catch (error) {
           console.error('Error fetching product:', error);
         }
@@ -53,15 +64,48 @@ const EditProduct = () => {
     }
   };
 
-  const handleSpecificationChange = (field: string, value: string) => {
+  const handleSpecificationFieldChange = (index: number, field: 'key' | 'value', value: string) => {
+    const newFields = [...specificationFields];
+    newFields[index][field] = value;
+    setSpecificationFields(newFields);
+    
+    // Update product specifications
     if (product) {
-      setProduct({
-        ...product,
-        specifications: {
-          ...product.specifications,
-          [field]: value
+      const specifications: Record<string, string> = {};
+      newFields.forEach(spec => {
+        if (spec.key.trim() && spec.value.trim()) {
+          specifications[spec.key.trim()] = spec.value.trim();
         }
       });
+      setProduct({
+        ...product,
+        specifications
+      });
+    }
+  };
+
+  const addSpecificationField = () => {
+    setSpecificationFields([...specificationFields, { key: '', value: '' }]);
+  };
+
+  const removeSpecificationField = (index: number) => {
+    if (specificationFields.length > 1) {
+      const newFields = specificationFields.filter((_, i) => i !== index);
+      setSpecificationFields(newFields);
+      
+      // Update product specifications
+      if (product) {
+        const specifications: Record<string, string> = {};
+        newFields.forEach(spec => {
+          if (spec.key.trim() && spec.value.trim()) {
+            specifications[spec.key.trim()] = spec.value.trim();
+          }
+        });
+        setProduct({
+          ...product,
+          specifications
+        });
+      }
     }
   };
 
@@ -262,85 +306,52 @@ const EditProduct = () => {
 
               {/* Specifications */}
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Spesifikasi Teknis</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Daya
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.power}
-                      onChange={(e) => handleSpecificationChange('power', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: 30 Watt"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Tegangan
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.voltage}
-                      onChange={(e) => handleSpecificationChange('voltage', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: AC 220V"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Material
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.material}
-                      onChange={(e) => handleSpecificationChange('material', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: Aluminium Die Cast"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Dimensi
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.dimension}
-                      onChange={(e) => handleSpecificationChange('dimension', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: 300 x 300 x 120 mm"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Berat
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.weight}
-                      onChange={(e) => handleSpecificationChange('weight', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: 5 kg"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Sertifikasi
-                    </label>
-                    <input
-                      type="text"
-                      value={product.specifications.certification}
-                      onChange={(e) => handleSpecificationChange('certification', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
-                      placeholder="Contoh: SNI, CE"
-                    />
-                  </div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Spesifikasi Teknis</h2>
+                  <button
+                    type="button"
+                    onClick={addSpecificationField}
+                    className="flex items-center px-3 py-2 text-sm bg-seltronik-red text-white rounded-lg hover:bg-red-600"
+                  >
+                    <FaPlus className="mr-2" />
+                    Tambah Spesifikasi
+                  </button>
+                </div>
+                
+                <div className="space-y-3">
+                  {specificationFields.map((field, index) => (
+                    <div key={index} className="grid grid-cols-5 gap-3 items-center">
+                      <div className="col-span-2">
+                        <input
+                          type="text"
+                          value={field.key}
+                          onChange={(e) => handleSpecificationFieldChange(index, 'key', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                          placeholder="Nama spesifikasi (contoh: Daya)"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <input
+                          type="text"
+                          value={field.value}
+                          onChange={(e) => handleSpecificationFieldChange(index, 'value', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                          placeholder="Nilai spesifikasi (contoh: 30 Watt)"
+                        />
+                      </div>
+                      <div className="col-span-1 flex justify-center">
+                        {specificationFields.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeSpecificationField(index)}
+                            className="p-3 text-red-600 hover:text-red-800"
+                          >
+                            <FaTimes />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 

@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({
     <div {...overlayProps}>
       <div {...modalProps}>
         {/* Modal Header */}
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
           <div className="flex-1 pr-4">
             <h2 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">
               {title}
@@ -91,7 +91,7 @@ const Modal: React.FC<ModalProps> = ({
               {...modalProps}
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
+              <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 md:p-6 flex justify-between items-start">
                 <div className="flex-1 pr-4">
                   <h2 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-2">
                     {title}

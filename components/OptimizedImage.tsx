@@ -82,7 +82,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     alt,
     quality,
     priority,
-    loading,
+    ...(priority ? {} : { loading }), // Only include loading if priority is false
     sizes: defaultSizes,
     placeholder: placeholder as any,
     blurDataURL: defaultBlurDataURL,
