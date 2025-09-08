@@ -213,11 +213,12 @@ const ProductsPage = () => {
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  whileHover={{ scale: viewMode === 'grid' ? 1.02 : 1.01, y: -2 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   className={`gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group ${
                     viewMode === 'list' ? 'flex flex-col md:flex-row' : ''
                   }`}
+                  style={{ willChange: 'transform' }}
                 >
                   {/* Product Image */}
                   <div className={`bg-gray-200 dark:bg-gray-700 relative overflow-hidden ${

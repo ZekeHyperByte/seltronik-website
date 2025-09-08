@@ -45,16 +45,6 @@ const HomePage = () => {
       // Smooth scroll setup
       gsap.config({ nullTargetWarn: false });
 
-      // Hero section animations
-      gsap.set(".hero-floating", { y: 50, opacity: 0 });
-      gsap.to(".hero-floating", {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        stagger: 0.3,
-        ease: "power2.out",
-      });
-
       // Section reveal animations
       const sections = [".products-section", ".projects-section", ".stats-section", ".clients-section"];
       
@@ -77,33 +67,6 @@ const HomePage = () => {
             }
           }
         );
-      });
-
-      // Smooth floating animation for hero elements
-      gsap.to(".floating-1", {
-        y: -20,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-      });
-
-      gsap.to(".floating-2", {
-        y: -30,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 1
-      });
-
-      gsap.to(".floating-3", {
-        y: -25,
-        duration: 3.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 2
       });
 
       // Stats counter animation
@@ -189,91 +152,89 @@ const HomePage = () => {
 
   return (
     <Layout>
-      {/* Hero Section with Traffic Light Animation */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-seltronik-dark via-gray-900 to-black">
-        {/* Animated Background Pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-20"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        </div>
-
-        {/* GSAP Floating Elements - Responsive sizes */}
-        <div className="absolute top-10 md:top-20 left-4 md:left-10 w-16 h-16 md:w-20 md:h-20 bg-seltronik-red/20 rounded-full blur-xl floating-1 hero-floating"></div>
-        <div className="absolute top-20 md:top-40 right-8 md:right-20 w-20 h-20 md:w-32 md:h-32 bg-seltronik-yellow/20 rounded-full blur-xl floating-2 hero-floating"></div>
-        <div className="absolute bottom-10 md:bottom-20 left-1/6 md:left-1/4 w-16 h-16 md:w-24 md:h-24 bg-seltronik-green/20 rounded-full blur-xl floating-3 hero-floating"></div>
+      {/* Hero Section - Clean & Focused */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-seltronik-dark to-gray-900">
+        {/* Subtle Background */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-white text-center lg:text-left"
             >
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-heading mb-4 lg:mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight">
                 Membangun <span className="text-seltronik-red">Negeri</span> dengan{' '}
                 <span className="text-seltronik-yellow">Inovasi</span> Elektronik
               </h1>
-              <p className="text-base sm:text-lg md:text-xl mb-6 lg:mb-8 text-gray-300 max-w-2xl mx-auto lg:mx-0">
+              <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link href="/produk" className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl text-center">
-                  Lihat Produk Kami
-                </Link>
-                <Link href="/kontak" className="bg-white/10 backdrop-blur text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30 text-center">
-                  Konsultasi Gratis
-                </Link>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-8 lg:mt-12 text-center lg:text-left">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-seltronik-yellow">
-                    <CountUp end={23} duration={2} />+
-                  </h3>
-                  <p className="text-gray-400 text-sm md:text-base">Tahun Pengalaman</p>
-                </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-seltronik-green">
-                    <CountUp end={500} duration={2} />+
-                  </h3>
-                  <p className="text-gray-400 text-sm md:text-base">Proyek Selesai</p>
-                </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-seltronik-red">
-                    <CountUp end={100} duration={2} />+
-                  </h3>
-                  <p className="text-gray-400 text-sm md:text-base">Klien Puas</p>
-                </div>
-              </div>
+              <Link 
+                href="/produk" 
+                className="inline-block bg-seltronik-red text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg"
+              >
+                Jelajahi Produk Kami
+              </Link>
             </motion.div>
 
-            {/* Logo Animation - Responsive sizing */}
+            {/* Hero Visual */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-              className="relative flex justify-center mt-8 lg:mt-0"
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="relative flex justify-center"
             >
-              <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px]">
+              <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px]">
                 <HeroCarousel projects={projects} />
               </div>
             </motion.div>
           </div>
         </div>
+      </section>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+      {/* Stats Section - Moved from Hero */}
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-red mb-2">
+                <CountUp end={23} duration={2} />+
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">Tahun Pengalaman</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-yellow mb-2">
+                <CountUp end={500} duration={2} />+
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">Proyek Selesai</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-green mb-2">
+                <CountUp end={100} duration={2} />+
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">Klien Puas</p>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Features Section */}

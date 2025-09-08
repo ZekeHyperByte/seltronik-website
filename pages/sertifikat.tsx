@@ -231,9 +231,12 @@ const CertificatesPage = () => {
             <AnimatePresence mode="wait">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                 {filteredCertificates.map((cert, index) => (
-                <div
+                <motion.div
                   key={cert.id}
-                  className="gsap-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:-translate-y-1"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className="gsap-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                  style={{ willChange: 'transform' }}
                 >
                   {/* Certificate Image */}
                   <div className="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
@@ -295,7 +298,7 @@ const CertificatesPage = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
               </div>
             </AnimatePresence>

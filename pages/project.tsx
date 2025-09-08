@@ -247,9 +247,12 @@ const ProjectsPage = () => {
           {!isLoading && !error && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {filteredProjects.map((project, index) => (
-                <div
+                <motion.div
                   key={project.id}
-                  className="gsap-card bg-white dark:bg-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:-translate-y-1"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className="gsap-card bg-white dark:bg-gray-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                  style={{ willChange: 'transform' }}
                 >
                   {/* Project Image */}
                   <div className="h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
@@ -304,7 +307,7 @@ const ProjectsPage = () => {
                       <FaEye /> Lihat Detail
                     </button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

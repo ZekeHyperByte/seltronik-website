@@ -44,11 +44,11 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
     <div
       className="relative w-full h-full rounded-full overflow-hidden"
       style={{
-        maskImage: 'url(/images/seltroniklogo.svg)', // Fallback for Firefox
+        maskImage: 'url(/images/seltroniklogo.svg)',
         maskSize: 'contain',
         maskRepeat: 'no-repeat',
         maskPosition: 'center',
-        WebkitMaskImage: 'url(/images/seltroniklogo.svg)', // Webkit browsers (Chrome, Safari)
+        WebkitMaskImage: 'url(/images/seltroniklogo.svg)',
         WebkitMaskSize: 'contain',
         WebkitMaskRepeat: 'no-repeat',
         WebkitMaskPosition: 'center',
