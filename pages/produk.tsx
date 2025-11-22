@@ -426,7 +426,7 @@ const ProductsPage = () => {
       </Modal>
 
       {/* CTA Section */}
-      <section className="gsap-scale py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section className="gsap-scale py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-4">
             Butuh Konsultasi Produk?

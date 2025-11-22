@@ -168,7 +168,7 @@ const HomePage = () => {
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight">
                 Membangun <span className="text-seltronik-red">Negeri</span> dengan{' '}
-                <span className="text-seltronik-yellow">Inovasi</span> Elektronik
+                <span className="text-white">Inovasi</span> Elektronik
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
@@ -438,7 +438,7 @@ const HomePage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section ref={statsRef} className="stats-section py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section ref={statsRef} className="stats-section py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4 stats-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
             <div>

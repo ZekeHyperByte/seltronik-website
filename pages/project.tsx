@@ -514,7 +514,7 @@ const ProjectsPage = () => {
       </Modal>
 
       {/* CTA Section */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Siap Menjadi Bagian dari Kesuksesan Anda?

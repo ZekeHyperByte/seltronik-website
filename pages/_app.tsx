@@ -193,7 +193,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     animate={{ opacity: [0.8, 1, 0.8] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                   >
-                    Seltronik
+                    <span className="text-white">Seltronik</span>
                   </motion.p>
                   <motion.div 
                     className="flex items-center justify-center space-x-1 text-seltronik-yellow"

@@ -30,10 +30,10 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
         }}
       >
         {/* Placeholder background with company branding */}
-        <div className="w-full h-full bg-gradient-to-br from-seltronik-red via-seltronik-yellow to-seltronik-green flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-red flex items-center justify-center">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="text-white text-2xl md:text-4xl lg:text-6xl font-bold opacity-50">
-            SELTRONIK
+            <span className="text-white">SELTRONIK</span>
           </div>
         </div>
       </div>

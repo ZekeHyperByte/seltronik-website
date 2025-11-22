@@ -363,7 +363,7 @@ const AboutPage = () => {
       </section>
 
       {/* Statistics */}
-      <section ref={ref} className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-yellow to-seltronik-green">
+      <section ref={ref} className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
             <div className="gsap-scale">

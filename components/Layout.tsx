@@ -105,11 +105,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   src="/images/seltroniklogo.svg"
                   alt="Seltronik Logo"
                   fill
-                  className="object-contain"
+                  className="object-contain brightness-0 dark:brightness-0 dark:invert"
                 />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-lg md:text-2xl font-bold font-heading text-seltronik-dark dark:text-white leading-tight">
+                <h1 className="text-lg md:text-2xl font-bold font-heading text-black dark:text-white leading-tight">
                   Seltronik
                 </h1>
                 <p className="text-xs text-seltronik-gray dark:text-gray-400 leading-tight">
@@ -127,14 +127,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     href={item.href}
                     className={`relative py-2 text-sm xl:text-base font-medium transition-colors duration-300 ${
                       isActiveRoute(item.href)
-                        ? 'text-seltronik-red dark:text-seltronik-yellow'
-                        : 'text-seltronik-dark dark:text-white hover:text-seltronik-red dark:hover:text-seltronik-yellow'
+                        ? 'text-seltronik-red dark:text-white'
+                        : 'text-seltronik-dark dark:text-white hover:text-seltronik-red dark:hover:text-seltronik-red-hover'
                     }`}
                   >
                     {item.name}
                     {isActiveRoute(item.href) && (
                       <motion.div
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-seltronik-red dark:bg-seltronik-yellow rounded-full"
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-seltronik-red rounded-full"
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -208,10 +208,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     src="/images/seltroniklogo.svg"
                     alt="Seltronik Logo"
                     fill
-                    className="object-contain"
+                    className="object-contain brightness-0 invert"
                   />
                 </div>
-                <h3 className="text-xl font-bold font-heading">Seltronik</h3>
+                <h3 className="text-xl font-bold font-heading text-white">Seltronik</h3>
               </div>
               <p className="text-gray-400 mb-4 text-sm md:text-base leading-relaxed">
                 PT. Sinyal Elektro Mekanik - Produsen perlengkapan dan rambu-rambu jalan terpercaya di Indonesia.
@@ -340,10 +340,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         src="/images/seltroniklogo.svg"
                         alt="Seltronik Logo"
                         fill
-                        className="object-contain"
+                        className="object-contain dark:brightness-0 dark:invert"
                       />
                     </div>
-                    <h2 className="text-xl font-bold text-seltronik-dark dark:text-white">
+                    <h2 className="text-xl font-bold text-black dark:text-white">
                       Seltronik
                     </h2>
                   </div>
@@ -363,7 +363,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       href={item.href}
                       className={`block py-3 px-4 rounded-lg transition-colors duration-300 font-medium ${
                         isActiveRoute(item.href)
-                          ? 'bg-seltronik-red/10 text-seltronik-red dark:bg-seltronik-yellow/10 dark:text-seltronik-yellow border-l-4 border-seltronik-red dark:border-seltronik-yellow'
+                          ? 'bg-seltronik-red/10 text-seltronik-red dark:bg-seltronik-red/20 dark:text-white border-l-4 border-seltronik-red'
                           : 'text-seltronik-dark dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                       onClick={() => setIsMenuOpen(false)}
@@ -390,14 +390,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <div className="space-y-3 text-sm">
                     <a
                       href="tel:+622287241364"
-                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
+                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-red-hover transition-colors"
                     >
                       <FaPhone className="flex-shrink-0" />
                       <span>022-87241364</span>
                     </a>
                     <a
                       href="mailto:sinyalektronik@outlook.com"
-                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-yellow transition-colors"
+                      className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-seltronik-red dark:hover:text-seltronik-red-hover transition-colors"
                     >
                       <FaEnvelope className="flex-shrink-0" />
                       <span>sinyalektronik@outlook.com</span>
