@@ -254,7 +254,7 @@ const AdminDashboard = () => {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Produk</h2>
                 <Link
                   href="/admin/products/add"
-                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center"
+                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 flex items-center"
                 >
                   <FaPlus className="mr-2" />
                   Tambah Produk
@@ -331,7 +331,7 @@ const AdminDashboard = () => {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Proyek</h2>
                 <Link
                   href="/admin/projects/add"
-                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center"
+                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 flex items-center"
                 >
                   <FaPlus className="mr-2" />
                   Tambah Proyek
@@ -406,7 +406,7 @@ const AdminDashboard = () => {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Sertifikat</h2>
                 <Link
                   href="/admin/certificates/add"
-                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center"
+                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 flex items-center"
                 >
                   <FaPlus className="mr-2" />
                   Tambah Sertifikat

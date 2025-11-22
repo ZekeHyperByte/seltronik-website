@@ -410,7 +410,7 @@ const AboutPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/produk"
-              className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Lihat Produk Kami
             </Link>

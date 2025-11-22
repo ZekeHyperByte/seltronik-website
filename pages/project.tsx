@@ -302,7 +302,7 @@ const ProjectsPage = () => {
                     </p>
                     <button
                       onClick={() => setSelectedProject(project as Project)}
-                      className="w-full bg-seltronik-red text-white py-2 md:py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
+                      className="w-full bg-seltronik-red text-white py-2 md:py-3 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
                     >
                       <FaEye /> Lihat Detail
                     </button>

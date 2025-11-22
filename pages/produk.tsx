@@ -281,7 +281,7 @@ const ProductsPage = () => {
                     <div className={`flex gap-2 ${viewMode === 'list' ? 'md:flex-row' : 'flex-col sm:flex-row'}`}>
                       <button
                         onClick={() => setSelectedProduct(product as Product)}
-                        className="flex-1 bg-seltronik-red text-white px-3 md:px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
+                        className="flex-1 bg-seltronik-red text-white px-3 md:px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
                       >
                         <FaEye /> Detail
                       </button>
@@ -415,7 +415,7 @@ const ProductsPage = () => {
               {selectedProduct.catalog_url && (
                 <a
                   href={selectedProduct.catalog_url}
-                  className="flex-1 bg-seltronik-red text-white px-4 md:px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="flex-1 bg-seltronik-red text-white px-4 md:px-6 py-3 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   <FaDownload className="text-lg" /> Download Katalog
                 </a>

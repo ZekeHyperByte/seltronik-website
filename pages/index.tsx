@@ -175,7 +175,7 @@ const HomePage = () => {
               </p>
               <Link 
                 href="/produk" 
-                className="inline-block bg-seltronik-red text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg"
+                className="inline-block bg-seltronik-red text-white px-8 py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl text-lg"
               >
                 Jelajahi Produk Kami
               </Link>
@@ -339,7 +339,7 @@ const HomePage = () => {
                   </p>
                   <Link
                     href="/produk"
-                    className="inline-flex items-center text-seltronik-red font-semibold hover:text-red-600 transition-colors duration-300 text-sm"
+                    className="inline-flex items-center text-seltronik-red font-semibold hover:text-seltronik-red-hover transition-colors duration-300 text-sm"
                   >
                     Lihat Detail <FaArrowRight className="ml-2" />
                   </Link>
@@ -351,7 +351,7 @@ const HomePage = () => {
           <div className="text-center mt-8 lg:mt-12">
             <Link
               href="/produk"
-              className="inline-block bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="inline-block bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Lihat Semua Produk
             </Link>
@@ -531,7 +531,7 @@ const HomePage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/kontak"
-                className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
                 Hubungi Kami Sekarang
               </Link>

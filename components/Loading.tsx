@@ -112,7 +112,7 @@ export const ErrorState: React.FC<{
       {onRetry && (
         <button
           onClick={onRetry}
-          className="bg-seltronik-red text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
+          className="bg-seltronik-red text-white px-6 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors"
         >
           Coba Lagi
         </button>

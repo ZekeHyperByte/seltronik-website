@@ -146,7 +146,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
               <Link
                 href="/kontak"
-                className="bg-seltronik-red text-white px-4 xl:px-6 py-2 xl:py-3 rounded-full hover:bg-red-600 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm xl:text-base"
+                className="bg-seltronik-red text-white px-4 xl:px-6 py-2 xl:py-3 rounded-full hover:bg-seltronik-red-hover transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm xl:text-base"
               >
                 Hubungi Kami
               </Link>
@@ -295,7 +295,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={scrollToTop}
-            className="fixed bottom-4 md:bottom-8 right-4 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-seltronik-red text-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors duration-300 z-40"
+            className="fixed bottom-4 md:bottom-8 right-4 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-seltronik-red text-white rounded-full flex items-center justify-center shadow-lg hover:bg-seltronik-red-hover transition-colors duration-300 z-40"
             aria-label="Scroll to top"
           >
             <FaChevronUp />
@@ -376,7 +376,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {/* CTA Button */}
                 <Link
                   href="/kontak"
-                  className="block w-full text-center bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium mb-8"
+                  className="block w-full text-center bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 font-medium mb-8"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Hubungi Kami

@@ -230,7 +230,7 @@ const ContactPage = () => {
                   className={`w-full py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     isSubmitting
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-seltronik-red text-white hover:bg-red-600 transform hover:scale-105'
+                      : 'bg-seltronik-red text-white hover:bg-seltronik-red-hover transform hover:scale-105'
                   }`}
                 >
                   {isSubmitting ? (
@@ -334,7 +334,7 @@ const ContactPage = () => {
       </section>
 
       {/* Quick Contact CTA */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-seltronik-red-hover">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-2xl sm:text-3xl font-bold font-heading mb-4">
             Butuh Respon Cepat?

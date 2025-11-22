@@ -122,16 +122,16 @@ export default function App({ Component, pageProps }: AppProps) {
                   <div className="flex flex-col space-y-3">
                     {/* Red Light */}
                     <motion.div
-                      className="w-8 h-8 rounded-full bg-seltronik-red border-2 border-red-800 shadow-lg"
+                      className="w-8 h-8 rounded-full bg-seltronik-red border-2 border-seltronik-red shadow-lg"
                       animate={{
                         opacity: [1, 1, 0.2, 0.2, 0.2],
                         scale: [1, 1, 0.95, 0.95, 0.95],
                         boxShadow: [
-                          '0 0 20px rgba(220, 38, 38, 0.8)',
-                          '0 0 20px rgba(220, 38, 38, 0.8)',
-                          '0 0 0 rgba(220, 38, 38, 0)',
-                          '0 0 0 rgba(220, 38, 38, 0)',
-                          '0 0 0 rgba(220, 38, 38, 0)'
+                          '0 0 20px rgba(111, 21, 32, 0.8)',
+                          '0 0 20px rgba(111, 21, 32, 0.8)',
+                          '0 0 0 rgba(111, 21, 32, 0)',
+                          '0 0 0 rgba(111, 21, 32, 0)',
+                          '0 0 0 rgba(111, 21, 32, 0)'
                         ]
                       }}
                       transition={{

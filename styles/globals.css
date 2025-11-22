@@ -33,12 +33,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ef4444;
+  background: #6f1520;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #dc2626;
+  background: #8a1a28;
 }
 
 /* Dark mode scrollbar */
@@ -70,12 +70,12 @@ body {
 
 /* Swiper Custom Styles */
 .swiper-pagination-bullet-active {
-  background: #ef4444 !important;
+  background: #6f1520 !important;
 }
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #ef4444 !important;
+  color: #6f1520 !important;
   width: 35px !important;
   height: 35px !important;
 }
@@ -142,7 +142,7 @@ img {
 
 /* Focus styles for accessibility */
 .focus-visible {
-  outline: 2px solid #ef4444;
+  outline: 2px solid #6f1520;
   outline-offset: 2px;
 }
 
@@ -345,9 +345,9 @@ img {
 /* Traffic Light Page Transition Styles */
 .traffic-light-glow-red {
   box-shadow: 
-    0 0 20px rgba(220, 38, 38, 0.8),
-    0 0 40px rgba(220, 38, 38, 0.6),
-    0 0 60px rgba(220, 38, 38, 0.4);
+    0 0 20px rgba(111, 21, 32, 0.8),
+    0 0 40px rgba(111, 21, 32, 0.6),
+    0 0 60px rgba(111, 21, 32, 0.4);
 }
 
 .traffic-light-glow-yellow {

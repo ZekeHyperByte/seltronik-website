@@ -221,7 +221,7 @@ const AddCertificate = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="flex items-center px-6 py-3 bg-seltronik-red text-white rounded-lg hover:bg-red-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center px-6 py-3 bg-seltronik-red text-white rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaSave className="mr-2" />
                   {isLoading ? 'Menyimpan...' : 'Simpan Sertifikat'}

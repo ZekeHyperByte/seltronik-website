@@ -282,7 +282,7 @@ const CertificatesPage = () => {
                     <div className="flex flex-col sm:flex-row gap-2">
                       <button
                         onClick={() => setSelectedCertificate(cert as Certificate)}
-                        className="flex-1 bg-seltronik-red text-white py-2 px-2 md:px-3 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-1 text-xs md:text-sm"
+                        className="flex-1 bg-seltronik-red text-white py-2 px-2 md:px-3 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-1 text-xs md:text-sm"
                       >
                         <FaEye className="flex-shrink-0" /> 
                         <span className="hidden sm:inline">Lihat</span>
@@ -379,7 +379,7 @@ const CertificatesPage = () => {
                         {selectedCertificate.certificate_url && (
                           <a
                             href={selectedCertificate.certificate_url}
-                            className="w-full bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center gap-2"
+                            className="w-full bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-2"
                           >
                             <FaDownload /> Download PDF
                           </a>
@@ -438,7 +438,7 @@ const CertificatesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-red-600">
+      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-seltronik-red-hover">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
             Butuh Dokumen Lengkap?

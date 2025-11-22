@@ -14,7 +14,8 @@ module.exports = {
         '4xl': '1920px',
       },
       colors: {
-        'seltronik-red': '#EF4444',
+        'seltronik-red': '#6f1520',
+        'seltronik-red-hover': '#8a1a28',
         'seltronik-yellow': '#FBC02D',
         'seltronik-green': '#4CAF50',
         'seltronik-dark': '#1F2937',
@@ -90,7 +91,7 @@ module.exports = {
       },
       keyframes: {
         trafficRed: {
-          '0%, 33%': { filter: 'drop-shadow(0 0 10px #EF4444)' },
+          '0%, 33%': { filter: 'drop-shadow(0 0 10px #6f1520)' },
           '34%, 100%': { filter: 'none' },
         },
         trafficYellow: {
