@@ -152,18 +152,23 @@ const SearchInput: React.FC<SearchInputProps> = ({
           {/* Animated Placeholder */}
           {!value && animatedPlaceholders.length > 0 && !isFocused && (
             <div className="absolute left-10 md:left-12 top-1/2 transform -translate-y-1/2 pointer-events-none overflow-hidden h-5 md:h-6 w-[calc(100%-3rem)] md:w-[calc(100%-4rem)]">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentPlaceholderIndex}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-gray-400 text-sm md:text-base whitespace-nowrap block"
-                >
-                  Search for &quot;{animatedPlaceholders[currentPlaceholderIndex]}&quot;
-                </motion.span>
-              </AnimatePresence>
+              <span className="text-gray-400 text-sm md:text-base whitespace-nowrap">
+                Search for{' '}
+                <span className="inline-block overflow-hidden relative h-5 md:h-6 align-top">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentPlaceholderIndex}
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -20, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="inline-block"
+                    >
+                      &quot;{animatedPlaceholders[currentPlaceholderIndex]}&quot;
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </span>
             </div>
           )}
         </div>
