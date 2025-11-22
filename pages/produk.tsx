@@ -92,6 +92,15 @@ const ProductsPage = () => {
     return selectedCategory === 'all' || product.category === selectedCategory;
   });
 
+  // Define special products for animated placeholder
+  const specialProducts = [
+    'Lampu Jalan LED',
+    'Traffic Light Controller',
+    'Warning Light Solar',
+    'Lampu Penyebrangan',
+    'Smart Traffic System'
+  ];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -122,6 +131,7 @@ const ProductsPage = () => {
                 placeholder="Cari produk..."
                 className="flex-1"
                 showSuggestions={true}
+                animatedPlaceholders={specialProducts}
               />
 
               {/* View Mode Toggle - Hidden on mobile */}
