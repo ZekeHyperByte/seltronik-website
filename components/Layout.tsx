@@ -105,7 +105,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   src="/images/seltroniklogo.svg"
                   alt="Seltronik Logo"
                   fill
-                  className="object-contain brightness-0 dark:brightness-0 dark:invert"
+                  className="object-contain"
                 />
               </div>
               <div className="hidden sm:block">
@@ -208,7 +208,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     src="/images/seltroniklogo.svg"
                     alt="Seltronik Logo"
                     fill
-                    className="object-contain brightness-0 invert"
+                    className="object-contain"
                   />
                 </div>
                 <h3 className="text-xl font-bold font-heading text-white">Seltronik</h3>
@@ -340,7 +340,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         src="/images/seltroniklogo.svg"
                         alt="Seltronik Logo"
                         fill
-                        className="object-contain dark:brightness-0 dark:invert"
+                        className="object-contain"
                       />
                     </div>
                     <h2 className="text-xl font-bold text-black dark:text-white">

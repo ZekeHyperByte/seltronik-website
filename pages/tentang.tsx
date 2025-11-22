@@ -151,13 +151,13 @@ const AboutPage = () => {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-red mb-1">
+                  <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-1">
                     <CountUp end={23} duration={2} />+
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Tahun Pengalaman</p>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-yellow mb-1">
+                  <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-1">
                     <CountUp end={50} duration={2} />+
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">Tim Profesional</p>
@@ -275,7 +275,7 @@ const AboutPage = () => {
                 <div className="lg:hidden">
                   <div className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-4 md:p-6 ml-8 relative">
                     <div className="absolute -left-4 top-6 w-6 h-6 bg-seltronik-red rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>
-                    <h3 className="text-xl md:text-2xl font-bold text-seltronik-red mb-2">{item.year}</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-2">{item.year}</h3>
                     <h4 className="text-lg md:text-xl font-semibold text-seltronik-dark dark:text-white mb-2">{item.title}</h4>
                     <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item.description}</p>
                   </div>
@@ -289,7 +289,7 @@ const AboutPage = () => {
                     <div className={`bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 ${
                       index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'
                     }`}>
-                      <h3 className="text-2xl font-bold text-seltronik-red mb-2">{item.year}</h3>
+                      <h3 className="text-2xl font-bold text-black dark:text-white mb-2">{item.year}</h3>
                       <h4 className="text-xl font-semibold text-seltronik-dark dark:text-white mb-2">{item.title}</h4>
                       <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
                     </div>

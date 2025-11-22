@@ -124,15 +124,15 @@ const ProjectsPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-red mb-2">500+</h3>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">500+</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Proyek Selesai</p>
             </div>
             <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-yellow mb-2">34</h3>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">34</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Provinsi</p>
             </div>
             <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-seltronik-green mb-2">100+</h3>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">100+</h3>
               <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm md:text-base">Klien Puas</p>
             </div>
             <div className="gsap-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 text-center">

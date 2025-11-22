@@ -167,7 +167,7 @@ const HomePage = () => {
               className="text-white text-center lg:text-left"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight">
-                Membangun <span className="text-seltronik-red">Negeri</span> dengan{' '}
+                Membangun <span className="italic font-light">Negeri</span> dengan{' '}
                 <span className="text-white">Inovasi</span> Elektronik
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
@@ -206,7 +206,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-red mb-2">
+              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={23} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Tahun Pengalaman</p>
@@ -217,7 +217,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-yellow mb-2">
+              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={500} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Proyek Selesai</p>
@@ -228,7 +228,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-seltronik-green mb-2">
+              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={100} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Klien Puas</p>
