@@ -153,16 +153,20 @@ const HomePage = () => {
   return (
     <Layout>
       {/* Hero Section - Clean & Focused */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-seltronik-dark to-gray-900">
-        {/* Subtle Background */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-seltronik-red">
+        {/* Subtle Seltronik Background Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <h1 className="text-[200px] md:text-[300px] lg:text-[400px] font-bold font-heading text-white/5 blur-sm select-none">
+            SELTRONIK
+          </h1>
+        </div>
 
-        {/* Decorative Polygon Extension from Stats Section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 md:h-48 lg:h-64 pointer-events-none">
+        {/* Thick White Horizontal Band with Angular Notch */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 lg:h-40 pointer-events-none">
           <div 
-            className="w-full h-full bg-white/15 dark:bg-white/15"
+            className="w-full h-full bg-white"
             style={{
-              clipPath: 'polygon(0% 100%, 15% 60%, 30% 80%, 45% 40%, 60% 70%, 75% 30%, 90% 50%, 100% 20%, 100% 100%)'
+              clipPath: 'polygon(0% 100%, 0% 60%, 15% 60%, 15% 40%, 25% 40%, 25% 70%, 100% 70%, 100% 100%)'
             }}
           />
         </div>
