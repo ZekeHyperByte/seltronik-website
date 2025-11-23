@@ -171,13 +171,13 @@ const HomePage = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-white text-center lg:text-left"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-8 md:mb-10 lg:mb-12 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6 md:mb-7 leading-tight">
                 Membangun <span className="italic font-light">Negeri</span> dengan{' '}
                 <span className="text-white">Inovasi</span> Elektronik
               </h1>
-              <Link 
-                href="/produk" 
-                className="inline-block bg-white text-seltronik-red px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg mb-8 md:mb-10 lg:mb-12"
+              <Link
+                href="/produk"
+                className="inline-block bg-white text-seltronik-red px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg mb-5 md:mb-6"
               >
                 Jelajahi Produk Kami
               </Link>
