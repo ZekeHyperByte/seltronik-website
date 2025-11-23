@@ -161,15 +161,6 @@ const HomePage = () => {
           </h1>
         </div>
 
-        {/* Thick White Horizontal Band with Angular Notch */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 lg:h-40 pointer-events-none">
-          <div 
-            className="w-full h-full bg-white"
-            style={{
-              clipPath: 'polygon(0% 100%, 0% 60%, 15% 60%, 15% 40%, 25% 40%, 25% 70%, 100% 70%, 100% 100%)'
-            }}
-          />
-        </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -211,18 +202,18 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section - Moved from Hero */}
-      <section className="relative py-12 md:py-16 bg-white dark:bg-gray-800 -mt-32 md:-mt-48 lg:-mt-64">
-        {/* Decorative Polygon Extension - Top Part */}
-        <div className="absolute top-0 left-0 right-0 h-32 md:h-48 lg:h-64 pointer-events-none">
+      <section className="relative py-12 md:py-16 bg-white dark:bg-gray-800 -mt-16 md:-mt-20 lg:-mt-24">
+        {/* Right Trapezoid Shape Extending to Hero */}
+        <div className="absolute top-0 left-0 right-0 h-16 md:h-20 lg:h-24 pointer-events-none">
           <div 
             className="w-full h-full bg-white dark:bg-gray-800"
             style={{
-              clipPath: 'polygon(0% 100%, 15% 60%, 30% 80%, 45% 40%, 60% 70%, 75% 30%, 90% 50%, 100% 20%, 100% 100%)'
+              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 60%)'
             }}
           />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 pt-32 md:pt-48 lg:pt-64">
+        <div className="container mx-auto px-4 relative z-10 pt-16 md:pt-20 lg:pt-24">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
