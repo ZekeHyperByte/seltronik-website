@@ -1,34 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Project } from '../lib/supabase';
 
 interface HeroCarouselProps {
   projects: Project[];
+  isSwapped: boolean;
+  onHoverStart: () => void;
 }
 
-const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
-  const [isSwapped, setIsSwapped] = useState(false);
-  const [isCycleActive, setIsCycleActive] = useState(false);
-  const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects, isSwapped, onHoverStart }) => {
   const logoVideoRef = useRef<HTMLVideoElement>(null);
-
-  // Handle hover to start the cycle
-  const handleHoverStart = () => {
-    if (!isCycleActive) {
-      setIsCycleActive(true);
-      setIsSwapped(true);
-      // Start background video from beginning
-      if (backgroundVideoRef.current) {
-        backgroundVideoRef.current.currentTime = 0;
-        backgroundVideoRef.current.play();
-      }
-    }
-  };
-
-  // Handle video end to swap back
-  const handleVideoEnd = () => {
-    setIsSwapped(false);
-    setIsCycleActive(false);
-  };
 
   // Show the proper masked container even when no projects
   if (!projects || projects.length === 0) {
@@ -58,36 +38,15 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
   }
 
   return (
-    <div
-      className="relative w-full h-full cursor-pointer"
-      onMouseEnter={handleHoverStart}
-    >
-      {/* Background Layer - Initially solid, becomes video on swap */}
-      <div className="absolute inset-0 transition-opacity duration-700">
-        {/* Solid background */}
-        <div
-          className={`absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-red transition-opacity duration-700 ${
-            isSwapped ? 'opacity-0' : 'opacity-100'
-          }`}
-        />
-
-        {/* Video background (shown when swapped) */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            isSwapped ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <video
-            ref={backgroundVideoRef}
-            className="w-full h-full object-cover"
-            muted
-            playsInline
-            onEnded={handleVideoEnd}
-          >
-            <source src="/videos/hero-video.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </div>
+    <div className="relative w-full h-full">
+      {/* Transparent hover container - larger than the logo for easier triggering */}
+      <div
+        className="absolute inset-0 cursor-pointer z-20"
+        onMouseEnter={onHoverStart}
+        style={{
+          transform: 'scale(1.2)', // Make it 20% larger than the logo
+        }}
+      />
 
       {/* Logo-Masked Layer - Initially video, becomes solid on swap */}
       <div

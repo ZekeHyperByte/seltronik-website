@@ -31,13 +31,16 @@ const HomePage = () => {
   const [statsInView, setStatsInView] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  
+  const [isSwapped, setIsSwapped] = useState(false);
+  const [isCycleActive, setIsCycleActive] = useState(false);
+
   // Refs for GSAP animations
   const heroRef = useRef<HTMLElement>(null);
   const productsRef = useRef<HTMLElement>(null);
   const projectsRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLElement>(null);
   const clientsRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   // GSAP Smooth Scroll Animations
   useEffect(() => {
@@ -114,6 +117,25 @@ const HomePage = () => {
     fetchData();
   }, []);
 
+  // Handle hover to start the cycle
+  const handleHoverStart = () => {
+    if (!isCycleActive) {
+      setIsCycleActive(true);
+      setIsSwapped(true);
+      // Start background video from beginning
+      if (heroVideoRef.current) {
+        heroVideoRef.current.currentTime = 0;
+        heroVideoRef.current.play();
+      }
+    }
+  };
+
+  // Handle video end to swap back
+  const handleVideoEnd = () => {
+    setIsSwapped(false);
+    setIsCycleActive(false);
+  };
+
   const features = [
     {
       icon: <FaShieldAlt />,
@@ -153,16 +175,44 @@ const HomePage = () => {
   return (
     <Layout>
       {/* Hero Section - Clean & Focused */}
-      <section ref={heroRef} className="relative min-h-screen overflow-hidden" style={{ backgroundColor: '#6f1520' }}>
+      <section ref={heroRef} className="relative min-h-screen overflow-hidden">
+        {/* Background Layer - Initially solid, becomes video on swap */}
+        <div className="absolute inset-0">
+          {/* Solid background */}
+          <div
+            className={`absolute inset-0 transition-opacity duration-700 ${
+              isSwapped ? 'opacity-0' : 'opacity-100'
+            }`}
+            style={{ backgroundColor: '#6f1520' }}
+          />
+
+          {/* Video background (shown when swapped) */}
+          <div
+            className={`absolute inset-0 transition-opacity duration-700 ${
+              isSwapped ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <video
+              ref={heroVideoRef}
+              className="w-full h-full object-cover"
+              muted
+              playsInline
+              onEnded={handleVideoEnd}
+            >
+              <source src="/videos/hero-video.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
         {/* Subtle Seltronik Background Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <h1 className="text-[200px] md:text-[300px] lg:text-[400px] font-bold font-heading text-white/5 blur-sm select-none">
             SELTRONIK
           </h1>
         </div>
 
 
-        <div className="container mx-auto px-4 relative z-10 pt-32 md:pt-40 lg:pt-48">
+        <div className="container mx-auto px-4 relative z-20 pt-32 md:pt-40 lg:pt-48">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <motion.div
@@ -194,7 +244,11 @@ const HomePage = () => {
               className="relative flex justify-center"
             >
               <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px]">
-                <HeroCarousel projects={projects} />
+                <HeroCarousel
+                  projects={projects}
+                  isSwapped={isSwapped}
+                  onHoverStart={handleHoverStart}
+                />
               </div>
             </motion.div>
           </div>
