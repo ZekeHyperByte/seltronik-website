@@ -212,8 +212,8 @@ const HomePage = () => {
 
       {/* Stats Section - Moved from Hero */}
       <section className="relative py-12 md:py-16 bg-white dark:bg-gray-800 -mt-16 md:-mt-20 lg:-mt-24">
-        {/* Right Trapezoid Shape Extending to Hero */}
-        <div className="absolute top-0 left-0 right-0 h-16 md:h-20 lg:h-24 pointer-events-none">
+        {/* Right Trapezoid Shape Extending to Hero - Attached to Stats Rectangle */}
+        <div className="absolute -top-16 md:-top-20 lg:-top-24 left-0 right-0 h-16 md:h-20 lg:h-24 pointer-events-none">
           <div 
             className="w-full h-full bg-white dark:bg-gray-800"
             style={{
