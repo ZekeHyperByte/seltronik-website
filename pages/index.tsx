@@ -162,7 +162,7 @@ const HomePage = () => {
         </div>
 
 
-        <div className="container mx-auto px-4 relative z-10 pt-24 md:pt-32 lg:pt-40">
+        <div className="container mx-auto px-4 relative z-10 pt-32 md:pt-40 lg:pt-48">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <motion.div
