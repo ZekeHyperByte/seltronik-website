@@ -187,7 +187,7 @@ const HomePage = () => {
               {/* Right Trapezoid Shape */}
               <div className="relative w-full max-w-2xl mx-auto lg:mx-0 h-12 md:h-16 lg:h-20">
                 <div 
-                  className="w-full h-full bg-white/15"
+                  className="w-full h-full bg-white"
                   style={{
                     clipPath: 'polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)'
                   }}
@@ -217,7 +217,7 @@ const HomePage = () => {
           <div 
             className="w-full h-full bg-white dark:bg-gray-800"
             style={{
-              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 60%)'
+              clipPath: 'polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)'
             }}
           />
         </div>
