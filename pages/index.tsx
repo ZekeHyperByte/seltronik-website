@@ -169,7 +169,7 @@ const HomePage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-white text-center lg:text-left pt-16 md:pt-24 lg:pt-32"
+              className="text-white text-center lg:text-left"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-8 md:mb-10 lg:mb-12 leading-tight">
                 Membangun <span className="italic font-light">Negeri</span> dengan{' '}
