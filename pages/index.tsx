@@ -157,6 +157,16 @@ const HomePage = () => {
         {/* Subtle Background */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 
+        {/* Decorative Polygon Extension from Stats Section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 md:h-48 lg:h-64 pointer-events-none">
+          <div 
+            className="w-full h-full bg-white/15 dark:bg-white/15"
+            style={{
+              clipPath: 'polygon(0% 100%, 15% 60%, 30% 80%, 45% 40%, 60% 70%, 75% 30%, 90% 50%, 100% 20%, 100% 100%)'
+            }}
+          />
+        </div>
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
@@ -197,8 +207,18 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section - Moved from Hero */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
+      <section className="relative py-12 md:py-16 bg-white dark:bg-gray-800 -mt-32 md:-mt-48 lg:-mt-64">
+        {/* Decorative Polygon Extension - Top Part */}
+        <div className="absolute top-0 left-0 right-0 h-32 md:h-48 lg:h-64 pointer-events-none">
+          <div 
+            className="w-full h-full bg-white dark:bg-gray-800"
+            style={{
+              clipPath: 'polygon(0% 100%, 15% 60%, 30% 80%, 45% 40%, 60% 70%, 75% 30%, 90% 50%, 100% 20%, 100% 100%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10 pt-32 md:pt-48 lg:pt-64">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
