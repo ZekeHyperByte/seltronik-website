@@ -181,18 +181,9 @@ const HomePage = () => {
               >
                 Jelajahi Produk Kami
               </Link>
-              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-6">
+              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
               </p>
-              {/* Right Trapezoid Shape */}
-              <div className="relative w-full max-w-2xl mx-auto lg:mx-0 h-12 md:h-16 lg:h-20">
-                <div 
-                  className="w-full h-full bg-white"
-                  style={{
-                    clipPath: 'polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)'
-                  }}
-                />
-              </div>
             </motion.div>
 
             {/* Hero Visual */}
