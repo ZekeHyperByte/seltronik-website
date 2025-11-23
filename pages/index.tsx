@@ -153,7 +153,7 @@ const HomePage = () => {
   return (
     <Layout>
       {/* Hero Section - Clean & Focused */}
-      <section ref={heroRef} className="relative overflow-hidden" style={{ backgroundColor: '#6f1520', minHeight: 'calc(100vh - 80px)' }}>
+      <section ref={heroRef} className="relative min-h-screen overflow-hidden" style={{ backgroundColor: '#6f1520' }}>
         {/* Subtle Seltronik Background Overlay */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <h1 className="text-[200px] md:text-[300px] lg:text-[400px] font-bold font-heading text-white/5 blur-sm select-none">
@@ -162,8 +162,8 @@ const HomePage = () => {
         </div>
 
 
-        <div className="container mx-auto px-4 relative z-10 flex items-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full py-16 md:py-20">
+        <div className="container mx-auto px-4 relative z-10 pt-24 md:pt-32 lg:pt-40">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
