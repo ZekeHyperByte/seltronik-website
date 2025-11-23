@@ -153,7 +153,7 @@ const HomePage = () => {
   return (
     <Layout>
       {/* Hero Section - Clean & Focused */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-seltronik-red">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#6f1520' }}>
         {/* Subtle Seltronik Background Overlay */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <h1 className="text-[200px] md:text-[300px] lg:text-[400px] font-bold font-heading text-white/5 blur-sm select-none">
@@ -184,15 +184,15 @@ const HomePage = () => {
                 Membangun <span className="italic font-light">Negeri</span> dengan{' '}
                 <span className="text-white">Inovasi</span> Elektronik
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
-              </p>
               <Link 
                 href="/produk" 
-                className="inline-block bg-seltronik-red text-white px-8 py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl text-lg"
+                className="inline-block bg-white text-seltronik-red px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg mb-8"
               >
                 Jelajahi Produk Kami
               </Link>
+              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
+              </p>
             </motion.div>
 
             {/* Hero Visual */}
