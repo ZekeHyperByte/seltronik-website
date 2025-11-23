@@ -189,7 +189,7 @@ const HomePage = () => {
                 <div 
                   className="w-full h-full bg-white/15"
                   style={{
-                    clipPath: 'polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%)'
+                    clipPath: 'polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)'
                   }}
                 />
               </div>
