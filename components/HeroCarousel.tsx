@@ -1,18 +1,35 @@
-import React from 'react';
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectFade } from 'swiper/modules';
+import React, { useState, useRef } from 'react';
 import { Project } from '../lib/supabase';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-fade';
 
 interface HeroCarouselProps {
   projects: Project[];
 }
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
+  const [isSwapped, setIsSwapped] = useState(false);
+  const [isCycleActive, setIsCycleActive] = useState(false);
+  const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+  const logoVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Handle hover to start the cycle
+  const handleHoverStart = () => {
+    if (!isCycleActive) {
+      setIsCycleActive(true);
+      setIsSwapped(true);
+      // Start background video from beginning
+      if (backgroundVideoRef.current) {
+        backgroundVideoRef.current.currentTime = 0;
+        backgroundVideoRef.current.play();
+      }
+    }
+  };
+
+  // Handle video end to swap back
+  const handleVideoEnd = () => {
+    setIsSwapped(false);
+    setIsCycleActive(false);
+  };
+
   // Show the proper masked container even when no projects
   if (!projects || projects.length === 0) {
     return (
@@ -42,44 +59,75 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects }) => {
 
   return (
     <div
-      className="relative w-full h-full rounded-full overflow-hidden"
-      style={{
-        maskImage: 'url(/images/seltroniklogo.svg)',
-        maskSize: 'contain',
-        maskRepeat: 'no-repeat',
-        maskPosition: 'center',
-        WebkitMaskImage: 'url(/images/seltroniklogo.svg)',
-        WebkitMaskSize: 'contain',
-        WebkitMaskRepeat: 'no-repeat',
-        WebkitMaskPosition: 'center',
-      }}
+      className="relative w-full h-full cursor-pointer"
+      onMouseEnter={handleHoverStart}
     >
-      <Swiper
-        modules={[Autoplay, EffectFade]}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
+      {/* Background Layer - Initially solid, becomes video on swap */}
+      <div className="absolute inset-0 transition-opacity duration-700">
+        {/* Solid background */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-red transition-opacity duration-700 ${
+            isSwapped ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+
+        {/* Video background (shown when swapped) */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            isSwapped ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <video
+            ref={backgroundVideoRef}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+            onEnded={handleVideoEnd}
+          >
+            <source src="/videos/hero-video.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      {/* Logo-Masked Layer - Initially video, becomes solid on swap */}
+      <div
+        className="relative w-full h-full rounded-full overflow-hidden"
+        style={{
+          maskImage: 'url(/images/seltroniklogo.svg)',
+          maskSize: 'contain',
+          maskRepeat: 'no-repeat',
+          maskPosition: 'center',
+          WebkitMaskImage: 'url(/images/seltroniklogo.svg)',
+          WebkitMaskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
         }}
-        loop={true}
-        className="w-full h-full"
       >
-        {projects.map((project) => (
-          <SwiperSlide key={project.id}>
-            <div className="w-full h-full relative">
-              <Image
-                src={project.images[0]}
-                alt={project.title}
-                className="w-full h-full object-cover"
-                fill
-              />
-              {/* Optional overlay for better visibility */}
-              <div className="absolute inset-0 bg-black/20"></div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        {/* Video in logo (shown initially, loops continuously) */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            isSwapped ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <video
+            ref={logoVideoRef}
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src="/videos/hero-video.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Solid color in logo (shown when swapped) */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-red transition-opacity duration-700 ${
+            isSwapped ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      </div>
     </div>
   );
 };
