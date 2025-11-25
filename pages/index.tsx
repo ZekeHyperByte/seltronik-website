@@ -164,12 +164,12 @@ const HomePage = () => {
   ];
 
   const clients = [
-    { name: 'Kementerian PUPR', logo: '/images/clients/pupr.png' },
-    { name: 'Dishub DKI Jakarta', logo: '/images/clients/dishub.png' },
-    { name: 'Jasa Marga', logo: '/images/clients/jasamarga.png' },
-    { name: 'Hutama Karya', logo: '/images/clients/hutama.png' },
-    { name: 'Waskita Karya', logo: '/images/clients/waskita.png' },
-    { name: 'Adhi Karya', logo: '/images/clients/adhi.png' }
+    { name: 'Kementerian PUPR', logo: '/images/trusted_by_logo/PUPR.svg' },
+    { name: 'Dishub DKI Jakarta', logo: '/images/trusted_by_logo/Dishub_DKI_Jakarta.png' },
+    { name: 'Jasa Marga', logo: '/images/trusted_by_logo/Jasa_Marga.svg' },
+    { name: 'Hutama Karya', logo: '/images/trusted_by_logo/Hutama_Karya.svg' },
+    { name: 'Waskita Karya', logo: '/images/trusted_by_logo/Waskita_Karya.svg' },
+    { name: 'Adhi Karya', logo: '/images/trusted_by_logo/Adhi_Karya.svg' }
   ];
 
   return (
@@ -563,16 +563,21 @@ const HomePage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ 
+                transition={{
                   duration: 0.6,
-                  delay: index * 0.1 
+                  delay: index * 0.1
                 }}
                 whileHover={{ scale: 1.05 }}
                 className="grayscale hover:grayscale-0 transition-all duration-300"
               >
-                <div className="h-16 md:h-20 flex items-center justify-center p-2">
-                  <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-400 hover:text-seltronik-red transition-colors duration-300 text-center">
-                    {client.name}
+                <div className="h-20 md:h-24 flex items-center justify-center p-4">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 </div>
               </motion.div>
