@@ -570,7 +570,7 @@ const HomePage = () => {
                 whileHover={{ scale: 1.05 }}
                 className="grayscale hover:grayscale-0 transition-all duration-300"
               >
-                <div className="h-20 md:h-24 flex items-center justify-center p-4">
+                <div className="h-28 md:h-32 lg:h-36 flex items-center justify-center p-4">
                   <div className="relative w-full h-full">
                     <Image
                       src={client.logo}
