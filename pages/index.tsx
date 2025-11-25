@@ -571,7 +571,9 @@ const HomePage = () => {
                 className="grayscale hover:grayscale-0 transition-all duration-300"
               >
                 <div className="h-28 md:h-32 lg:h-36 flex items-center justify-center p-4">
-                  <div className="relative w-full h-full">
+                  <div className={`relative w-full h-full ${
+                    client.name === 'Dishub DKI Jakarta' ? 'scale-[2]' : ''
+                  }`}>
                     <Image
                       src={client.logo}
                       alt={client.name}
