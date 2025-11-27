@@ -68,19 +68,19 @@ const ContactPage = () => {
     {
       icon: <FaPhone />,
       title: 'Telepon',
-      content: '022-87241364',
+      content: '+62 881-0828-72889',
       subcontent: 'Senin - Jumat, 08:00 - 17:00'
     },
     {
       icon: <FaEnvelope />,
       title: 'Email',
-      content: 'sinyalektronik@outlook.com',
-      subcontent: 'sales@seltronik.co.id'
+      content: 'sinyalelektromekanik@gmail.com',
+      subcontent: 'sinyalelektromekanik@gmail.com'
     },
     {
       icon: <FaWhatsapp />,
       title: 'WhatsApp',
-      content: '+62 811-2345-678',
+      content: '+62 881-0828-72889',
       subcontent: 'Fast Response'
     }
   ];
@@ -318,7 +318,7 @@ const ContactPage = () => {
                       <FaLinkedinIn className="text-sm md:text-base" />
                     </a>
                     <a
-                      href="https://wa.me/628112345678"
+                      href="https://wa.me/62881082872889"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition-all duration-300"
@@ -343,7 +343,7 @@ const ContactPage = () => {
             Hubungi kami langsung melalui WhatsApp untuk mendapatkan respon lebih cepat
           </p>
           <a
-            href="https://wa.me/628112345678"
+            href="https://wa.me/62881082872889"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-white text-seltronik-dark px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
