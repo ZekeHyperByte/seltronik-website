@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaBox, FaProjectDiagram, FaUsers, FaCertificate, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaBox, FaCertificate, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye, FaBars, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService, projectService, certificateService, statsService, Product, Project, Certificate } from '../../lib/supabase';
+import { productService, certificateService, statsService, Product, Certificate } from '../../lib/supabase';
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [products, setProducts] = useState<Product[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [dashboardStats, setDashboardStats] = useState({
     products: 0,
-    projects: 0,
     certificates: 8,
     messages: 12
   });
@@ -35,15 +33,13 @@ const AdminDashboard = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [productsData, projectsData, certificatesData, statsData] = await Promise.all([
+      const [productsData, certificatesData, statsData] = await Promise.all([
         productService.getAll(),
-        projectService.getAll(),
         certificateService.getAll(),
         statsService.getDashboardStats()
       ]);
-      
+
       setProducts(productsData);
-      setProjects(projectsData);
       setCertificates(certificatesData);
       setDashboardStats(statsData);
     } catch (error) {
@@ -77,18 +73,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteProject = async (id: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus proyek ini?')) {
-      try {
-        await projectService.delete(id);
-        setProjects(projects.filter(p => p.id !== id));
-      } catch (error) {
-        console.error('Error deleting project:', error);
-        alert('Gagal menghapus proyek');
-      }
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('adminAuth');
     router.push('/admin/login');
@@ -97,14 +81,12 @@ const AdminDashboard = () => {
   const menuItems = [
     { id: 'overview', name: 'Dashboard', icon: FaHome },
     { id: 'products', name: 'Produk', icon: FaBox },
-    { id: 'projects', name: 'Proyek', icon: FaProjectDiagram },
     { id: 'certificates', name: 'Sertifikat', icon: FaCertificate },
     { id: 'contacts', name: 'Kontak', icon: FaEnvelope },
   ];
 
   const statsCards = [
     { title: 'Total Produk', value: dashboardStats.products.toString(), color: 'bg-blue-500', icon: FaBox },
-    { title: 'Total Proyek', value: dashboardStats.projects.toString(), color: 'bg-green-500', icon: FaProjectDiagram },
     { title: 'Sertifikat', value: dashboardStats.certificates.toString(), color: 'bg-yellow-500', icon: FaCertificate },
     { title: 'Pesan Masuk', value: dashboardStats.messages.toString(), color: 'bg-red-500', icon: FaEnvelope },
   ];
@@ -195,7 +177,7 @@ const AdminDashboard = () => {
           {activeTab === 'overview' && (
             <div>
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {statsCards.map((stat, index) => (
                   <motion.div
                     key={index}
@@ -220,20 +202,13 @@ const AdminDashboard = () => {
               {/* Quick Actions */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <button
                     onClick={() => setActiveTab('products')}
                     className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200"
                   >
                     <FaPlus className="mr-3 text-blue-600" />
                     <span className="text-blue-700 dark:text-blue-300">Tambah Produk</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('projects')}
-                    className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors duration-200"
-                  >
-                    <FaPlus className="mr-3 text-green-600" />
-                    <span className="text-green-700 dark:text-green-300">Tambah Proyek</span>
                   </button>
                   <Link
                     href="/"
@@ -312,81 +287,6 @@ const AdminDashboard = () => {
                               onClick={() => product.id && handleDeleteProduct(product.id)}
                               className="text-red-600 hover:text-red-900"
                               title="Hapus produk"
-                            >
-                              <FaTrash />
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'projects' && (
-            <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Proyek</h2>
-                <Link
-                  href="/admin/projects/add"
-                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 flex items-center"
-                >
-                  <FaPlus className="mr-2" />
-                  Tambah Proyek
-                </Link>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
-                <table className="w-full min-w-max">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Proyek</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Klien</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tahun</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    {loading ? (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
-                          Loading...
-                        </td>
-                      </tr>
-                    ) : projects.length === 0 ? (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
-                          Belum ada proyek. <Link href="/admin/projects/add" className="text-seltronik-red hover:underline">Tambah proyek pertama</Link>
-                        </td>
-                      </tr>
-                    ) : (
-                      projects.map((project) => (
-                        <tr key={project.id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">{project.title}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-300">{project.location}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                            {project.client}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                            {project.year}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <Link href={`/admin/projects/edit/${project.id}`}>
-                              <button 
-                                className="text-blue-600 hover:text-blue-900 mr-3"
-                                title="Edit proyek"
-                              >
-                                <FaEdit />
-                              </button>
-                            </Link>
-                            <button 
-                              onClick={() => project.id && handleDeleteProject(project.id)}
-                              className="text-red-600 hover:text-red-900"
-                              title="Hapus proyek"
                             >
                               <FaTrash />
                             </button>

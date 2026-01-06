@@ -1,41 +1,12 @@
 import React, { useRef } from 'react';
-import { Project } from '../lib/supabase';
 
 interface HeroCarouselProps {
-  projects: Project[];
   isSwapped: boolean;
   onHoverStart: () => void;
 }
 
-const HeroCarousel: React.FC<HeroCarouselProps> = ({ projects, isSwapped, onHoverStart }) => {
+const HeroCarousel: React.FC<HeroCarouselProps> = ({ isSwapped, onHoverStart }) => {
   const logoVideoRef = useRef<HTMLVideoElement>(null);
-
-  // Show the proper masked container even when no projects
-  if (!projects || projects.length === 0) {
-    return (
-      <div
-        className="relative w-full h-full rounded-full overflow-hidden"
-        style={{
-          maskImage: 'url(/images/seltroniklogo.svg)',
-          maskSize: 'contain',
-          maskRepeat: 'no-repeat',
-          maskPosition: 'center',
-          WebkitMaskImage: 'url(/images/seltroniklogo.svg)',
-          WebkitMaskSize: 'contain',
-          WebkitMaskRepeat: 'no-repeat',
-          WebkitMaskPosition: 'center',
-        }}
-      >
-        {/* Placeholder background with company branding */}
-        <div className="w-full h-full bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-red flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="text-white text-2xl md:text-4xl lg:text-6xl font-bold opacity-50">
-            <span className="text-white">SELTRONIK</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full h-full">

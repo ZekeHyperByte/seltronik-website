@@ -12,7 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
 import HeroCarousel from '../components/HeroCarousel';
-import { projectService, Project, productService, Product } from '../lib/supabase';
+import { productService, Product } from '../lib/supabase';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -29,7 +29,6 @@ const HomePage = () => {
   const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
   const [textSwiper, setTextSwiper] = useState<SwiperClass | null>(null);
   const [statsInView, setStatsInView] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isSwapped, setIsSwapped] = useState(false);
   const [isCycleActive, setIsCycleActive] = useState(false);
@@ -37,7 +36,6 @@ const HomePage = () => {
   // Refs for GSAP animations
   const heroRef = useRef<HTMLElement>(null);
   const productsRef = useRef<HTMLElement>(null);
-  const projectsRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLElement>(null);
   const clientsRef = useRef<HTMLElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
@@ -49,7 +47,7 @@ const HomePage = () => {
       gsap.config({ nullTargetWarn: false });
 
       // Section reveal animations
-      const sections = [".products-section", ".projects-section", ".stats-section", ".clients-section"];
+      const sections = [".products-section", ".stats-section", ".clients-section"];
       
       sections.forEach((section) => {
         gsap.fromTo(section, 
@@ -100,11 +98,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Projects
-        const projectData = await projectService.getAll();
-        const sortedProjects = (projectData || []).sort((a, b) => parseInt(b.year) - parseInt(a.year));
-        setProjects(sortedProjects.slice(0, 3));
-
         // Fetch Products
         const productData = await productService.getFeatured();
         setProducts(productData || []);
@@ -245,7 +238,6 @@ const HomePage = () => {
             >
               <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px]">
                 <HeroCarousel
-                  projects={projects}
                   isSwapped={isSwapped}
                   onHoverStart={handleHoverStart}
                 />
@@ -268,7 +260,7 @@ const HomePage = () => {
         </div>
 
         <div className="container mx-auto px-4 relative z-10 pt-16 md:pt-20 lg:pt-24">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -285,17 +277,6 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
-                <CountUp end={500} duration={2} />+
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">Proyek Selesai</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
             >
               <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={100} duration={2} />+
@@ -428,84 +409,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section ref={projectsRef} className="projects-section py-12 md:py-16 lg:py-20 bg-seltronik-dark">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="text-center mb-8 lg:mb-12"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
-              Proyek Terbaru Kami
-            </h2>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-              Dipercaya oleh berbagai instansi pemerintah dan perusahaan besar di Indonesia
-            </p>
-          </motion.div>
-
-          <Swiper
-            modules={[Autoplay, Pagination, Navigation]}
-            spaceBetween={20}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            breakpoints={{
-              640: { 
-                slidesPerView: 1.5,
-                spaceBetween: 20
-              },
-              768: { 
-                slidesPerView: 2,
-                spaceBetween: 30
-              },
-              1024: { 
-                slidesPerView: 3,
-                spaceBetween: 30
-              }
-            }}
-            className="pb-12"
-          >
-            {projects.map((project) => (
-              <SwiperSlide key={project.id}>
-                <Link href="/project">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer h-64 md:h-80"
-                  >
-                    <Image src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" fill />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute inset-0 flex items-end p-4 md:p-6">
-                      <div className="transform transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">
-                        <h3 className="text-lg md:text-2xl font-bold font-heading text-white">
-                          {project.title}
-                        </h3>
-                        <p className="text-sm text-gray-300 mt-1">
-                          {project.client} - {project.year}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <div className="text-center mt-8">
-            <Link
-              href="/project"
-              className="inline-block bg-white text-seltronik-dark px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
-            >
-              Lihat Semua Proyek
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Statistics Section */}
       <section ref={statsRef} className="stats-section py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4 stats-container">
@@ -599,7 +502,7 @@ const HomePage = () => {
             className="text-center text-white"
           >
             <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
-              Siap Memulai Proyek Anda?
+              Siap Untuk Berkolaborasi?
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 lg:mb-8">
               Konsultasikan kebutuhan infrastruktur lalu lintas Anda dengan tim ahli kami. Dapatkan solusi terbaik dengan harga kompetitif.

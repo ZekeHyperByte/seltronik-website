@@ -85,7 +85,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'Beranda', href: '/' },
     { name: 'Tentang', href: '/tentang' },
     { name: 'Produk', href: '/produk' },
-    { name: 'Proyek', href: '/project' },
     { name: 'Sertifikat', href: '/sertifikat' },
     { name: 'Kontak', href: '/kontak' },
   ];
