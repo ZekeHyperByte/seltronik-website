@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaBox, FaCertificate, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaBox, FaEnvelope, FaSignOutAlt, FaPlus, FaEdit, FaTrash, FaEye, FaBars, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { productService, certificateService, statsService, Product, Certificate } from '../../lib/supabase';
+import { productService, statsService, Product } from '../../lib/supabase';
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [products, setProducts] = useState<Product[]>([]);
-  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [dashboardStats, setDashboardStats] = useState({
     products: 0,
-    certificates: 8,
     messages: 12
   });
   const [loading, setLoading] = useState(false);
@@ -33,14 +31,12 @@ const AdminDashboard = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [productsData, certificatesData, statsData] = await Promise.all([
+      const [productsData, statsData] = await Promise.all([
         productService.getAll(),
-        certificateService.getAll(),
         statsService.getDashboardStats()
       ]);
 
       setProducts(productsData);
-      setCertificates(certificatesData);
       setDashboardStats(statsData);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -61,17 +57,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteCertificate = async (id: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus sertifikat ini?')) {
-      try {
-        await certificateService.delete(id);
-        setCertificates(certificates.filter(c => c.id !== id));
-      } catch (error) {
-        console.error('Error deleting certificate:', error);
-        alert('Gagal menghapus sertifikat');
-      }
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('adminAuth');
@@ -81,13 +66,11 @@ const AdminDashboard = () => {
   const menuItems = [
     { id: 'overview', name: 'Dashboard', icon: FaHome },
     { id: 'products', name: 'Produk', icon: FaBox },
-    { id: 'certificates', name: 'Sertifikat', icon: FaCertificate },
     { id: 'contacts', name: 'Kontak', icon: FaEnvelope },
   ];
 
   const statsCards = [
     { title: 'Total Produk', value: dashboardStats.products.toString(), color: 'bg-blue-500', icon: FaBox },
-    { title: 'Sertifikat', value: dashboardStats.certificates.toString(), color: 'bg-yellow-500', icon: FaCertificate },
     { title: 'Pesan Masuk', value: dashboardStats.messages.toString(), color: 'bg-red-500', icon: FaEnvelope },
   ];
 
@@ -300,73 +283,6 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {activeTab === 'certificates' && (
-            <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Sertifikat</h2>
-                <Link
-                  href="/admin/certificates/add"
-                  className="bg-seltronik-red text-white px-4 py-2 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-200 flex items-center"
-                >
-                  <FaPlus className="mr-2" />
-                  Tambah Sertifikat
-                </Link>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
-                <table className="w-full min-w-max">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sertifikat</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Penerbit</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    {loading ? (
-                      <tr>
-                        <td colSpan={3} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
-                          Loading...
-                        </td>
-                      </tr>
-                    ) : certificates.length === 0 ? (
-                      <tr>
-                        <td colSpan={3} className="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
-                          Belum ada sertifikat. <Link href="/admin/certificates/add" className="text-seltronik-red hover:underline">Tambah sertifikat pertama</Link>
-                        </td>
-                      </tr>
-                    ) : (
-                      certificates.map((certificate) => (
-                        <tr key={certificate.id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">{certificate.name}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                            {certificate.issuer}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button 
-                              className="text-blue-600 hover:text-blue-900 mr-3"
-                              title="Edit sertifikat"
-                            >
-                              <FaEdit />
-                            </button>
-                            <button 
-                              onClick={() => certificate.id && handleDeleteCertificate(certificate.id)}
-                              className="text-red-600 hover:text-red-900"
-                              title="Hapus sertifikat"
-                            >
-                              <FaTrash />
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
 
           {activeTab === 'contacts' && (
             <div>

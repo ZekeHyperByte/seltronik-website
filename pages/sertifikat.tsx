@@ -1,101 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
-import Modal from '../components/Modal';
-import OptimizedImage from '../components/OptimizedImage';
-import { GridSkeleton, ErrorState, EmptyState } from '../components/Loading';
-import { imageSizes, imageQuality, generateBlurDataURL } from '../lib/imageOptimization';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaCertificate, FaDownload, FaEye, FaCheckCircle, FaAward, FaShieldAlt, FaFileAlt, FaGlobeAsia, FaBuilding, FaCalendarAlt, FaQrcode, FaTimes, FaFilter } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaCertificate, FaCheckCircle, FaAward, FaShieldAlt, FaGlobeAsia, FaCalendarAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import Head from 'next/head';
-import { certificateService, Certificate } from '../lib/supabase';
 import useGSAPAnimations from '../hooks/useGSAP';
-import { useSearch } from '../hooks/useSearch';
-import SearchInput from '../components/SearchInput';
+
+interface Certificate {
+  id: number;
+  name: string;
+  issuer: string;
+  issue_date: string;
+  expiry_date: string;
+  certificate_url: string;
+  description: string;
+}
 
 const CertificatesPage = () => {
   // Apply GSAP animations
   useGSAPAnimations();
 
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
-  const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Search functionality
-  const {
-    searchTerm,
-    debouncedSearchTerm,
-    searchResults,
-    suggestions,
-    isSearching,
-    setSearchTerm,
-    clearSearch,
-    highlightText,
-    hasResults,
-    hasSearch,
-  } = useSearch({
-    items: certificates,
-    searchFields: ['name', 'issuer', 'description'],
-    debounceMs: 300,
-    maxSuggestions: 5,
-  });
-
-  useEffect(() => {
-    const fetchCertificates = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await certificateService.getAll();
-        setCertificates(data || []);
-      } catch (error) {
-        console.error('Error fetching certificates:', error);
-        setError('Gagal memuat data sertifikat. Silakan coba lagi.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCertificates();
-  }, []);
-
-  const handleRetry = () => {
-    const fetchCertificates = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await certificateService.getAll();
-        setCertificates(data || []);
-      } catch (error) {
-        console.error('Error fetching certificates:', error);
-        setError('Gagal memuat data sertifikat. Silakan coba lagi.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchCertificates();
-  };
-
-  const categories = [
-    { id: 'all', name: 'Semua Dokumen', count: searchResults.length },
-    { id: 'business', name: 'Legalitas Usaha', count: searchResults.filter(c => c.category === 'business').length },
-    { id: 'quality', name: 'Sertifikat Mutu', count: searchResults.filter(c => c.category === 'quality').length },
-    { id: 'product', name: 'Sertifikat Produk', count: searchResults.filter(c => c.category === 'product').length },
-    { id: 'award', name: 'Penghargaan', count: searchResults.filter(c => c.category === 'award').length }
+  // Hardcoded certification data
+  const certificates: Certificate[] = [
+    {
+      id: 1,
+      name: 'ISO 9001:2015',
+      issuer: 'International Organization for Standardization',
+      issue_date: '2023-01-15',
+      expiry_date: '2026-01-15',
+      certificate_url: '/certificates/iso.pdf',
+      description: 'Sistem Manajemen Mutu'
+    },
+    {
+      id: 2,
+      name: 'SNI',
+      issuer: 'Badan Standardisasi Nasional',
+      issue_date: '2023-06-20',
+      expiry_date: '2026-06-20',
+      certificate_url: '/certificates/sni.pdf',
+      description: 'Standar Nasional Indonesia'
+    },
+    {
+      id: 3,
+      name: 'TKDN',
+      issuer: 'Kementerian Perindustrian RI',
+      issue_date: '2023-09-10',
+      expiry_date: '2025-09-10',
+      certificate_url: '/certificates/tkdn.pdf',
+      description: 'Tingkat Komponen Dalam Negeri'
+    }
   ];
 
-  // Apply category filter to search results
-  const filteredCertificates = selectedCategory === 'all' 
-    ? searchResults 
-    : searchResults.filter(cert => cert.category === selectedCategory);
-
   const stats = [
-    { label: 'Sertifikat Aktif', value: '15+', color: 'text-seltronik-green' },
-    { label: 'Standar Internasional', value: '5', color: 'text-seltronik-yellow' },
-    { label: 'Penghargaan', value: '8', color: 'text-seltronik-red' },
+    { label: 'Sertifikat Aktif', value: '3', color: 'text-seltronik-green' },
+    { label: 'Standar Internasional', value: '1', color: 'text-seltronik-yellow' },
+    { label: 'Standar Nasional', value: '2', color: 'text-seltronik-red' },
     { label: 'Tahun Bersertifikat', value: '23', color: 'text-blue-500' }
   ];
 
@@ -135,267 +94,62 @@ const CertificatesPage = () => {
         </div>
       </section>
 
-      {/* Search & Filter Section */}
-      <section className="py-6 md:py-8 bg-gray-50 dark:bg-seltronik-dark sticky top-14 md:top-16 z-30">
-        <div className="container mx-auto px-4">
-          {/* Search Bar */}
-          <div className="mb-6">
-            <SearchInput
-              value={searchTerm}
-              onChange={setSearchTerm}
-              onClear={clearSearch}
-              suggestions={suggestions}
-              isSearching={isSearching}
-              placeholder="Cari sertifikat, penerbit, atau kategori..."
-              className="max-w-2xl mx-auto"
-            />
-          </div>
-          {/* Mobile Filter Button */}
-          <div className="md:hidden mb-4">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center justify-center w-full px-4 py-3 bg-seltronik-red text-white rounded-lg font-medium"
-            >
-              <FaFilter className="mr-2" />
-              Filter Kategori ({categories.find(c => c.id === selectedCategory)?.name})
-            </button>
-          </div>
-
-          {/* Desktop Filter */}
-          <div className="hidden md:flex flex-wrap gap-4 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-medium transition-all duration-300 ${
-                  selectedCategory === category.id
-                    ? 'bg-seltronik-red text-white shadow-lg transform scale-105'
-                    : 'bg-white dark:bg-gray-700 dark:text-white text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-              >
-                {category.name} ({category.count})
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Filter Panel */}
-          <AnimatePresence>
-            {showFilters && (
-              <div className="gsap-fade-up md:hidden grid grid-cols-1 gap-2 mt-4">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => {
-                      setSelectedCategory(category.id);
-                      setShowFilters(false);
-                    }}
-                    className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all duration-300 ${
-                      selectedCategory === category.id
-                        ? 'bg-seltronik-red text-white'
-                        : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                    }`}
-                  >
-                    <span>{category.name}</span>
-                    <span className="text-sm bg-black/20 px-2 py-1 rounded-full">
-                      {category.count}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
 
       {/* Certificates Grid */}
       <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          {/* Loading State */}
-          {isLoading && (
-            <GridSkeleton 
-              count={10} 
-              gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-            />
-          )}
-
-          {/* Error State */}
-          {error && (
-            <ErrorState 
-              message={error}
-              onRetry={handleRetry}
-            />
-          )}
-
-          {/* Content */}
-          {!isLoading && !error && (
-            <AnimatePresence mode="wait">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                {filteredCertificates.map((cert, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {certificates.map((cert) => (
+              <a
+                key={cert.id}
+                href={cert.certificate_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <motion.div
-                  key={cert.id}
                   whileHover={{ y: -8 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className="gsap-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                  className="gsap-card h-full bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer p-6 md:p-8"
                   style={{ willChange: 'transform' }}
                 >
-                  {/* Certificate Image */}
-                  <div className="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 relative overflow-hidden">
-                    {cert.image_url ? (
-                      <OptimizedImage 
-                        src={cert.image_url} 
-                        alt={cert.name} 
-                        className="transition-transform duration-300 group-hover:scale-105" 
-                        fill
-                        sizes={imageSizes.certificate}
-                        quality={imageQuality.card}
-                        objectFit="cover"
-                        blurDataURL={generateBlurDataURL()}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <FaCertificate className="text-4xl text-gray-400" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  {/* Certificate Icon */}
+                  <div className="flex justify-center mb-6">
+                    <FaCertificate className="text-5xl md:text-6xl text-seltronik-red group-hover:scale-110 transition-transform duration-300" />
                   </div>
 
-                  {/* Certificate Info */}
-                  <div className="p-4 md:p-5">
-                    <h3 className="text-sm md:text-lg font-bold text-seltronik-dark dark:text-white mb-2 line-clamp-2 min-h-[2.5rem]">
-                      {cert.name}
-                    </h3>
-                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-2 line-clamp-1">{cert.issuer}</p>
-                    
-                    <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300 mb-4">
-                      <div className="flex items-center gap-2">
-                        <FaCalendarAlt className="text-seltronik-green flex-shrink-0" />
-                        <span className="line-clamp-1">Terbit: {cert.issue_date}</span>
-                      </div>
-                      {cert.expiry_date && (
-                        <div className="flex items-center gap-2">
-                          <FaCalendarAlt className="text-seltronik-yellow flex-shrink-0" />
-                          <span className="line-clamp-1">Berlaku: {cert.expiry_date}</span>
-                        </div>
-                      )}
-                    </div>
+                  {/* Certificate Name */}
+                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-3 text-center">
+                    {cert.name}
+                  </h3>
 
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <button
-                        onClick={() => setSelectedCertificate(cert as Certificate)}
-                        className="flex-1 bg-seltronik-red text-white py-2 px-2 md:px-3 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-1 text-xs md:text-sm"
-                      >
-                        <FaEye className="flex-shrink-0" /> 
-                        <span className="hidden sm:inline">Lihat</span>
-                      </button>
-                      {cert.certificate_url && (
-                        <a
-                          href={cert.certificate_url}
-                          className="flex-1 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-white py-2 px-2 md:px-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-1 text-xs md:text-sm"
-                        >
-                          <FaDownload className="flex-shrink-0" /> 
-                          <span className="hidden sm:inline">Unduh</span>
-                        </a>
-                      )}
+                  {/* Issuer */}
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4 text-center line-clamp-2">
+                    {cert.issuer}
+                  </p>
+
+                  {/* Dates */}
+                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-6 border-t border-gray-200 dark:border-gray-600 pt-4">
+                    <div className="flex items-center justify-center gap-2">
+                      <FaCalendarAlt className="text-seltronik-green flex-shrink-0" />
+                      <span>Terbit: {cert.issue_date}</span>
                     </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <FaCalendarAlt className="text-seltronik-yellow flex-shrink-0" />
+                      <span>Berlaku: {cert.expiry_date}</span>
+                    </div>
+                  </div>
+
+                  {/* Click Hint */}
+                  <div className="text-center text-xs md:text-sm text-seltronik-red font-semibold group-hover:underline">
+                    Klik untuk membuka PDF
                   </div>
                 </motion.div>
-              ))}
-              </div>
-            </AnimatePresence>
-          )}
-
-          {/* Empty State */}
-          {!isLoading && !error && filteredCertificates.length === 0 && (
-            <EmptyState
-              title="Tidak ada sertifikat ditemukan"
-              message="Sertifikat yang Anda cari tidak ditemukan. Coba ubah filter kategori."
-              onReset={() => setSelectedCategory('all')}
-              resetLabel="Lihat Semua Sertifikat"
-              icon="📜"
-            />
-          )}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Certificate Detail Modal */}
-      <Modal
-        isOpen={!!selectedCertificate}
-        onClose={() => setSelectedCertificate(null)}
-        title={selectedCertificate?.name || ''}
-        enableAnimation={false}
-      >
-        {selectedCertificate && (
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-                  {/* Certificate Preview */}
-                  <div>
-                    <div className="h-64 sm:h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center overflow-hidden">
-                      {selectedCertificate.image_url ? (
-                        <OptimizedImage 
-                          src={selectedCertificate.image_url} 
-                          alt={selectedCertificate.name} 
-                          className="" 
-                          fill
-                          sizes={imageSizes.modal}
-                          quality={imageQuality.modal}
-                          objectFit="contain"
-                          priority
-                          blurDataURL={generateBlurDataURL()}
-                        />
-                      ) : (
-                        <FaCertificate className="text-6xl md:text-8xl text-gray-400" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Certificate Details */}
-                  <div>
-                    <div className="space-y-4 md:space-y-6">
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Penerbit</h3>
-                        <p className="text-base md:text-lg font-medium text-gray-800 dark:text-white flex items-center gap-2">
-                          <FaBuilding className="text-seltronik-red flex-shrink-0" />
-                          {selectedCertificate.issuer}
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Tanggal Terbit</h3>
-                          <p className="text-base md:text-lg font-medium text-gray-800 dark:text-white">
-                            {selectedCertificate.issue_date}
-                          </p>
-                        </div>
-                        {selectedCertificate.expiry_date && (
-                          <div>
-                            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Berlaku Hingga</h3>
-                            <p className="text-base md:text-lg font-medium text-gray-800 dark:text-white">
-                              {selectedCertificate.expiry_date}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="pt-4 border-t dark:border-gray-700 space-y-3">
-                        {selectedCertificate.certificate_url && (
-                          <a
-                            href={selectedCertificate.certificate_url}
-                            className="w-full bg-seltronik-red text-white py-3 px-4 rounded-lg hover:bg-seltronik-red-hover transition-colors duration-300 flex items-center justify-center gap-2"
-                          >
-                            <FaDownload /> Download PDF
-                          </a>
-                        )}
-                        <button
-                          onClick={() => window.print()}
-                          className="w-full bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
-                        >
-                          <FaFileAlt /> Cetak Dokumen
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-          </div>
-        )}
-      </Modal>
 
       {/* Trust Badges Section */}
       <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
