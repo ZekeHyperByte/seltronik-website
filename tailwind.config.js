@@ -12,6 +12,8 @@ module.exports = {
         'xs': '475px',
         '3xl': '1600px',
         '4xl': '1920px',
+        // Laptop breakpoint for 14" screens (common resolution: 1366x768)
+        'laptop': {'raw': '(max-height: 800px) and (min-width: 1024px)'},
       },
       colors: {
         'seltronik-red': '#6f1520',

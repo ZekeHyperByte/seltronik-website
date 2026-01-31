@@ -5,9 +5,10 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { productService, storageService } from '../../../lib/supabase';
+import { useAuth } from '../../../hooks/useAuth';
 
 const AddProduct = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, isAdmin, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -17,7 +18,8 @@ const AddProduct = () => {
     description: '',
     features: [''],
     specifications: {} as Record<string, string>,
-    image: '',
+    mockup_image: '',
+    real_image: '',
     catalog_url: ''
   });
 
@@ -25,24 +27,23 @@ const AddProduct = () => {
     { key: '', value: '' }
   ]);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [mockupImageFile, setMockupImageFile] = useState<File | null>(null);
+  const [realImageFile, setRealImageFile] = useState<File | null>(null);
   const [catalogFile, setCatalogFile] = useState<File | null>(null);
 
   useEffect(() => {
-    const auth = localStorage.getItem('adminAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    } else {
-      router.push('/admin/login');
+    if (!authLoading) {
+      if (!isAuthenticated || !isAdmin) {
+        router.push('/auth/login');
+      }
     }
-  }, [router]);
+  }, [authLoading, isAuthenticated, isAdmin, router]);
 
   const categories = [
     { id: 'pedestrian', name: 'Lampu Penyebrangan' },
     { id: 'warning', name: 'Warning Light' },
     { id: 'traffic', name: 'Traffic Light' },
-    { id: 'street', name: 'Lampu Jalan' },
-    { id: 'controller', name: 'Controller System' }
+    { id: 'street', name: 'Lampu Jalan' }
   ];
 
   const handleInputChange = (field: string, value: string) => {
@@ -124,9 +125,14 @@ const AddProduct = () => {
     setIsLoading(true);
 
     try {
-      let imageUrl = '';
-      if (imageFile) {
-        imageUrl = await storageService.uploadFile(imageFile);
+      let mockupImageUrl = '';
+      if (mockupImageFile) {
+        mockupImageUrl = await storageService.uploadFile(mockupImageFile);
+      }
+
+      let realImageUrl = '';
+      if (realImageFile) {
+        realImageUrl = await storageService.uploadFile(realImageFile);
       }
 
       let catalogUrl = '';
@@ -136,7 +142,9 @@ const AddProduct = () => {
 
       const productData = {
         ...product,
-        image: imageUrl,
+        mockup_image: mockupImageUrl,
+        real_image: realImageUrl,
+        image: realImageUrl || mockupImageUrl, // Fallback for backward compatibility
         catalog_url: catalogUrl,
         features: product.features.filter(f => f.trim() !== ''),
         specifications: product.specifications
@@ -151,8 +159,15 @@ const AddProduct = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return <div>Loading...</div>;
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-seltronik-red mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -333,21 +348,39 @@ const AddProduct = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Gambar
+                      Gambar Mockup *
                     </label>
+                    <p className="text-xs text-gray-500 mb-2">Gambar preview untuk user yang belum login</p>
                     <input
                       type="file"
-                      onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+                      accept="image/*"
+                      onChange={(e) => setMockupImageFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      required
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Gambar Produk Asli *
+                    </label>
+                    <p className="text-xs text-gray-500 mb-2">Gambar asli untuk user yang sudah login</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setRealImageFile(e.target.files ? e.target.files[0] : null)}
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
+                      required
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Katalog (PDF)
                     </label>
                     <input
                       type="file"
+                      accept=".pdf"
                       onChange={(e) => setCatalogFile(e.target.files ? e.target.files[0] : null)}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-seltronik-red dark:bg-gray-700 dark:text-white"
                     />

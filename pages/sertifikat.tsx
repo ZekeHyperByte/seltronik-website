@@ -59,11 +59,11 @@ const CertificatesPage = () => {
       </Head>
       
       {/* Hero Section */}
-      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20 laptop:py-10">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Sertifikat & Legalitas</h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl laptop:text-3xl font-bold font-heading mb-4 laptop:mb-2">Sertifikat & Legalitas</h1>
+            <p className="text-lg md:text-xl laptop:text-base text-gray-300 max-w-3xl mx-auto">
               Komitmen kami terhadap kualitas dan standar tertinggi dibuktikan dengan berbagai sertifikasi resmi
             </p>
           </div>
@@ -73,7 +73,7 @@ const CertificatesPage = () => {
 
 
       {/* Certificates Grid */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {certificates.map((cert) => (
@@ -86,16 +86,16 @@ const CertificatesPage = () => {
                 <motion.div
                   whileHover={{ y: -8 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className="gsap-card h-full bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer p-6 md:p-8"
+                  className="gsap-card h-full bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer p-6 md:p-8 laptop:p-4"
                   style={{ willChange: 'transform' }}
                 >
                   {/* Certificate Icon */}
                   <div className="flex justify-center mb-6">
-                    <FaCertificate className="text-5xl md:text-6xl text-seltronik-red group-hover:scale-110 transition-transform duration-300" />
+                    <FaCertificate className="text-5xl md:text-6xl laptop:text-4xl text-seltronik-red group-hover:scale-110 transition-transform duration-300" />
                   </div>
 
                   {/* Certificate Name */}
-                  <h3 className="text-xl md:text-2xl font-bold text-seltronik-dark dark:text-white mb-3 text-center">
+                  <h3 className="text-xl md:text-2xl laptop:text-base font-bold text-seltronik-dark dark:text-white mb-3 text-center">
                     {cert.name}
                   </h3>
 
@@ -130,18 +130,18 @@ const CertificatesPage = () => {
 
 
       {/* CTA Section */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-r from-seltronik-red to-seltronik-red-hover">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-gradient-to-r from-seltronik-red to-seltronik-red-hover">
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
+          <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading mb-4 laptop:mb-2">
             Butuh Dokumen Lengkap?
           </h2>
-          <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl laptop:text-base mb-6 md:mb-8 laptop:mb-2 max-w-3xl mx-auto">
             Dapatkan akses ke semua dokumen sertifikasi dan legalitas perusahaan kami
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kontak"
-              className="bg-white text-seltronik-dark px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="bg-white text-seltronik-dark px-6 md:px-8 laptop:px-5 py-3 md:py-4 laptop:py-2 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl laptop:text-sm"
             >
               Hubungi Kami
             </Link>

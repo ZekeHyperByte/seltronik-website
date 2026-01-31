@@ -119,11 +119,11 @@ const AboutPage = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20">
+      <section className="gsap-hero bg-gradient-to-br from-seltronik-dark to-gray-900 text-white py-12 md:py-16 lg:py-20 laptop:py-10">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4">Tentang Seltronik</h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl laptop:text-3xl font-bold font-heading mb-4 laptop:mb-2">Tentang Seltronik</h1>
+            <p className="text-lg md:text-xl laptop:text-base text-gray-300 max-w-3xl mx-auto">
               Lebih dari 23 tahun berkontribusi dalam pembangunan infrastruktur lalu lintas Indonesia
             </p>
           </div>
@@ -131,20 +131,20 @@ const AboutPage = () => {
       </section>
 
       {/* Company Overview */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="gsap-fade-up order-2 lg:order-1">
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 md:mb-6">
+              <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 md:mb-6 laptop:mb-2">
                 PT. Sinyal Elektro Mekanik
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base lg:text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base lg:text-lg laptop:text-base leading-relaxed">
                 PT. Sinyal Elektro Mekanik (Seltronik) merupakan perusahaan yang bergerak di bidang elektronik 
                 mekanikal yang berkaitan dengan perlengkapan dan rambu-rambu jalan. Didirikan pada tahun 2000, 
                 kami telah menjadi mitra terpercaya pemerintah dan swasta dalam menyediakan solusi infrastruktur 
                 lalu lintas berkualitas tinggi.
               </p>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm md:text-base lg:text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm md:text-base lg:text-lg laptop:text-base leading-relaxed">
                 Dengan dukungan tim ahli berpengalaman dan teknologi modern, kami berkomitmen untuk terus 
                 berinovasi dalam menghadirkan produk-produk yang tidak hanya memenuhi standar nasional, 
                 tetapi juga standar internasional.
@@ -175,28 +175,28 @@ const AboutPage = () => {
       </section>
 
       {/* Vision & Mission */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gray-50 dark:bg-seltronik-dark">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-gray-50 dark:bg-seltronik-dark">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 laptop:p-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-red/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <FaEye className="text-seltronik-red text-xl md:text-2xl" />
+                <div className="w-12 h-12 md:w-16 md:h-16 laptop:w-12 laptop:h-12 bg-seltronik-red/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <FaEye className="text-seltronik-red text-xl md:text-2xl laptop:text-base" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Visi</h2>
+                <h2 className="text-2xl md:text-3xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white">Visi</h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base lg:text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base lg:text-lg laptop:text-base leading-relaxed">
                 Membangun negeri dengan berinovasi dibidang elektronik perlengkapan & rambu-rambu jalan 
                 yang siap bersaing di skala nasional & internasional.
               </p>
             </div>
 
-            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
+            <div className="gsap-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 laptop:p-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
                 <div className="w-12 h-12 md:w-16 md:h-16 bg-seltronik-yellow/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <FaBullseye className="text-seltronik-yellow text-xl md:text-2xl" />
+                  <FaBullseye className="text-seltronik-yellow text-xl md:text-2xl laptop:text-base" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold font-heading text-seltronik-dark dark:text-white">Misi</h2>
+                <h2 className="text-2xl md:text-3xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white">Misi</h2>
               </div>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
@@ -222,13 +222,13 @@ const AboutPage = () => {
       </section>
 
       {/* Company Values */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="gsap-fade-up text-center mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+          <div className="gsap-fade-up text-center mb-8 md:mb-12 laptop:mb-8">
+            <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 laptop:mb-2">
               Nilai-Nilai Perusahaan
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl laptop:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Prinsip yang menjadi fondasi dalam setiap langkah kami
             </p>
           </div>
@@ -251,13 +251,13 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
-          <div className="gsap-fade-up text-center mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+          <div className="gsap-fade-up text-center mb-8 md:mb-12 laptop:mb-8">
+            <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 laptop:mb-2">
               Perjalanan Kami
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl laptop:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Milestone penting dalam sejarah PT. Sinyal Elektro Mekanik
             </p>
           </div>
@@ -306,9 +306,9 @@ const AboutPage = () => {
       </section>
 
       {/* Certifications */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-seltronik-dark">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-seltronik-dark">
         <div className="container mx-auto px-4">
-          <div className="gsap-fade-up text-center mb-8 md:mb-12">
+          <div className="gsap-fade-up text-center mb-8 md:mb-12 laptop:mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
               Sertifikasi & Penghargaan
             </h2>
@@ -335,13 +335,13 @@ const AboutPage = () => {
       </section>
 
       {/* Leadership Team */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-white dark:bg-gray-800">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="gsap-fade-up text-center mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+          <div className="gsap-fade-up text-center mb-8 md:mb-12 laptop:mb-8">
+            <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-4 laptop:mb-2">
               Tim Kepemimpinan
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl laptop:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Dipimpin oleh profesional berpengalaman di bidangnya
             </p>
           </div>
@@ -399,18 +399,18 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="gsap-fade-up py-12 md:py-16 bg-gradient-to-br from-seltronik-dark to-gray-900">
+      <section className="gsap-fade-up py-12 md:py-16 laptop:py-8 bg-gradient-to-br from-seltronik-dark to-gray-900">
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
+          <h2 className="text-3xl sm:text-4xl laptop:text-2xl font-bold font-heading mb-4 laptop:mb-2">
             Mari Berkolaborasi Bersama Kami
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8">
+          <p className="text-lg md:text-xl laptop:text-base text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8 laptop:mb-2">
             Wujudkan infrastruktur lalu lintas yang modern, aman, dan efisien untuk Indonesia
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/produk"
-              className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="bg-seltronik-red text-white px-6 md:px-8 laptop:px-5 py-3 md:py-4 laptop:py-2 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl laptop:text-sm"
             >
               Lihat Produk Kami
             </Link>

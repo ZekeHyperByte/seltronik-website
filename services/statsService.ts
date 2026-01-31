@@ -2,12 +2,14 @@ import { supabase } from '../lib/supabase';
 
 export const statsService = {
   async getDashboardStats() {
-    const productsResult = await supabase.from('products').select('id', { count: 'exact' })
+    const [productsResult, messagesResult] = await Promise.all([
+      supabase.from('products').select('id', { count: 'exact' }),
+      supabase.from('contact_messages').select('id', { count: 'exact' })
+    ]);
 
     return {
       products: productsResult.count || 0,
-      certificates: 8, // Static for now
-      messages: 12 // Static for now
-    }
+      messages: messagesResult.count || 0
+    };
   }
-}
+};

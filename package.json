@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.0.0",
     "@next/eslint-plugin-next": "^15.4.6",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.55.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tanstack/react-virtual": "^3.0.0",

@@ -205,7 +205,7 @@ const HomePage = () => {
         </div>
 
 
-        <div className="container mx-auto px-4 relative z-20 pt-32 md:pt-40 lg:pt-48">
+        <div className="container mx-auto px-4 relative z-20 pt-24 md:pt-32 lg:pt-40 laptop:pt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <motion.div
@@ -214,17 +214,17 @@ const HomePage = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-white text-center lg:text-left"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-8 md:mb-10 lg:mb-12 leading-tight">
+              <h1 className="text-responsive-3xl md:text-responsive-4xl lg:text-5xl laptop:text-4xl font-bold font-heading mb-6 md:mb-8 lg:mb-10 laptop:mb-6 leading-tight">
                 Membangun <span className="italic font-light">Negeri</span> dengan{' '}
                 <span className="text-white">Inovasi</span> Elektronik
               </h1>
               <Link
                 href="/produk"
-                className="inline-block bg-white text-seltronik-red px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg mb-8 md:mb-10 lg:mb-12"
+                className="inline-block bg-white text-seltronik-red px-6 md:px-8 laptop:px-6 py-3 md:py-4 laptop:py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-base md:text-lg laptop:text-base mb-6 md:mb-8 lg:mb-10 laptop:mb-6"
               >
                 Jelajahi Produk Kami
               </Link>
-              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base md:text-lg laptop:text-base text-gray-200 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 PT. Sinyal Elektro Mekanik - Produsen terpercaya perlengkapan lalu lintas dan rambu jalan di Indonesia sejak tahun 2000
               </p>
             </motion.div>
@@ -236,7 +236,7 @@ const HomePage = () => {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="relative flex justify-center"
             >
-              <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px]">
+              <div className="w-64 h-64 md:w-80 md:h-80 lg:w-[400px] lg:h-[400px] laptop:w-72 laptop:h-72">
                 <HeroCarousel
                   isSwapped={isSwapped}
                   onHoverStart={handleHoverStart}
@@ -248,9 +248,9 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section - Moved from Hero */}
-      <section className="relative py-12 md:py-16 bg-white dark:bg-gray-800 -mt-16 md:-mt-20 lg:-mt-24">
+      <section className="relative py-8 md:py-12 lg:py-16 laptop:py-10 bg-white dark:bg-gray-800 -mt-12 md:-mt-16 lg:-mt-20 laptop:-mt-14">
         {/* Right Trapezoid Shape Extending to Hero - Attached to Stats Rectangle */}
-        <div className="absolute -top-16 md:-top-20 lg:-top-24 left-0 w-1/2 h-16 md:h-20 lg:h-24 pointer-events-none">
+        <div className="absolute -top-12 md:-top-16 lg:-top-20 laptop:-top-14 left-0 w-1/2 h-12 md:h-16 lg:h-20 laptop:h-14 pointer-events-none">
           <div 
             className="w-full h-full bg-white dark:bg-gray-800"
             style={{
@@ -259,7 +259,7 @@ const HomePage = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 pt-16 md:pt-20 lg:pt-24">
+        <div className="container mx-auto px-4 relative z-10 pt-12 md:pt-16 lg:pt-20 laptop:pt-14">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -267,7 +267,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
+              <h3 className="text-2xl md:text-3xl laptop:text-2xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={23} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Tahun Pengalaman</p>
@@ -288,7 +288,7 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="relative bg-seltronik-dark h-[50vh] sm:h-[60vh] lg:h-[70vh] min-h-[400px] md:min-h-[600px]">
+      <section className="relative bg-seltronik-dark h-[40vh] sm:h-[50vh] lg:h-[60vh] laptop:h-[45vh] min-h-[350px] md:min-h-[500px] laptop:min-h-[400px]">
         <Swiper
           modules={[Autoplay, Navigation, Pagination]}
           loop={true}
@@ -309,8 +309,8 @@ const HomePage = () => {
                 />
                 <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white p-4">
                   <div className="text-4xl text-seltronik-red mb-4">{feature.icon}</div>
-                  <h3 className="text-2xl md:text-4xl font-bold font-heading mb-2">{feature.title}</h3>
-                  <p className="text-sm md:text-lg max-w-md">{feature.description}</p>
+                  <h3 className="text-xl md:text-3xl laptop:text-2xl font-bold font-heading mb-2">{feature.title}</h3>
+                  <p className="text-sm md:text-base laptop:text-sm max-w-md">{feature.description}</p>
                 </div>
               </div>
             </SwiperSlide>
@@ -319,7 +319,7 @@ const HomePage = () => {
       </section>
 
       {/* Products Showcase */}
-      <section ref={productsRef} className="products-section py-12 md:py-16 lg:py-20 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
+      <section ref={productsRef} className="products-section py-10 md:py-14 lg:py-18 laptop:py-12 bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -328,16 +328,16 @@ const HomePage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center mb-8 lg:mb-12"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-3 laptop:mb-2">
               Produk Unggulan Kami
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-lg laptop:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Inovasi dalam bidang elektronika untuk membangun negeri dan memberikan produk terbaik
             </p>
           </motion.div>
 
           {/* Desktop/Tablet Grid */}
-          <div className="hidden md:flex w-full md:h-[500px] lg:h-[600px] gap-2">
+          <div className="hidden md:flex w-full md:h-[450px] lg:h-[550px] laptop:h-[400px] gap-2">
             {products.map((product) => (
               <div
                 key={product.id}
@@ -347,10 +347,10 @@ const HomePage = () => {
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-700 ease-in-out"></div>
                 <div className="relative h-full flex flex-col justify-end p-6 lg:p-8 text-white">
                   <div className="transform transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-12">
-                    <h3 className="text-xl lg:text-2xl font-bold font-heading mb-2">
+                    <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2">
                       {product.name}
                     </h3>
-                    <p className="text-xs lg:text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{product.description}</p>
+                    <p className="text-xs laptop:text-xs mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{product.description}</p>
                     <Link
                       href="/produk"
                       className="inline-flex items-center text-seltronik-yellow font-semibold hover:text-yellow-300 transition-colors duration-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300 text-sm lg:text-base"
@@ -398,10 +398,10 @@ const HomePage = () => {
             ))}
           </div>
 
-          <div className="text-center mt-8 lg:mt-12">
+          <div className="text-center mt-6 lg:mt-10 laptop:mt-8">
             <Link
               href="/produk"
-              className="inline-block bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="inline-block bg-seltronik-red text-white px-5 md:px-8 laptop:px-6 py-2.5 md:py-4 laptop:py-3 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl text-sm md:text-base laptop:text-sm"
             >
               Lihat Semua Produk
             </Link>
@@ -410,39 +410,39 @@ const HomePage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section ref={statsRef} className="stats-section py-12 md:py-16 lg:py-20 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
+      <section ref={statsRef} className="stats-section py-10 md:py-14 lg:py-18 laptop:py-12 bg-gradient-to-r from-seltronik-red via-seltronik-red-hover to-seltronik-red">
         <div className="container mx-auto px-4 stats-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white text-center">
             <div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl laptop:text-3xl font-bold mb-2">
                 {statsInView ? <CountUp end={2000} duration={2.5} /> : '2000'}+
               </h3>
-              <p className="text-sm sm:text-base md:text-xl">Unit Terpasang</p>
+              <p className="text-sm sm:text-base md:text-lg laptop:text-sm">Unit Terpasang</p>
             </div>
             <div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl laptop:text-3xl font-bold mb-2">
                 {statsInView ? <CountUp end={34} duration={2.5} /> : '34'}
               </h3>
-              <p className="text-sm sm:text-base md:text-xl">Provinsi</p>
+              <p className="text-sm sm:text-base md:text-lg laptop:text-sm">Provinsi</p>
             </div>
             <div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl laptop:text-3xl font-bold mb-2">
                 {statsInView ? <CountUp end={150} duration={2.5} /> : '150'}+
               </h3>
-              <p className="text-sm sm:text-base md:text-xl">Kota/Kabupaten</p>
+              <p className="text-sm sm:text-base md:text-lg laptop:text-sm">Kota/Kabupaten</p>
             </div>
             <div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl laptop:text-3xl font-bold mb-2">
                 {statsInView ? <CountUp end={98} duration={2.5} /> : '98'}%
               </h3>
-              <p className="text-sm sm:text-base md:text-xl">Kepuasan Klien</p>
+              <p className="text-sm sm:text-base md:text-lg laptop:text-sm">Kepuasan Klien</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Clients Section */}
-      <section ref={clientsRef} className="clients-section py-12 md:py-16 lg:py-20 bg-white dark:bg-gray-800">
+      <section ref={clientsRef} className="clients-section py-10 md:py-14 lg:py-18 laptop:py-12 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -451,10 +451,10 @@ const HomePage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center mb-8 lg:mb-12"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-seltronik-dark dark:text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl laptop:text-2xl font-bold font-heading text-seltronik-dark dark:text-white mb-3 laptop:mb-2">
               Dipercaya Oleh
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-lg laptop:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Berbagai instansi pemerintah dan perusahaan ternama
             </p>
           </motion.div>
@@ -473,7 +473,7 @@ const HomePage = () => {
                 whileHover={{ scale: 1.05 }}
                 className="grayscale hover:grayscale-0 transition-all duration-300"
               >
-                <div className="h-28 md:h-32 lg:h-36 flex items-center justify-center p-4">
+                <div className="h-24 md:h-28 lg:h-32 laptop:h-26 flex items-center justify-center p-4">
                   <div className={`relative w-full h-full ${
                     client.name === 'Dishub DKI Jakarta' ? 'scale-[2]' : ''
                   }`}>
@@ -492,7 +492,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-seltronik-dark to-gray-900">
+      <section className="py-10 md:py-14 lg:py-18 laptop:py-12 bg-gradient-to-br from-seltronik-dark to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -501,22 +501,22 @@ const HomePage = () => {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4">
+            <h2 className="text-2xl sm:text-3xl laptop:text-2xl font-bold font-heading mb-3 laptop:mb-2">
               Siap Untuk Berkolaborasi?
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 lg:mb-8">
+            <p className="text-base md:text-lg laptop:text-base text-gray-300 max-w-3xl mx-auto mb-5 lg:mb-6 laptop:mb-5">
               Konsultasikan kebutuhan infrastruktur lalu lintas Anda dengan tim ahli kami. Dapatkan solusi terbaik dengan harga kompetitif.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/kontak"
-                className="bg-seltronik-red text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="bg-seltronik-red text-white px-5 md:px-8 laptop:px-6 py-2.5 md:py-4 laptop:py-3 rounded-full font-semibold hover:bg-seltronik-red-hover transition-all duration-300 transform hover:scale-105 shadow-xl text-sm md:text-base laptop:text-sm"
               >
                 Hubungi Kami Sekarang
               </Link>
               <Link
                 href="/produk"
-                className="bg-white/10 backdrop-blur text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30"
+                className="bg-white/10 backdrop-blur text-white px-5 md:px-8 laptop:px-6 py-2.5 md:py-4 laptop:py-3 rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30 text-sm md:text-base laptop:text-sm"
               >
                 Download Katalog
               </Link>
