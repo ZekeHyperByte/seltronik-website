@@ -12,7 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
 import HeroCarousel from '../components/HeroCarousel';
-import { productService, Product } from '../lib/supabase';
+import { categoryService, Category, productService, Product } from '../lib/supabase';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -29,7 +29,7 @@ const HomePage = () => {
   const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
   const [textSwiper, setTextSwiper] = useState<SwiperClass | null>(null);
   const [statsInView, setStatsInView] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isSwapped, setIsSwapped] = useState(false);
   const [isCycleActive, setIsCycleActive] = useState(false);
 
@@ -98,9 +98,9 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Products
-        const productData = await productService.getFeatured();
-        setProducts(productData || []);
+        // Fetch Categories
+        const categoriesData = await categoryService.getAll();
+        setCategories(categoriesData || []);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -338,19 +338,19 @@ const HomePage = () => {
 
           {/* Desktop/Tablet Grid */}
           <div className="hidden md:flex w-full md:h-[450px] lg:h-[550px] laptop:h-[400px] gap-2">
-            {products.map((product) => (
+            {categories.map((category) => (
               <div
-                key={product.id}
+                key={category.id}
                 className="group relative flex-1 hover:flex-[5] transition-all duration-700 ease-in-out bg-gray-500 bg-center bg-cover rounded-2xl overflow-hidden"
-                style={{ backgroundImage: product.image ? `url(${product.image})` : product.mockup_image ? `url(${product.mockup_image})` : 'none' }}
+                style={{ backgroundImage: category.thumbnail_image ? `url(${category.thumbnail_image})` : 'none' }}
               >
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-700 ease-in-out"></div>
                 <div className="relative h-full flex flex-col justify-end p-6 lg:p-8 text-white">
                   <div className="transform transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-12">
                     <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2">
-                      {product.name}
+                      {category.name}
                     </h3>
-                    <p className="text-xs laptop:text-xs mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{product.description}</p>
+                    <p className="text-xs laptop:text-xs mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{category.description}</p>
                     <Link
                       href="/produk"
                       className="inline-flex items-center text-seltronik-yellow font-semibold hover:text-yellow-300 transition-colors duration-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300 text-sm lg:text-base"
@@ -365,9 +365,9 @@ const HomePage = () => {
 
           {/* Mobile Grid */}
           <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {products.map((product) => (
+            {categories.map((category) => (
               <motion.div
-                key={product.id}
+                key={category.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -375,17 +375,17 @@ const HomePage = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
               >
                 <div className="h-48 bg-gray-300 dark:bg-gray-700 relative">
-                  {(product.image || product.mockup_image) && (
-                    <Image src={product.image || product.mockup_image || ''} alt={product.name} className="w-full h-full object-cover" fill />
+                  {category.thumbnail_image && (
+                    <Image src={category.thumbnail_image} alt={category.name} className="w-full h-full object-cover" fill />
                   )}
                   <div className="absolute inset-0 bg-black/40"></div>
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-bold font-heading text-seltronik-dark dark:text-white mb-2">
-                    {product.name}
+                    {category.name}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-                    {product.description}
+                    {category.description}
                   </p>
                   <Link
                     href="/produk"
