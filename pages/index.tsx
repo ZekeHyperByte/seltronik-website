@@ -386,16 +386,13 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          {/* Desktop/Tablet Grid - Maroon Gallery Style with Overlay Animation */}
-          <div className="hidden md:flex w-full md:h-[450px] lg:h-[550px] laptop:h-[400px] relative">
-            {categories.map((category, index) => (
+          {/* Desktop/Tablet Grid - Maroon Gallery Style with Scale Animation */}
+          <div className="hidden md:flex w-full md:h-[450px] lg:h-[550px] laptop:h-[400px] gap-4">
+            {categories.map((category) => (
               <Link
                 key={category.id}
                 href="/produk"
-                className="group relative h-full w-1/5 hover:w-[40%] transition-all duration-700 ease-in-out rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer z-0 hover:z-10"
-                style={{ 
-                  marginLeft: index === 0 ? '0' : '-10px',
-                }}
+                className="group relative flex-1 h-full rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer z-0 hover:z-10 origin-center scale-100 hover:scale-110 transition-transform duration-500 ease-out"
               >
                 {/* Maroon Theme Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-dark">
@@ -406,14 +403,14 @@ const HomePage = () => {
                 </div>
 
                 {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8 text-white min-w-[200px]">
+                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8 text-white">
                   <div className="transform transition-all duration-500 ease-in-out">
                     {/* Icon */}
                     <div className="mb-4 text-seltronik-yellow transition-all duration-500 group-hover:scale-110">
                       {categoryIcons[category.id] || <FaLightbulb className="text-4xl md:text-5xl" />}
                     </div>
                     {/* Title - Always visible */}
-                    <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2 whitespace-nowrap">
+                    <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2">
                       {category.name}
                     </h3>
                     {/* Description - Appears on hover */}
