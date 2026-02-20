@@ -91,7 +91,7 @@ const CertificatesPage = () => {
                 >
                   {/* Certificate Icon */}
                   <div className="flex justify-center mb-6">
-                    <FaCertificate className="text-5xl md:text-6xl laptop:text-4xl text-seltronik-red group-hover:scale-110 transition-transform duration-300" />
+                    <FaCertificate className="text-5xl md:text-6xl laptop:text-4xl text-seltronik-red dark:text-seltronik-yellow group-hover:scale-110 transition-transform duration-300" />
                   </div>
 
                   {/* Certificate Name */}
@@ -117,7 +117,7 @@ const CertificatesPage = () => {
                   </div>
 
                   {/* Click Hint */}
-                  <div className="text-center text-xs md:text-sm text-seltronik-red font-semibold group-hover:underline">
+                  <div className="text-center text-xs md:text-sm text-seltronik-red dark:text-seltronik-yellow font-semibold group-hover:underline">
                     Klik untuk membuka PDF
                   </div>
                 </motion.div>

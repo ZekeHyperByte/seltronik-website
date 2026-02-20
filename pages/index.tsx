@@ -267,7 +267,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h3 className="text-2xl md:text-3xl laptop:text-2xl font-bold text-black dark:text-white mb-2">
+              <h3 className="text-3xl md:text-4xl laptop:text-3xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={23} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Tahun Pengalaman</p>
@@ -278,7 +278,7 @@ const HomePage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h3 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
+              <h3 className="text-3xl md:text-4xl laptop:text-3xl font-bold text-black dark:text-white mb-2">
                 <CountUp end={100} duration={2} />+
               </h3>
               <p className="text-gray-600 dark:text-gray-400">Klien Puas</p>
@@ -342,7 +342,7 @@ const HomePage = () => {
               <div
                 key={product.id}
                 className="group relative flex-1 hover:flex-[5] transition-all duration-700 ease-in-out bg-gray-500 bg-center bg-cover rounded-2xl overflow-hidden"
-                style={{ backgroundImage: product.image ? `url(${product.image})` : 'none' }}
+                style={{ backgroundImage: product.image ? `url(${product.image})` : product.mockup_image ? `url(${product.mockup_image})` : 'none' }}
               >
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-700 ease-in-out"></div>
                 <div className="relative h-full flex flex-col justify-end p-6 lg:p-8 text-white">
@@ -375,8 +375,8 @@ const HomePage = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
               >
                 <div className="h-48 bg-gray-300 dark:bg-gray-700 relative">
-                  {product.image && (
-                    <Image src={product.image} alt={product.name} className="w-full h-full object-cover" fill />
+                  {(product.image || product.mockup_image) && (
+                    <Image src={product.image || product.mockup_image || ''} alt={product.name} className="w-full h-full object-cover" fill />
                   )}
                   <div className="absolute inset-0 bg-black/40"></div>
                 </div>
