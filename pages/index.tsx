@@ -33,6 +33,42 @@ const categoryIcons: { [key: string]: React.ReactNode } = {
   street: <FaRoad className="text-4xl md:text-5xl" />,
 };
 
+// Fallback categories if database is not available
+const fallbackCategories: Category[] = [
+  {
+    id: 'pedestrian',
+    name: 'Lampu Penyebrangan',
+    description: 'Sistem lampu penyebrangan pejalan kaki dengan teknologi terkini. Dilengkapi dengan countdown timer, audio warning, dan touchless button untuk keselamatan maksimal.',
+    thumbnail_image: '/images/categories/PEDESTRIAN CROSSING SXC.jpg',
+    display_order: 1,
+    is_active: true,
+  },
+  {
+    id: 'traffic',
+    name: 'Traffic Light',
+    description: 'Lampu lalu lintas LED dengan kualitas terbaik. Tersedia dalam berbagai konfigurasi dan ukuran.',
+    thumbnail_image: '/images/categories/TRAFFIC LIGHT.jpg',
+    display_order: 2,
+    is_active: true,
+  },
+  {
+    id: 'street',
+    name: 'Alat Penerangan Jalan',
+    description: 'Lampu jalan LED hemat energi dengan berbagai wattage. Desain modern, tahan cuaca, dan mudah perawatan.',
+    thumbnail_image: '/images/categories/ALAT PENERANGAN JALAN.jpg',
+    display_order: 3,
+    is_active: true,
+  },
+  {
+    id: 'warning',
+    name: 'Warning Light',
+    description: 'Lampu peringatan tenaga surya dan listrik untuk berbagai aplikasi. Ideal untuk area konstruksi dan titik rawan kecelakaan.',
+    thumbnail_image: '/images/categories/WARNING LIGHT.jpg',
+    display_order: 4,
+    is_active: true,
+  },
+];
+
 const HomePage = () => {
   const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
   const [textSwiper, setTextSwiper] = useState<SwiperClass | null>(null);
@@ -108,10 +144,16 @@ const HomePage = () => {
       try {
         // Fetch Categories
         const categoriesData = await categoryService.getAll();
-        setCategories(categoriesData || []);
-
+        // If no categories returned, use fallback
+        if (!categoriesData || categoriesData.length === 0) {
+          setCategories(fallbackCategories);
+        } else {
+          setCategories(categoriesData);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Use fallback categories on error
+        setCategories(fallbackCategories);
       }
     };
 
