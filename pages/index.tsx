@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Autoplay, Pagination, Navigation, Controller } from 'swiper/modules';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
-import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, FaRoad, FaTrafficLight, FaExclamationTriangle, FaSolarPanel, FaMicrochip, FaArrowRight } from 'react-icons/fa';
+import { FaCheckCircle, FaShieldAlt, FaTruck, FaHeadset, FaAward, FaLightbulb, FaRoad, FaTrafficLight, FaExclamationTriangle, FaSolarPanel, FaMicrochip, FaArrowRight, FaWalking } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedLogo from '../components/AnimatedLogo';
@@ -24,6 +24,14 @@ import 'swiper/css/effect-fade';
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
+
+// Category icon mapping
+const categoryIcons: { [key: string]: React.ReactNode } = {
+  pedestrian: <FaWalking className="text-4xl md:text-5xl" />,
+  warning: <FaExclamationTriangle className="text-4xl md:text-5xl" />,
+  traffic: <FaTrafficLight className="text-4xl md:text-5xl" />,
+  street: <FaRoad className="text-4xl md:text-5xl" />,
+};
 
 const HomePage = () => {
   const [backgroundSwiper, setBackgroundSwiper] = useState<SwiperClass | null>(null);
@@ -336,64 +344,88 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          {/* Desktop/Tablet Grid */}
+          {/* Desktop/Tablet Grid - Maroon Gallery Style */}
           <div className="hidden md:flex w-full md:h-[450px] lg:h-[550px] laptop:h-[400px] gap-2">
             {categories.map((category) => (
-              <div
+              <Link
                 key={category.id}
-                className="group relative flex-1 hover:flex-[5] transition-all duration-700 ease-in-out bg-gray-500 bg-center bg-cover rounded-2xl overflow-hidden"
-                style={{ backgroundImage: category.thumbnail_image ? `url(${category.thumbnail_image})` : 'none' }}
+                href="/produk"
+                className="group relative flex-1 hover:flex-[5] transition-all duration-700 ease-in-out rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer"
               >
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-700 ease-in-out"></div>
-                <div className="relative h-full flex flex-col justify-end p-6 lg:p-8 text-white">
-                  <div className="transform transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-12">
-                    <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2">
+                {/* Maroon Theme Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-dark">
+                  {/* Subtle pattern overlay */}
+                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2)_1px,_transparent_1px)] bg-[length:20px_20px]" />
+                  {/* Gradient Overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent group-hover:from-black/90 group-hover:via-black/40 transition-all duration-500" />
+                </div>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8 text-white">
+                  <div className="transform transition-all duration-500 ease-in-out opacity-100 group-hover:translate-y-0">
+                    {/* Icon */}
+                    <div className="mb-4 text-seltronik-yellow transition-all duration-500 group-hover:scale-110">
+                      {categoryIcons[category.id] || <FaLightbulb className="text-4xl md:text-5xl" />}
+                    </div>
+                    {/* Title - Always visible */}
+                    <h3 className="text-lg lg:text-xl laptop:text-lg font-bold font-heading mb-2 transition-all duration-500">
                       {category.name}
                     </h3>
-                    <p className="text-xs laptop:text-xs mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">{category.description}</p>
-                    <Link
-                      href="/produk"
-                      className="inline-flex items-center text-seltronik-yellow font-semibold hover:text-yellow-300 transition-colors duration-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300 text-sm lg:text-base"
-                    >
-                      Lihat Detail <FaArrowRight className="ml-2" />
-                    </Link>
+                    {/* Description - Appears on hover */}
+                    <p className="text-xs laptop:text-xs mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-2">
+                      {category.description.substring(0, 100)}...
+                    </p>
+                    {/* Link - Appears on hover */}
+                    <div className="flex items-center text-seltronik-yellow font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
+                      <span className="text-sm">Lihat Detail</span>
+                      <FaArrowRight className="ml-2 transform group-hover:translate-x-2 transition-transform" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
-          {/* Mobile Grid */}
+          {/* Mobile Grid - Maroon Card Style */}
           <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
+                className="group cursor-pointer"
               >
-                <div className="h-48 bg-gray-300 dark:bg-gray-700 relative">
-                  {category.thumbnail_image && (
-                    <Image src={category.thumbnail_image} alt={category.name} className="w-full h-full object-cover" fill />
-                  )}
-                  <div className="absolute inset-0 bg-black/40"></div>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-bold font-heading text-seltronik-dark dark:text-white mb-2">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-                    {category.description}
-                  </p>
-                  <Link
-                    href="/produk"
-                    className="inline-flex items-center text-seltronik-red font-semibold hover:text-seltronik-red-hover transition-colors duration-300 text-sm"
-                  >
-                    Lihat Detail <FaArrowRight className="ml-2" />
-                  </Link>
-                </div>
+                <Link href="/produk">
+                  <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
+                    {/* Maroon Theme Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-seltronik-red via-seltronik-red-hover to-seltronik-dark">
+                      {/* Subtle pattern overlay */}
+                      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2)_1px,_transparent_1px)] bg-[length:20px_20px]" />
+                      {/* Gradient Overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent group-hover:from-black/90 group-hover:via-black/40 transition-all duration-500" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                      <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                        <div className="mb-4 text-seltronik-yellow">
+                          {categoryIcons[category.id] || <FaLightbulb className="text-4xl md:text-5xl" />}
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-bold mb-2">{category.name}</h3>
+                        <p className="text-sm text-gray-300 line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          {category.description.substring(0, 100)}...
+                        </p>
+                        <div className="flex items-center text-seltronik-yellow font-semibold">
+                          <span className="text-sm">Lihat Detail</span>
+                          <FaArrowRight className="ml-2 transform group-hover:translate-x-2 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
