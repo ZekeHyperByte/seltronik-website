@@ -60,6 +60,15 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
+  // Redirect authenticated users away from auth pages
+  if (request.nextUrl.pathname.startsWith('/auth')) {
+    if (session) {
+      // User is already logged in, redirect to products
+      return NextResponse.redirect(new URL('/produk', request.url))
+    }
+    return response
+  }
+
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
     // Allow access to admin login page
@@ -103,5 +112,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/auth/:path*'],
 }

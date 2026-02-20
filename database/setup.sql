@@ -114,6 +114,20 @@ ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist (to make script idempotent)
+DROP POLICY IF EXISTS "Public can read products" ON products;
+DROP POLICY IF EXISTS "Public can read projects" ON projects;
+DROP POLICY IF EXISTS "Public can read certificates" ON certificates;
+DROP POLICY IF EXISTS "Public can read categories" ON categories;
+DROP POLICY IF EXISTS "Admin can manage products" ON products;
+DROP POLICY IF EXISTS "Admin can manage projects" ON projects;
+DROP POLICY IF EXISTS "Admin can manage certificates" ON certificates;
+DROP POLICY IF EXISTS "Admin can manage contact messages" ON contact_messages;
+DROP POLICY IF EXISTS "Admin can manage categories" ON categories;
+DROP POLICY IF EXISTS "Users can read own profile" ON user_profiles;
+DROP POLICY IF EXISTS "Users can update own profile" ON user_profiles;
+DROP POLICY IF EXISTS "Admins can read all profiles" ON user_profiles;
+
 -- Create policies for public read access
 CREATE POLICY "Public can read products" ON products FOR SELECT USING (true);
 CREATE POLICY "Public can read projects" ON projects FOR SELECT USING (true);
@@ -181,6 +195,9 @@ BEGIN
     RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Drop trigger if exists (to make script idempotent)
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
 -- Trigger to auto-create user profile
 CREATE TRIGGER on_auth_user_created
@@ -276,6 +293,14 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+-- Drop existing update triggers if they exist (to make script idempotent)
+DROP TRIGGER IF EXISTS update_products_updated_at ON products;
+DROP TRIGGER IF EXISTS update_projects_updated_at ON projects;
+DROP TRIGGER IF EXISTS update_certificates_updated_at ON certificates;
+DROP TRIGGER IF EXISTS update_contact_messages_updated_at ON contact_messages;
+DROP TRIGGER IF EXISTS update_user_profiles_updated_at ON user_profiles;
+DROP TRIGGER IF EXISTS update_categories_updated_at ON categories;
+
 -- Create triggers to automatically update the updated_at column
 CREATE TRIGGER update_products_updated_at BEFORE UPDATE ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON projects FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -284,13 +309,32 @@ CREATE TRIGGER update_contact_messages_updated_at BEFORE UPDATE ON contact_messa
 CREATE TRIGGER update_user_profiles_updated_at BEFORE UPDATE ON user_profiles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_categories_updated_at BEFORE UPDATE ON categories FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Data Migration: Copy existing images to new fields
-UPDATE products
-SET mockup_image = image, real_image = image
-WHERE mockup_image IS NULL OR real_image IS NULL;
+-- Data Migration: Copy existing images to new fields (only if columns exist)
+DO $$
+BEGIN
+    -- Check if mockup_image column exists
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'products' 
+        AND column_name = 'mockup_image'
+    ) THEN
+        -- Only update if the column exists
+        UPDATE products
+        SET mockup_image = image, real_image = image
+        WHERE mockup_image IS NULL OR real_image IS NULL;
+    END IF;
+END $$;
 
--- Remove controller category products
-DELETE FROM products WHERE category = 'controller';
+-- Remove controller category products (only if table exists)
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'products'
+    ) THEN
+        DELETE FROM products WHERE category = 'controller';
+    END IF;
+END $$;
 
 -- Note: To create an admin user, you need to:
 -- 1. Sign up a user through the auth system (via /auth/register or Supabase dashboard)
